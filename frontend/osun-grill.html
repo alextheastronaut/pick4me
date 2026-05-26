@@ -320,6 +320,40 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
   </main>
 
   <script>
+const API_BASE = (window.PICK4ME_API_BASE || "http://127.0.0.1:8000");
+const RESTAURANT_SLUG = "osun-grill";
+
+function getSessionId() {
+  let id = sessionStorage.getItem("pw_session_id");
+  if (!id) { id = crypto.randomUUID(); sessionStorage.setItem("pw_session_id", id); }
+  return id;
+}
+
+let _viewScreenTimer = null;
+function trackEvent(eventType, payload = {}) {
+  const body = JSON.stringify({
+    session_id: getSessionId(),
+    event_type: eventType,
+    payload,
+    client_ts: new Date().toISOString(),
+    language: currentLang || null,
+  });
+  const url = `${API_BASE}/api/v1/restaurants/${RESTAURANT_SLUG}/events`;
+  try {
+    if (navigator.sendBeacon &&
+        (eventType === "menu_clickthrough" || eventType === "quiz_abandoned")) {
+      navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
+      return;
+    }
+    fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true })
+      .catch(e => console.warn("[track] fetch failed", e));
+  } catch (e) { console.warn("[track] error", e); }
+}
+function trackViewScreen(screen) {
+  clearTimeout(_viewScreenTimer);
+  _viewScreenTimer = setTimeout(() => trackEvent("view_screen", { screen }), 200);
+}
+
 const RESTAURANT = {
   name: "O'Sun Grill",
   tagline: "Hawaii plate lunches. Asian roots. Open late.",
@@ -549,7 +583,7 @@ const TRANSLATIONS = {
 let currentLang = "en";
 function t(key) { return (TRANSLATIONS[currentLang]||TRANSLATIONS.en)[key]||TRANSLATIONS.en[key]||key; }
 function tQuestion(qId,field){const b=(TRANSLATIONS[currentLang]?.questions||{})[qId]||TRANSLATIONS.en.questions[qId]||{};return b[field];}
-function trackEvent(n,d={}){console.log("[track]",n,d);}
+// trackEvent defined above script block
 function resolveBudgetCap(a){const s=a.budget;if(!s||s==="none")return null;const q=QUIZ_QUESTIONS.find(q=>q.id==="budget");return q?.options.find(o=>o.value===s)?.cap??null;}
 function getExcludedTags(a){const r=a.restrictions;if(!r||!r.length)return[];const s=new Set();const rQ=QUIZ_QUESTIONS.find(q=>q.id==="restrictions");rQ.options.forEach(o=>{if(r.includes(o.value)&&o.hard&&o.excludeTags)o.excludeTags.forEach(t=>s.add(t));});return[...s];}
 function getSoftWarnings(a){const r=a.restrictions;if(!r||!r.length)return[];const rQ=QUIZ_QUESTIONS.find(q=>q.id==="restrictions");const s=[];rQ.options.forEach(o=>{if(r.includes(o.value)&&o.soft&&o.warnTags)s.push({warnTags:o.warnTags,warnLabel:o.warnLabel});});if(r.includes("other")&&a.restrictionOther?.trim())s.push({warnTags:[],warnLabel:a.restrictionOther.trim(),isCustom:true});return s;}
@@ -562,7 +596,7 @@ const state={screen:"landing",answers:{},step:0,result:null,extendedMode:false};
 const SCREENS=["landing","quiz","checkpoint","result","menu","staff","feedback"];
 function getScreenEl(n){return document.getElementById(`screen-${n}`);}
 function forceTop(el){if(el)el.scrollTop=0;document.body.scrollTop=0;document.documentElement.scrollTop=0;window.scrollTo(0,0);}
-function showScreen(name){state.screen=name;document.body.classList.add("is-switching");let ae=null;SCREENS.forEach(sn=>{const el=getScreenEl(sn);if(!el)return;const isA=sn===name;el.hidden=!isA;el.classList.toggle("is-active",isA);el.setAttribute("aria-hidden",String(!isA));if(isA)ae=el;});forceTop(ae);requestAnimationFrame(()=>{forceTop(ae);document.body.classList.remove("is-switching");});trackEvent("view_screen",{screen:name});}
+function showScreen(name){state.screen=name;document.body.classList.add("is-switching");let ae=null;SCREENS.forEach(sn=>{const el=getScreenEl(sn);if(!el)return;const isA=sn===name;el.hidden=!isA;el.classList.toggle("is-active",isA);el.setAttribute("aria-hidden",String(!isA));if(isA)ae=el;});forceTop(ae);requestAnimationFrame(()=>{forceTop(ae);document.body.classList.remove("is-switching");});trackViewScreen(name);}
 function renderLanding(){document.getElementById("restaurant-name").textContent=RESTAURANT.name;document.getElementById("restaurant-tagline").textContent=RESTAURANT.tagline;document.getElementById("restaurant-blurb").textContent=RESTAURANT.blurb;}
 function renderQuizStep(){const q=QUIZ_QUESTIONS[state.step];const total=QUIZ_QUESTIONS.length;const root=document.getElementById("quiz-body");root.innerHTML="";const isCore=state.step<CORE_COUNT;if(isCore){document.getElementById("quiz-progress").textContent=`Question ${state.step+1} of ${CORE_COUNT}`;document.getElementById("quiz-bar-fill").style.width=`${((state.step+1)/CORE_COUNT)*100}%`;}else{const ei=state.step-CORE_COUNT+1;const et=QUIZ_QUESTIONS.length-CORE_COUNT;document.getElementById("quiz-progress").textContent=`Extra question ${ei} of ${et}`;document.getElementById("quiz-bar-fill").style.width=`${(ei/et)*100}%`;}document.getElementById("btn-quiz-back").textContent=state.step===0?t("quizBack0"):t("quizBackN");const prompt=document.createElement("h2");prompt.className="quiz-prompt";prompt.textContent=tQuestion(q.id,"prompt")||q.prompt;root.appendChild(prompt);const tSub=tQuestion(q.id,"subtitle");if(q.subtitle||tSub){const sub=document.createElement("p");sub.className="quiz-subtitle";sub.textContent=tSub||q.subtitle;root.appendChild(sub);}const opts=document.createElement("div");opts.className="quiz-options";const isLast=state.step===total-1;if(q.type==="multi"){if(!Array.isArray(state.answers[q.id]))state.answers[q.id]=[];const tOpts=tQuestion(q.id,"options")||[];const isR=q.id==="restrictions";let hh=false,sh=false;q.options.forEach((o,oi)=>{if(isR){if(o.hard&&!hh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionHard");opts.appendChild(l);hh=true;}if(o.soft&&!sh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionSoft");opts.appendChild(l);sh=true;}}const btn=document.createElement("button");btn.type="button";const sel=state.answers[q.id];btn.className="option"+(sel.includes(o.value)?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{let cur=state.answers[q.id];if(o.exclusive){state.answers[q.id]=cur.includes(o.value)?[]:[o.value];}else{cur=cur.filter(v=>{const ex=q.options.find(x=>x.value===v);return!ex?.exclusive;});if(cur.includes(o.value))state.answers[q.id]=cur.filter(v=>v!==o.value);else state.answers[q.id]=[...cur,o.value];}trackEvent("quiz_answer",{question:q.id,value:state.answers[q.id]});const ab=opts.querySelectorAll(".option");ab.forEach(b=>b.classList.remove("is-selected"));state.answers[q.id].forEach(v=>{const idx=q.options.findIndex(x=>x.value===v);if(idx>=0)ab[idx]?.classList.add("is-selected");});const nxt=document.getElementById("btn-quiz-next");const ne=state.answers[q.id].length===0;if(q.optional)nxt.textContent=ne?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));else nxt.disabled=ne;const tnxt=document.getElementById("btn-quiz-next-top");if(tnxt)tnxt.textContent=nxt.textContent;if(isR){const w=document.getElementById("other-restriction-wrap");if(w)w.style.display=state.answers[q.id].includes("other")?"":"none";}});opts.appendChild(btn);if(isR&&o.value==="other"){const ow=document.createElement("div");ow.className="custom-amount";ow.id="other-restriction-wrap";ow.style.display=state.answers[q.id].includes("other")?"":"none";const lbl=document.createElement("label");lbl.setAttribute("for","other-restriction-input");lbl.textContent=t("restrictionsOtherLabel");const inp=document.createElement("input");inp.type="text";inp.id="other-restriction-input";inp.placeholder=t("restrictionsOtherPlaceholder");inp.value=state.answers.restrictionOther||"";inp.addEventListener("input",()=>{state.answers.restrictionOther=inp.value;});ow.appendChild(lbl);ow.appendChild(inp);opts.appendChild(ow);}});}else{const tOpts=tQuestion(q.id,"options")||[];q.options.forEach((o,oi)=>{const btn=document.createElement("button");btn.type="button";btn.className="option"+(state.answers[q.id]===o.value?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{state.answers[q.id]=o.value;trackEvent("quiz_answer",{question:q.id,value:o.value});opts.querySelectorAll(".option").forEach(c=>c.classList.remove("is-selected"));btn.classList.add("is-selected");window.setTimeout(nextStep,140);});opts.appendChild(btn);});}if(q.type==="multi"){const tn=document.createElement("button");tn.type="button";tn.id="btn-quiz-next-top";tn.className="btn btn--secondary quiz-top-next";const ne0=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;tn.textContent=q.optional?(ne0?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"))):(isLast?t("quizSeeMyPick"):t("quizNext"));tn.addEventListener("click",nextStep);root.appendChild(tn);}root.appendChild(opts);const next=document.getElementById("btn-quiz-next");if(q.type==="multi"){const ie=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;if(q.optional){next.textContent=ie?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));next.style.display="";next.disabled=false;}else{next.textContent=isLast?t("quizSeeMyPick"):t("quizNext");next.style.display="";next.disabled=ie;}}else{next.style.display="none";next.disabled=true;}forceTop(getScreenEl("quiz"));}
 function nextStep(){const q=QUIZ_QUESTIONS[state.step];const ans=state.answers[q.id];const ha=q.type==="multi"?(q.optional||(Array.isArray(ans)&&ans.length>0)):ans!=null;if(!ha)return;if(state.step===CORE_COUNT-1&&!state.extendedMode){showScreen("checkpoint");return;}if(state.step<QUIZ_QUESTIONS.length-1){state.step+=1;renderQuizStep();}else{submitQuiz();}}

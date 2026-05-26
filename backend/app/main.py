@@ -17,6 +17,7 @@ app = FastAPI(title="Pick4Me API", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        # local dev
         "http://localhost:8000",
         "http://127.0.0.1:8000",
         "http://localhost:3000",
@@ -24,7 +25,10 @@ app.add_middleware(
         "http://localhost:5500",
         "http://127.0.0.1:5500",
         "null",  # file:// during local testing
+        # production (Cloudflare Pages — exact + preview subdomains)
+        "https://pick4me.pages.dev",
     ],
+    allow_origin_regex=r"https://pick4me(-[a-z0-9]+)?\.pages\.dev",
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type"],
 )

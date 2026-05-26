@@ -18,11 +18,13 @@ ALLOWED_EVENT_TYPES = frozenset({
     "quiz_checkpoint_choice",
     "recommendation_shown",
     "menu_clickthrough",
+    "next_best_clicked",
     "retry_clicked",
     "feedback_submitted",
     "language_changed",
     "quiz_started",
     "quiz_abandoned",
+    "session_end",
 })
 
 

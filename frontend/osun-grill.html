@@ -342,7 +342,7 @@ function trackEvent(eventType, payload = {}) {
   const url = `${API_BASE}/api/v1/restaurants/${RESTAURANT_SLUG}/events`;
   try {
     if (navigator.sendBeacon &&
-        (eventType === "menu_clickthrough" || eventType === "quiz_abandoned")) {
+        (eventType === "menu_clickthrough" || eventType === "quiz_abandoned" || eventType === "session_end")) {
       navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
       return;
     }
@@ -657,7 +657,7 @@ function scoreItem(item,answers,questions){let score=0;const pOpt=questions.find
 function buildReason(item,answers,questions){const parts=[];questions.forEach(q=>{if(q.type==="budget"||q.id==="resultStyle"||q.id==="restrictions"||q.type==="multi")return;const opt=q.options.find(o=>o.value===answers[q.id]);if(!opt?.reason)return;const ov=(opt.tags||[]).some(t=>item.tags.includes(t));if(ov||opt.boostFeatured||opt.boostNew||opt.prioritizeCheap)parts.push({text:opt.reason,weight:q.weight??1});});parts.sort((a,b)=>b.weight-a.weight);const top=parts.slice(0,2).map(r=>r.text).filter(Boolean);if(!top.length)return"A crowd favorite we think you'll enjoy.";if(top.length===1)return`Picked because you wanted ${top[0]}.`;return`Picked because you wanted ${top[0]} and ${top[1]}.`;}
 function recommend(answers){const questions=QUIZ_QUESTIONS;const{min:bmin,cap:bc}=resolveBudgetRange(answers);const hasBudgetFilter=bc!=null||bmin!=null;const excl=getExcludedTags(answers);const sw=getSoftWarnings(answers);const style=answers.resultStyle||"one";const pOpt=questions.find(q=>q.id==="priority")?.options.find(o=>o.value===answers.priority);let pool=MENU_ITEMS.filter(i=>!excl.some(t=>i.tags.includes(t)));let fallback=false;let bp=hasBudgetFilter?pool.filter(i=>(bc==null||i.price<=bc)&&(bmin==null||i.price>=bmin)):pool;if(hasBudgetFilter&&!bp.length){bp=pool;fallback=true;}pool=bp;const scored=pool.map(i=>({item:i,score:scoreItem(i,answers,questions),softWarnings:buildSoftWarningsForItem(i,sw)}));if(pOpt?.prioritizeCheap)scored.sort((a,b)=>a.item.price-b.item.price||b.score-a.score);else scored.sort((a,b)=>b.score-a.score||a.item.price-b.item.price);if(style==="top3")return{style:"top3",items:scored.slice(0,3),ranked:scored,fallback};if(style==="eliminate")return{style:"eliminate",items:scored.slice(0,Math.min(5,scored.length)),ranked:scored,fallback};const c=scored[0];return{style:"one",item:c.item,score:c.score,fallback,ranked:scored,reason:buildReason(c.item,answers,QUIZ_QUESTIONS)};}
 
-const state={screen:"landing",answers:{},step:0,result:null,extendedMode:false};
+const state={screen:"landing",answers:{},step:0,result:null,extendedMode:false,sessionStartedAt:Date.now()};
 const SCREENS=["landing","quiz","checkpoint","result","menu","staff","feedback"];
 function getScreenEl(n){return document.getElementById(`screen-${n}`);}
 function forceTop(el){if(el)el.scrollTop=0;document.body.scrollTop=0;document.documentElement.scrollTop=0;window.scrollTo(0,0);}
@@ -671,9 +671,9 @@ function submitQuiz(){state.result=recommend(state.answers);const _shown=state.r
 
 function buildResultActions(root,showNB,onNB,currentItem=null){
   const a=document.createElement("div");a.className="result-actions";
-  if(showNB){const b=document.createElement("button");b.type="button";b.className="btn btn--secondary";b.textContent=t("nextBest");b.addEventListener("click",onNB);a.appendChild(b);}
+  if(showNB){const b=document.createElement("button");b.type="button";b.className="btn btn--secondary";b.textContent=t("nextBest");b.addEventListener("click",()=>{trackEvent("next_best_clicked",{from_item_id:currentItem?.id||null});onNB();});a.appendChild(b);}
   const m=document.createElement("button");m.type="button";m.className="btn btn--primary";m.textContent=t("viewFullMenu");m.addEventListener("click",()=>{trackEvent("menu_clickthrough",{item_id:currentItem?.id||null,source:"result"});window.open("https://www.osungrill.com/menu","_blank","noopener,noreferrer");});a.appendChild(m);
-  const fb=document.createElement("button");fb.type="button";fb.className="btn btn--ghost";fb.style.marginTop="6px";fb.style.opacity="0.7";fb.style.fontSize="0.9rem";fb.textContent="💬 Rate this pick";fb.addEventListener("click",()=>{resetFeedback();showScreen("feedback");});a.appendChild(fb);
+  const fb=document.createElement("button");fb.type="button";fb.className="btn btn--ghost";fb.style.marginTop="6px";fb.style.opacity="0.7";fb.style.fontSize="0.9rem";fb.textContent="💬 Did this help?";fb.addEventListener("click",()=>{resetFeedback();showScreen("feedback");});a.appendChild(fb);
   root.appendChild(a);
 }
 
@@ -704,7 +704,7 @@ function wireEvents(){
   document.getElementById("btn-menu-pick").addEventListener("click",()=>startQuiz("menu"));
   document.getElementById("btn-staff-back").addEventListener("click",()=>showScreen("landing"));
   document.getElementById("btn-staff-pick").addEventListener("click",()=>startQuiz("staff"));
-  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&state.screen==="quiz"){trackEvent("quiz_abandoned",{step:state.step,question_key:QUIZ_QUESTIONS[state.step]?.id||null,answers_so_far:state.answers});}});
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){const dur=Math.round((Date.now()-state.sessionStartedAt)/1000);trackEvent("session_end",{duration_seconds:dur,from_screen:state.screen});if(state.screen==="quiz"){trackEvent("quiz_abandoned",{step:state.step,question_key:QUIZ_QUESTIONS[state.step]?.id||null,answers_so_far:state.answers});}}});
   wireFeedback();
 }
 function applyLang(lang){currentLang=lang;trackEvent("language_changed",{lang,from_screen:state.screen});document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===lang));document.getElementById("restaurant-tagline").textContent=t("tagline");document.getElementById("restaurant-blurb").textContent=t("blurb");document.querySelector(".eyebrow").textContent=t("eyebrow");document.getElementById("btn-pick").textContent=t("btnPick");document.getElementById("btn-view-menu").textContent=t("btnViewMenu");document.getElementById("btn-staff").textContent=t("btnStaff");document.querySelector(".landing-hint").textContent=t("landingHint");document.getElementById("btn-result-retry").textContent=t("topbarRetry");document.getElementById("btn-result-menu").textContent=t("topbarMenu");document.getElementById("btn-menu-back").textContent=t("topbarMenuBack");document.getElementById("btn-menu-pick").textContent=t("topbarMenuPick");document.getElementById("btn-staff-back").textContent=t("topbarStaffBack");document.getElementById("btn-staff-pick").textContent=t("topbarStaffPick");document.getElementById("menu-title").textContent=t("menuTitle");document.querySelector("#screen-menu .screen-sub").textContent=t("menuSub");document.getElementById("staff-title").textContent=t("staffTitle");document.querySelector("#screen-staff .screen-sub").textContent=t("staffSub");renderStaffFavorites();document.getElementById("btn-checkpoint-back").textContent=t("checkpointBack");document.getElementById("checkpoint-title").textContent=t("checkpointTitle");document.querySelector("#screen-checkpoint .checkpoint-headline").textContent=t("checkpointHeadline");document.querySelector("#screen-checkpoint .checkpoint-sub").textContent=t("checkpointSub");document.getElementById("btn-checkpoint-now").textContent=t("checkpointNow");document.getElementById("btn-checkpoint-top3").textContent=t("checkpointTop3");document.getElementById("btn-checkpoint-more").textContent=t("checkpointMore");if(state.screen==="quiz")renderQuizStep();if(state.screen==="result")renderResult();}

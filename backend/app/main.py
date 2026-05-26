@@ -36,6 +36,6 @@ app.include_router(recommendations.router, prefix="/api/v1")
 app.include_router(events.router, prefix="/api/v1")
 
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 async def health():
     return {"status": "ok"}

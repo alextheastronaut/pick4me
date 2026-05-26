@@ -667,7 +667,7 @@ function renderQuizStep(){const q=QUIZ_QUESTIONS[state.step];const total=QUIZ_QU
 function nextStep(){const q=QUIZ_QUESTIONS[state.step];const ans=state.answers[q.id];const ha=q.type==="multi"?(q.optional||(Array.isArray(ans)&&ans.length>0)):ans!=null;if(!ha)return;if(state.step===CORE_COUNT-1&&!state.extendedMode){showScreen("checkpoint");return;}if(state.step<QUIZ_QUESTIONS.length-1){state.step+=1;renderQuizStep();}else{submitQuiz();}}
 function prevStep(){if(state.step===CORE_COUNT&&state.extendedMode){showScreen("checkpoint");return;}if(state.step>0){state.step-=1;renderQuizStep();}else{showScreen("landing");}}
 function startQuiz(entryPoint){state.step=0;state.extendedMode=false;renderQuizStep();showScreen("quiz");trackEvent("quiz_started",{entry_point:entryPoint||null});}
-function submitQuiz(){state.result=recommend(state.answers);const _ranked=state.result.ranked||[];const _rankedIds=_ranked.map(e=>(e?.item||e).id);const _scores={};_ranked.forEach(e=>{const _i=e?.item||e;_scores[_i.id]=e?.score??0;});const _topId=(_ranked[0]?.item||_ranked[0])?.id||null;trackEvent("recommendation_shown",{answers:state.answers,ranked_ids:_rankedIds,scores:_scores,top_item_id:_topId});renderResult();showScreen("result");}
+function submitQuiz(){state.result=recommend(state.answers);const _shown=state.result.items?state.result.items.map(e=>e.item||e):(state.result.item?[state.result.item]:[]);const _rankedIds=_shown.map(i=>i.id);const _topId=_rankedIds[0]||null;trackEvent("recommendation_shown",{answers:state.answers,ranked_ids:_rankedIds,top_item_id:_topId});renderResult();showScreen("result");}
 
 function buildResultActions(root,showNB,onNB,currentItem=null){
   const a=document.createElement("div");a.className="result-actions";

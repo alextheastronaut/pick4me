@@ -2,6 +2,23 @@
 
 QR-code restaurant menu recommender. Diner scans a QR code, answers a few questions, gets 3–4 recommended dishes with explanations.
 
+## Production (Phase 1 — O'Sun Grill pilot)
+
+| | URL |
+|---|---|
+| **Frontend** | https://plate-up.alextheastronaut.workers.dev/osun-grill |
+| **Backend** | https://pick4me.fly.dev |
+| **QR code** | `qr-osun-grill.png` in repo root |
+
+**Deploy backend:** `fly deploy --app pick4me --config fly.toml`  
+**Deploy frontend:** push to `master` — Cloudflare auto-deploys via Wrangler
+
+**If something breaks:**
+1. `fly logs --app pick4me` — check for crashes
+2. `curl https://pick4me.fly.dev/health` — should return `{"status":"ok"}`
+3. Neon dashboard → confirm `pick4me` project is active (free tier suspends after 5 days idle)
+4. UptimeRobot dashboard → check alert history
+
 ---
 
 ## Prerequisites

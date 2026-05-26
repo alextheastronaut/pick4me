@@ -3,15 +3,56 @@
 ## What this is
 A QR-code restaurant menu recommender. Diner scans a QR code, answers ~5 quiz questions about preferences and dietary restrictions, and receives 3–4 recommended menu items with short explanations.
 
+## Production URLs
+
+| Service | URL |
+|---|---|
+| Frontend | https://plate-up.alextheastronaut.workers.dev/osun-grill |
+| Backend API | https://pick4me.fly.dev |
+| Health check | https://pick4me.fly.dev/health |
+| Database | Neon — ep-proud-queen-akx6qgup (project: pick4me) |
+| Uptime monitoring | UptimeRobot (2 monitors, 5-min checks, alerts → alextheastronaut@gmail.com) |
+
+## Deploy commands
+
+```bash
+# Backend — from repo root (flyctl must be logged in)
+fly deploy --app pick4me --config fly.toml
+
+# Frontend — auto-deploys on every push to master via Cloudflare/Wrangler
+
+# Run migrations against Neon (from backend/)
+DATABASE_SYNC_URL="..." uv run alembic upgrade head
+
+# Regenerate QR code
+uv run --with "qrcode[pil]" scripts/make_qr.py <url> qr-osun-grill.png
+```
+
+## If something breaks
+
+1. **Check Fly.io logs:** `fly logs --app pick4me`
+2. **Check health endpoint:** `curl https://pick4me.fly.dev/health`
+3. **Check Neon dashboard:** https://console.neon.tech — verify the `pick4me` project is active and not suspended
+4. **Check UptimeRobot:** https://uptimerobot.com — review alert history
+5. **Check recent events in Neon:**
+   ```sql
+   SELECT client_meta->>'event_type', count(*), max(created_at)
+   FROM recommendation_events
+   WHERE created_at > now() - interval '1 hour'
+   GROUP BY 1 ORDER BY 3 DESC;
+   ```
+6. **Redeploy backend:** `fly deploy --app pick4me --config fly.toml`
+7. **Redeploy frontend:** push any commit to master — Cloudflare auto-deploys
+
 ## Stack
 
 | Layer | Technology |
 |---|---|
 | Backend | Python 3.12 · FastAPI · SQLAlchemy 2 (async) · Alembic · asyncpg |
-| Database | Postgres 16 (local Docker; Neon/Supabase for prod later) |
-| Frontend | Next.js 15 (App Router) · TypeScript · Tailwind CSS · deployed to Vercel |
+| Database | Neon Postgres (free tier) |
+| Frontend | Single-file HTML · Cloudflare Workers (static assets via wrangler) |
 | Storage | S3 for menu item images — **not wired yet** |
-| Deployment | Single long-running container on Fly.io or Render — **not Lambda** |
+| Deployment | Fly.io (shared-cpu-1x, 256 MB, region sjc) — **not Lambda** |
 
 ## Repo layout
 

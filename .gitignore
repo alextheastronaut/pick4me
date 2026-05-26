@@ -1,0 +1,29 @@
+# Claude Code
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+.env
+
+# uv
+.python-version
+
+# Next.js
+web/.next/
+web/node_modules/
+web/.env.local
+web/.env*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Alembic
+alembic/versions/__pycache__/

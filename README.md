@@ -50,6 +50,25 @@ docker compose down -v   # stop and WIPE all data
 
 ---
 
+## Serve the frontend demo
+
+Open `/frontend/osun-grill.html` using VS Code Live Server (right-click → Open with Live Server, port 5500), or:
+
+```powershell
+cd frontend
+python -m http.server 5500
+```
+
+Then open `http://localhost:5500/osun-grill.html` in your browser. The demo will POST events to `http://127.0.0.1:8000` by default.
+
+**Override the API base for production** — set `window.PICK4ME_API_BASE` before the script loads:
+
+```html
+<script>window.PICK4ME_API_BASE = "https://your-backend.fly.dev";</script>
+```
+
+---
+
 ## Interactive API docs
 
 Open `http://127.0.0.1:8000/docs` in your browser — FastAPI's built-in Swagger UI lets you try every endpoint without curl.
@@ -61,6 +80,21 @@ Open `http://127.0.0.1:8000/docs` in your browser — FastAPI's built-in Swagger
 ### `GET /health`
 ```
 http://127.0.0.1:8000/health
+```
+
+### `POST /api/v1/restaurants/{slug}/events`
+
+Track a diner event. Returns 204 No Content.
+
+```powershell
+curl -X POST http://127.0.0.1:8000/api/v1/restaurants/osun-grill/events `
+  -H "Content-Type: application/json" `
+  -d '{
+    "session_id": "test-session-1",
+    "event_type": "view_screen",
+    "payload": { "screen": "landing" },
+    "client_ts": "2026-05-26T12:00:00.000Z"
+  }'
 ```
 
 ### `POST /api/v1/restaurants/{slug}/recommendations`
@@ -149,16 +183,21 @@ uv run pytest -v
 ## Project layout
 
 ```
+frontend/
+  osun-grill.html      # Phase 1 demo — self-contained, wired to events endpoint
 backend/
   app/
-    main.py            # FastAPI app + lifespan
+    main.py            # FastAPI app + lifespan + CORS
     models.py          # SQLAlchemy ORM models (7 tables)
-    quiz_config.py     # Answer → tag boost/exclude mapping (edit to tune recommendations)
+    quiz_config.py     # Answer → tag boost/exclude mapping
     recommender.py     # Scoring algorithm
-    seed.py            # Sample data: The Golden Fork
+    seed.py            # O'Sun Grill seed data
     routers/
       recommendations.py  # POST /api/v1/restaurants/{slug}/recommendations
+      events.py           # POST /api/v1/restaurants/{slug}/events
   alembic/             # DB migrations
   tests/
+    conftest.py          # NullPool engine patch (prevents event-loop issues)
     test_recommender.py
+    test_events.py
 ```

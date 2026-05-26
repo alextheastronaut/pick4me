@@ -26,16 +26,51 @@ A QR-code restaurant menu recommender. Diner scans a QR code, answers ~5 quiz qu
 │   │   ├── recommender.py
 │   │   ├── seed.py
 │   │   └── routers/
-│   │       └── recommendations.py
+│   │       ├── recommendations.py
+│   │       └── events.py    # POST /api/v1/restaurants/{slug}/events
 │   ├── alembic/
 │   ├── alembic.ini
 │   ├── pyproject.toml
 │   └── docker-compose.yml
-├── web/              # Next.js app
-│   └── lib/          # kept Next-free (no Next.js imports) for portability
+├── frontend/
+│   └── osun-grill.html   # Phase 1 single-file demo (wired to events endpoint)
+├── web/              # Next.js app (Phase 2+, not yet built)
 ├── CLAUDE.md
 └── README.md
 ```
+
+## Events contract (Phase 1)
+
+**Endpoint:** `POST /api/v1/restaurants/{slug}/events`  
+**Response:** 204 No Content  
+**Allowed `event_type` values:**
+
+| event_type | fired when |
+|---|---|
+| `view_screen` | any screen transition (debounced 200 ms) |
+| `quiz_started` | quiz begins; payload `{ entry_point: "landing"\|"menu"\|"staff"\|"retry" }` |
+| `quiz_answer` | option selected; payload `{ question, value, action? }` |
+| `quiz_checkpoint_choice` | checkpoint button; payload `{ choice: "now"\|"top3"\|"more" }` |
+| `recommendation_shown` | result displayed; payload includes `answers`, `ranked_ids`, `scores` |
+| `menu_clickthrough` | "View full menu" tapped; payload `{ from_screen, item_id, item_name }` |
+| `retry_clicked` | retry button; payload `{ from_style }` |
+| `feedback_submitted` | feedback form submitted; payload `{ rating, comment, item_id, style }` |
+| `language_changed` | language toggled; payload `{ lang, from_screen }` |
+| `quiz_abandoned` | tab hidden mid-quiz; payload `{ step, question_key, answers_so_far }` |
+
+For `recommendation_shown`, the backend also indexes `payload.answers → quiz_answers`, `payload.ranked_ids → recommended_item_ids`, and `payload.scores → scores` for cheap SQL analytics.
+
+Storage: events are stored in `recommendation_events` with `client_meta` JSONB holding `{ event_type, client_ts, language, payload }`. Non-recommendation rows use `{}` / `[]` sentinels for the NOT NULL analytics columns.
+
+**Override API base in prod:** set `window.PICK4ME_API_BASE` before the script loads.
+
+## Roadmap
+
+| Phase | What |
+|---|---|
+| **Phase 1** ✅ | Single-file HTML demo wired to event-tracking endpoint. Pilot O'Sun Grill. |
+| **Phase 2** | Serve menu data from backend. Schema reconciliation (demo's 7 Qs vs backend's 5). |
+| **Phase 3** | Server-side recommendations via `POST /recommendations`. Next.js frontend for restaurant #2. |
 
 ## Naming conventions
 - Python: `snake_case` for everything; no abbreviations

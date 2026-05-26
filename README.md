@@ -13,6 +13,12 @@ QR-code restaurant menu recommender. Diner scans a QR code, answers a few questi
 **Deploy backend:** `fly deploy --app pick4me --config fly.toml`  
 **Deploy frontend:** push to `master` — Cloudflare auto-deploys via Wrangler
 
+**Dashboards:**
+- Neon: https://console.neon.tech/app/projects/orange-darkness-27487799
+- Fly.io: https://fly.io/apps/pick4me
+- Cloudflare: https://dash.cloudflare.com/66f706ad64f39336f657f65ad0286fc3/workers/services/view/plate-up/production/builds
+- UptimeRobot: https://dashboard.uptimerobot.com/monitors
+
 **If something breaks:**
 1. `fly logs --app pick4me` — check for crashes
 2. `curl https://pick4me.fly.dev/health` — should return `{"status":"ok"}`

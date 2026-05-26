@@ -393,8 +393,7 @@ const QUIZ_QUESTIONS = [
       { label: "🍗 BBQ or grilled chicken",   value: "chicken", tags: ["chicken"],                          reason: "BBQ chicken" },
       { label: "🥩 Kalbi / Beef",              value: "beef",    tags: ["beef"],                             reason: "Kalbi or beef" },
       { label: "🐟 Fish or seafood",          value: "fish",    tags: ["fish","shellfish"],                 reason: "fish or seafood" },
-      { label: "🍖 Pork chop",               value: "pork",    tags: ["pork"],                             reason: "pork chop" },
-      { label: "🥟 Appetizers / lighter",    value: "light",   tags: ["light-hunger","quick","appetizer"],  reason: "something lighter" }
+      { label: "🍖 Pork chop",               value: "pork",    tags: ["pork"],                             reason: "pork chop" }
     ]
   },
   {
@@ -580,7 +579,7 @@ const TRANSLATIONS = {
     questions: {
       hunger:       { prompt: "How hungry are you?",            options: ["🥟 Just a small bite","🍽️ Ready for a full plate","🔥 Starving — max plates"] },
       budget:       { prompt: "What's your budget?",            options: ["🤙 No budget — just pick the best","Under $15","$15–$20","$20+"] },
-      craving:      { prompt: "What sounds good right now?",    options: ["🍤 Garlic shrimp","🍗 BBQ or grilled chicken","🥩 Kalbi / Beef","🐟 Fish or seafood","🍖 Pork chop","🥟 Appetizers / lighter"] },
+      craving:      { prompt: "What sounds good right now?",    options: ["🍤 Garlic shrimp","🍗 BBQ or grilled chicken","🥩 Kalbi / Beef","🐟 Fish or seafood","🍖 Pork chop"] },
       restrictions: { prompt: "Any hard no's or allergies?",    subtitle: "Pick all that apply — or tap Next to skip.", options: ["🥜 Peanuts","🌰 Tree nuts","🦞 Shellfish","🐟 Fish","🧀 Dairy","🥚 Eggs","🌾 Gluten / Wheat","🫘 Soy","🐷 Pork","🐄 Beef","🌶️ Spicy","🍬 Lots of sugar","✏️ Other (type below)"] },
       mood:         { prompt: "What kind of mood are you in?",  options: ["✅ Local classic","⭐ Most popular","🆕 Something new","🌞 Light & easy"] },
       priority:     { prompt: "What matters most?",             options: ["💰 Cheapest pick","🏋️ Most filling","🥦 Lighter option","😋 Most delicious","⚡ Quick to get"] },
@@ -611,7 +610,7 @@ function buildMatchReasons(item,answers){
   const proteinTag=PROTEIN_TAG[answers.craving];
   const cravingLabel={shrimp:"Matches your shrimp craving",chicken:"Matches your chicken craving",
     beef:"Matches your beef craving",fish:"Matches your seafood craving",
-    pork:"Matches your pork craving",light:"A lighter bite"};
+    pork:"Matches your pork craving"};
   if(proteinTag&&item.tags.includes(proteinTag)){
     // Exact protein match
     reasons.push("✓ "+(cravingLabel[answers.craving]||"Matches your craving"));

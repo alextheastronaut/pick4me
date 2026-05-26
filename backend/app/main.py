@@ -25,10 +25,9 @@ app.add_middleware(
         "http://localhost:5500",
         "http://127.0.0.1:5500",
         "null",  # file:// during local testing
-        # production (Cloudflare Pages — exact + preview subdomains)
-        "https://plate-up.pages.dev",
+        # production (Cloudflare Workers static deploy)
+        "https://plate-up.alextheastronaut.workers.dev",
     ],
-    allow_origin_regex=r"https://plate-up(-[a-z0-9]+)?\.pages\.dev",
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type"],
 )

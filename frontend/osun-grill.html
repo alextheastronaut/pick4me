@@ -341,11 +341,6 @@ function trackEvent(eventType, payload = {}) {
   });
   const url = `${API_BASE}/api/v1/restaurants/${RESTAURANT_SLUG}/events`;
   try {
-    if (navigator.sendBeacon &&
-        (eventType === "menu_clickthrough" || eventType === "quiz_abandoned" || eventType === "session_end")) {
-      navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
-      return;
-    }
     fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true })
       .catch(e => console.warn("[track] fetch failed", e));
   } catch (e) { console.warn("[track] error", e); }

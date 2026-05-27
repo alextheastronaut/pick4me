@@ -313,7 +313,11 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
   </main>
 
   <script>
-const API_BASE = window.PICK4ME_API_BASE || "http://127.0.0.1:8000";
+const API_BASE = window.PICK4ME_API_BASE || (
+  (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? "http://127.0.0.1:8000"
+    : "https://pick4me.fly.dev"
+);
 const RESTAURANT_SLUG = "osun-grill";
 
 function getSessionId() {

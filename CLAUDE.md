@@ -114,6 +114,30 @@ Storage: events are stored in `recommendation_events` with `client_meta` JSONB h
 | **Phase 2** | Serve menu data from backend. Schema reconciliation (demo's 7 Qs vs backend's 5). |
 | **Phase 3** | Server-side recommendations via `POST /recommendations`. Next.js frontend for restaurant #2. |
 
+## Dev/prod endpoint convention
+
+Dev and prod must never cross-wire. The frontend resolves `API_BASE` in this priority order:
+
+1. `window.PICK4ME_API_BASE` — injected by the Cloudflare Worker (`src/worker.js`) from `wrangler.toml [vars]`. Always set in the deployed Worker; never set when opening the HTML file directly.
+2. `location.hostname` ternary — fallback when the Worker is absent:
+   - `localhost` / `127.0.0.1` → `http://127.0.0.1:8000`
+   - anything else → `https://pick4me.fly.dev`
+
+```js
+const API_BASE = window.PICK4ME_API_BASE || (
+  (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? "http://127.0.0.1:8000"
+    : "https://pick4me.fly.dev"
+);
+```
+
+**Local dev with `wrangler dev`:** the Worker will inject the prod URL from `wrangler.toml [vars]`, overriding the hostname fallback. Override it explicitly:
+```bash
+wrangler dev --var API_BASE:http://127.0.0.1:8000
+```
+
+**Pre-commit hook** blocks any frontend file that contains `pick4me.fly.dev` without a `location.hostname` guard (i.e., bare hardcoded prod URL).
+
 ## Naming conventions
 - Python: `snake_case` for everything; no abbreviations
 - URL slugs: `kebab-case` (e.g., `golden-fork`)

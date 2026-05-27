@@ -25,6 +25,7 @@ ALLOWED_EVENT_TYPES = frozenset({
     "quiz_started",
     "quiz_abandoned",
     "session_end",
+    "feedback_star_clicked",
 })
 
 

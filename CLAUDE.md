@@ -95,6 +95,7 @@ uv run --with "qrcode[pil]" scripts/make_qr.py <url> qr-osun-grill.png
 | `recommendation_shown` | result displayed; payload includes `answers`, `ranked_ids`, `scores` |
 | `menu_clickthrough` | "View full menu" tapped; payload `{ from_screen, item_id, item_name }` |
 | `retry_clicked` | retry button; payload `{ from_style }` |
+| `feedback_star_clicked` | star tapped before submit; payload `{ rating }` |
 | `feedback_submitted` | feedback form submitted; payload `{ rating, comment, item_id, style }` |
 | `language_changed` | language toggled; payload `{ lang, from_screen }` |
 | `quiz_abandoned` | tab hidden mid-quiz; payload `{ step, question_key, answers_so_far }` |

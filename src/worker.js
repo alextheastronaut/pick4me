@@ -1,7 +1,8 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname.endsWith(".html") || url.pathname.endsWith("/")) {
+    const ext = url.pathname.split("/").pop().includes(".");
+    if (!ext || url.pathname.endsWith(".html") || url.pathname.endsWith("/")) {
       const response = await env.ASSETS.fetch(request);
       const html = await response.text();
       const injected = html.replace(

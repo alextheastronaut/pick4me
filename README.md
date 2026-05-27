@@ -73,7 +73,21 @@ docker compose down -v   # stop and WIPE all data
 
 ---
 
-## Serve the frontend demo
+## Browse the frontend on GitHub Pages
+
+The frontend is served from the `master` branch via GitHub Pages:
+
+`https://alextheastronaut.github.io/pick4me/frontend/osun-grill.html`
+
+This hits the production backend by default. To point it at a local backend, run this in the browser console:
+
+```js
+window.PICK4ME_API_BASE = "http://127.0.0.1:8000"
+```
+
+---
+
+## Serve the frontend demo locally
 
 Open `/frontend/osun-grill.html` using VS Code Live Server (right-click → Open with Live Server, port 5500), or:
 

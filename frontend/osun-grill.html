@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#b8691a" />
-  <title>O'Sun Grill — Platewise</title>
+  <title>O'Sun Grill — Brilla</title>
   <style>
 :root {
   --c-sea: #b8691a;
@@ -165,22 +165,19 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
 .lang-btn { display: block; width: 100%; text-align: left; border: none; background: none; cursor: pointer; font-size: 0.84rem; font-weight: 700; color: var(--c-ink); padding: 12px 16px; -webkit-tap-highlight-color: transparent; }
 .lang-btn + .lang-btn { border-top: 1px solid var(--c-line); }
 .lang-btn.is-active { background: #f5e4c0; color: var(--c-sea-deep); }
-/* ── Feedback screen ── */
-.feedback-body { padding: 12px 4px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-.feedback-icon { font-size: 2.2rem; margin-bottom: 16px; width: 76px; height: 76px; display: grid; place-items: center; background: var(--c-coral); border-radius: 24px; box-shadow: var(--shadow-btn); }
-.feedback-title { font-size: 1.75rem; font-weight: 900; letter-spacing: -0.03em; color: var(--c-ink); line-height: 1.15; margin-bottom: 8px; }
-.feedback-sub { color: var(--c-ink-soft); font-weight: 600; max-width: 28ch; margin: 0 auto 22px; font-size: 0.93rem; line-height: 1.5; }
-.star-rating { display: flex; gap: 6px; margin-bottom: 22px; }
+/* ── Feedback (inline on result screen) ── */
+.star-rating { display: flex; gap: 6px; margin-bottom: 16px; justify-content: center; }
 .star { font-size: 2.5rem; background: none; border: none; cursor: pointer; color: #e8c080; transition: color 0.1s, transform 0.1s; -webkit-tap-highlight-color: transparent; padding: 2px 4px; }
 .star.is-active { color: var(--c-mango); }
 .star:active { transform: scale(1.18); }
-.feedback-comment-wrap { width: 100%; margin-bottom: 20px; text-align: left; }
+.feedback-comment-wrap { width: 100%; margin-bottom: 12px; text-align: left; }
 .feedback-label { display: block; font-weight: 800; font-size: 0.9rem; margin-bottom: 6px; color: var(--c-ink-soft); }
 .feedback-textarea { width: 100%; font-size: 1rem; padding: 13px 15px; border: 2px solid var(--c-line); border-radius: var(--radius-s); background: #fff; resize: none; color: var(--c-ink); }
 .feedback-textarea:focus { outline: none; border-color: var(--c-coral); }
-.feedback-actions { display: flex; flex-direction: column; gap: 11px; width: 100%; }
-.feedback-thanks { display: flex; flex-direction: column; align-items: center; width: 100%; padding-top: 8px; }
-.feedback-thanks-text { font-size: 1.4rem; font-weight: 900; color: var(--c-sea-deep); margin-bottom: 20px; line-height: 1.3; }
+.feedback-thanks-text { font-size: 1.15rem; font-weight: 900; color: var(--c-sea-deep); line-height: 1.3; padding: 6px 0; }
+.feedback-inline { border-top: 1.5px solid var(--c-line); margin-top: 20px; padding-top: 18px; text-align: center; }
+.feedback-inline-title { font-size: 1rem; font-weight: 800; color: var(--c-sea-deep); margin-bottom: 12px; }
+.restaurant-website-link { display: inline-block; font-size: 0.85rem; font-weight: 700; color: var(--c-ink-soft); text-decoration: underline; margin-top: 8px; -webkit-tap-highlight-color: transparent; }
 /* ── Match-reason chips ── */
 .match-reasons { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 2px; }
 .match-chip { font-size: 0.75rem; font-weight: 800; padding: 4px 11px; border-radius: var(--radius-pill); background: rgba(184,105,26,0.09); color: var(--c-sea-deep); border: 1px solid rgba(184,105,26,0.22); letter-spacing: 0.01em; }
@@ -201,13 +198,15 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
           <div class="lang-dropdown" role="listbox">
             <button class="lang-btn is-active" data-lang="en" type="button">🇺🇸 English</button>
             <button class="lang-btn" data-lang="es" type="button">🇲🇽 Español</button>
+            <button class="lang-btn" data-lang="ja" type="button">🇯🇵 日本語</button>
+            <button class="lang-btn" data-lang="zh" type="button">🇨🇳 中文</button>
           </div>
         </div>
         <div class="logo-badge" aria-hidden="true">🌞</div>
-        <p class="eyebrow">Platewise</p>
+        <p class="eyebrow">Brilla</p>
         <h1 id="restaurant-name">O'Sun Grill</h1>
         <p id="restaurant-tagline" class="tagline">Hawaii plate lunches. Asian roots. Open late.</p>
-        <p class="hours-pill">🕐 Open daily till midnight</p>
+        <p id="hours-pill" class="hours-pill">🕐 Open daily till midnight</p>
       </div>
       <div class="landing-inner">
         <p id="restaurant-blurb" class="blurb">Garlic shrimp, BBQ chicken, Kalbi, and more. Tell us what you're feeling — we'll pick it.</p>
@@ -217,7 +216,8 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
           <button class="btn btn--staff btn--lg" id="btn-staff" type="button">❤️ People Loved</button>
         </div>
         <p class="landing-hint">Quick · Simple · Tourist-friendly</p>
-        <p class="pilot-note">🧪 We're testing Platewise with O'Sun Grill. Your feedback helps us improve it.</p>
+        <a href="https://www.osungrill.com/" target="_blank" rel="noopener noreferrer" class="restaurant-website-link" id="landing-website-link">Visit osungrill.com →</a>
+        <p id="pilot-note" class="pilot-note">🧪 We're testing Brilla with O'Sun Grill. Your feedback helps us improve it.</p>
       </div>
     </section>
 
@@ -242,6 +242,26 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
         <button class="topbar-action" id="btn-result-menu" type="button">Menu</button>
       </div>
       <div class="result-body" id="result-body"></div>
+      <div class="feedback-inline">
+        <div id="result-feedback-form">
+          <p id="feedback-inline-title" class="feedback-inline-title">Did this help you decide?</p>
+          <div class="star-rating" id="result-star-rating" role="group" aria-label="Star rating">
+            <button class="star" data-val="1" type="button" aria-label="1 star">★</button>
+            <button class="star" data-val="2" type="button" aria-label="2 stars">★</button>
+            <button class="star" data-val="3" type="button" aria-label="3 stars">★</button>
+            <button class="star" data-val="4" type="button" aria-label="4 stars">★</button>
+            <button class="star" data-val="5" type="button" aria-label="5 stars">★</button>
+          </div>
+          <div class="feedback-comment-wrap" id="result-feedback-comment-wrap" style="display:none">
+            <label id="feedback-comment-label" for="result-feedback-comment" class="feedback-label">Anything else? (optional)</label>
+            <textarea id="result-feedback-comment" class="feedback-textarea" placeholder="e.g. great suggestion, wanted more options…" rows="3"></textarea>
+          </div>
+          <button class="btn btn--cta" id="result-feedback-submit" type="button" disabled style="display:none;margin-top:12px">Submit →</button>
+        </div>
+        <div id="result-feedback-thanks" style="display:none">
+          <p id="feedback-thanks-text" class="feedback-thanks-text">🙏 Thanks — that really helps!</p>
+        </div>
+      </div>
     </section>
 
     <!-- ── Menu ── -->
@@ -253,6 +273,7 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
       <div class="screen-head">
         <h2 class="screen-title" id="menu-title">Menu</h2>
         <p class="screen-sub">Tap "Pick for me" if you want help choosing.</p>
+        <a href="https://www.osungrill.com/" id="restaurant-website-link" target="_blank" rel="noopener noreferrer" class="restaurant-website-link">Visit osungrill.com →</a>
       </div>
       <div class="menu-list" id="menu-list"></div>
     </section>
@@ -287,38 +308,6 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
         <p class="screen-sub">Items guests keep coming back for.</p>
       </div>
       <div class="staff-list" id="staff-list"></div>
-    </section>
-
-    <!-- ── Feedback ── -->
-    <section id="screen-feedback" class="screen" hidden aria-labelledby="feedback-title">
-      <div class="topbar">
-        <button class="topbar-back" id="btn-feedback-back" type="button">← Back</button>
-        <span class="topbar-progress">Quick Feedback</span>
-      </div>
-      <div class="feedback-body">
-        <div class="feedback-icon" aria-hidden="true">💬</div>
-        <h2 class="feedback-title" id="feedback-title">Did this help you decide?</h2>
-        <p class="feedback-sub">A quick rating helps us improve the experience for everyone.</p>
-        <div class="star-rating" id="star-rating" role="group" aria-label="Star rating">
-          <button class="star" data-val="1" type="button" aria-label="1 star">★</button>
-          <button class="star" data-val="2" type="button" aria-label="2 stars">★</button>
-          <button class="star" data-val="3" type="button" aria-label="3 stars">★</button>
-          <button class="star" data-val="4" type="button" aria-label="4 stars">★</button>
-          <button class="star" data-val="5" type="button" aria-label="5 stars">★</button>
-        </div>
-        <div class="feedback-comment-wrap" id="feedback-comment-wrap" style="display:none">
-          <label for="feedback-comment" class="feedback-label">Anything else? (optional)</label>
-          <textarea id="feedback-comment" class="feedback-textarea" placeholder="e.g. great suggestion, wanted more options…" rows="3"></textarea>
-        </div>
-        <div class="feedback-actions" id="feedback-actions">
-          <button class="btn btn--cta" id="btn-feedback-submit" type="button" disabled>Submit →</button>
-          <button class="btn btn--ghost" id="btn-feedback-skip" type="button">Skip</button>
-        </div>
-        <div class="feedback-thanks" id="feedback-thanks" style="display:none">
-          <p class="feedback-thanks-text">🙏 Thanks — that really helps!</p>
-          <button class="btn btn--secondary" id="btn-feedback-done" type="button">Back to home</button>
-        </div>
-      </div>
     </section>
 
   </main>
@@ -445,6 +434,11 @@ const MENU_ITEMS = [
   {
     id: "garlic-wings", name: "Garlic Butter Chicken Wings", price: 15.75, image: "menu_pictures/compressed/garlic-wings.webp",
     description: "Crispy golden wings tossed in our signature rich garlic butter sauce.",
+    translations: {
+      es: { name: "Alitas de Pollo con Mantequilla de Ajo", description: "Crujientes alitas de pollo bañadas en nuestra rica salsa de mantequilla y ajo." },
+      ja: { name: "ガーリックバターチキンウィング", description: "香ばしいガーリックバターソースに絡めたカリッとした黄金色のウィング。" },
+      zh: { name: "蒜香黄油鸡翅", description: "酥脆金黄的鸡翅，裹上我们招牌浓郁的蒜香黄油酱。" }
+    },
     tags: ["chicken","savory","garlic","light-hunger","quick","appetizer"],
     labels: ["Popular"], featured: true,
     popularReason: "crispy, garlicky, and impossible to stop eating — a go-to starter."
@@ -452,95 +446,170 @@ const MENU_ITEMS = [
   {
     id: "shrimp-tempura", name: "Shrimp Tempura", price: 13.75, image: "menu_pictures/compressed/shrimp-tempura.webp",
     description: "Plump shrimp dipped in a light, airy batter and fried until golden crisp.",
+    translations: {
+      es: { name: "Tempura de Camarones", description: "Camarones jugosos rebozados en una masa ligera y aireada, fritos hasta quedar dorados." },
+      ja: { name: "エビの天ぷら", description: "プリプリのエビを軽やかな衣でカラッと揚げた一品。" },
+      zh: { name: "天妇罗虾", description: "饱满的虾裹上轻盈酥脆的面衣，炸至金黄。" }
+    },
     tags: ["shrimp","light-hunger","quick","appetizer","shellfish"],
     labels: ["Light"], featured: false
   },
   {
     id: "gyoza", name: "Gyoza", price: 12.75, image: "menu_pictures/compressed/gyoza.webp",
     description: "Japanese-style dumplings filled with savory pork and vegetables, pan-fried for a crispy bite.",
+    translations: {
+      es: { name: "Gyoza", description: "Empanadillas al estilo japonés rellenas de cerdo y verduras, fritas hasta quedar crujientes." },
+      ja: { name: "餃子", description: "豚ひき肉と野菜を包んだ焼き餃子。パリッとした食感が特徴。" },
+      zh: { name: "饺子", description: "日式煎饺，馅料为猪肉和蔬菜，煎至底部酥脆。" }
+    },
     tags: ["pork","savory","light-hunger","quick","appetizer","gluten","soy"],
     labels: ["Light"], featured: false
   },
   {
     id: "veggie-rolls", name: "Veggie Spring Rolls", price: 12.75, image: "menu_pictures/compressed/veggie-rolls.webp",
     description: "Crispy rolls filled with a fresh vegetable mix, fried golden and perfect for sharing.",
+    translations: {
+      es: { name: "Rollitos de Primavera Vegetarianos", description: "Rollitos crujientes rellenos de una mezcla de verduras frescas, fritos hasta quedar dorados." },
+      ja: { name: "野菜春巻き", description: "新鮮な野菜を包んだカリカリの揚げ春巻き。" },
+      zh: { name: "蔬菜春卷", description: "外皮酥脆，内馅是新鲜蔬菜，油炸至金黄，适合分享。" }
+    },
     tags: ["light-hunger","quick","appetizer","vegetarian"],
     labels: ["Vegetarian", "Light"], featured: false
   },
   {
     id: "fried-calamari", name: "Fried Calamari", price: 14.75, image: "menu_pictures/compressed/fried-calamari.webp",
     description: "Tender calamari rings lightly battered and fried until golden, served with a dipping sauce.",
+    translations: {
+      es: { name: "Calamares Fritos", description: "Anillos de calamar tiernos ligeramente rebozados y fritos hasta quedar dorados, servidos con salsa." },
+      ja: { name: "フライドカラマリ", description: "やわらかいイカのリングを薄衣でカリッと揚げ、ディップソース添え。" },
+      zh: { name: "炸鱿鱼圈", description: "嫩滑的鱿鱼圈，裹上薄面衣炸至金黄，配蘸酱享用。" }
+    },
     tags: ["shellfish","savory","light-hunger","quick","appetizer"],
     labels: ["Light"], featured: false
   },
   {
     id: "onion-rings", name: "Onion Rings", price: 9.75, image: "menu_pictures/compressed/onion-rings.webp",
     description: "Thick-cut onion rings in a crispy golden batter — a classic crowd-pleasing side.",
+    translations: {
+      es: { name: "Aros de Cebolla", description: "Aros de cebolla gruesos en una masa dorada y crujiente — un clásico que a todos gusta." },
+      ja: { name: "オニオンリング", description: "厚切りタマネギをサクサクのコロモで揚げた定番の一品。" },
+      zh: { name: "洋葱圈", description: "厚切洋葱裹上酥脆面衣炸制，经典受欢迎的小食。" }
+    },
     tags: ["savory","light-hunger","quick","appetizer","vegetarian"],
     labels: ["Light"], featured: false
   },
   /* ── Entrées (served with rice & salad) ── */
   {
-    id: "garlic-shrimp", name: "Garlic Butter Shrimp", price: 20.75, withRice: true, image: "menu_pictures/compressed/garlic-shrimp.webp",
+    id: "garlic-shrimp", name: "Garlic Butter Shrimp", price: 20.75, image: "menu_pictures/compressed/garlic-shrimp.webp",
     description: "A North Shore classic. Large shrimp sautéed in plenty of butter and fresh chopped garlic. Served with rice and salad.",
+    translations: {
+      es: { name: "Camarones a la Mantequilla de Ajo", description: "Un clásico de la Costa Norte. Camarones grandes salteados en abundante mantequilla y ajo fresco. Servido con arroz y ensalada." },
+      ja: { name: "ガーリックバタートエビ", description: "ノースショアの名物。新鮮なニンニクをたっぷり使ったバターソースで炒めた大エビ。ライスとサラダ付き。" },
+      zh: { name: "蒜香黄油虾", description: "北岸经典。大虾用大量黄油和新鲜蒜末翻炒。配白饭和沙拉。" }
+    },
     tags: ["shrimp","savory","garlic","classic","hawaiian","medium-hunger","shellfish"],
     labels: ["Popular", "Classic"], featured: true,
     popularReason: "a North Shore legend — guests say it's the reason they came back a second time."
   },
   {
-    id: "bbq-chicken", name: "BBQ Chicken", price: 20.75, withRice: true, image: "menu_pictures/compressed/bbq-chicken.webp",
+    id: "bbq-chicken", name: "BBQ Chicken", price: 20.75, image: "menu_pictures/compressed/bbq-chicken.webp",
     description: "Boneless chicken thighs marinated in island spices and grilled with our house BBQ sauce. Served with rice and salad.",
+    translations: {
+      es: { name: "Pollo BBQ", description: "Muslos de pollo deshuesados marinados en especias isleñas y asados con nuestra salsa BBQ casera. Servido con arroz y ensalada." },
+      ja: { name: "BBQチキン", description: "アイランドスパイスでマリネした骨なしチキンをハウスBBQソースでグリル。ライスとサラダ付き。" },
+      zh: { name: "BBQ烤鸡", description: "去骨鸡腿用岛式香料腌制，配上自制BBQ酱烤制。配白饭和沙拉。" }
+    },
     tags: ["chicken","bbq","savory","classic","hawaiian","medium-hunger"],
     labels: ["Popular", "Classic"], featured: true,
     popularReason: "a crowd go-to — that island BBQ glaze keeps people ordering it again."
   },
   {
-    id: "kalbi", name: "Kalbi / Beef Short Ribs", price: 23.75, withRice: true, image: "menu_pictures/compressed/kalbi.webp",
+    id: "kalbi", name: "Kalbi / Beef Short Ribs", price: 23.75, image: "menu_pictures/compressed/kalbi.webp",
     description: "Tender beef short ribs marinated in a sweet and savory soy-ginger glaze, grilled to perfection. Served with rice and salad.",
+    translations: {
+      es: { name: "Kalbi / Costillas Cortas de Res", description: "Costillas de res tiernas marinadas en un glaseado dulce y salado de soja y jengibre, asadas a la perfección. Servido con arroz y ensalada." },
+      ja: { name: "カルビ / 牛ショートリブ", description: "甘辛い醤油ジンジャーグレーズでマリネしたやわらかい牛ショートリブをグリル。ライスとサラダ付き。" },
+      zh: { name: "烤牛小排（卡尔比）", description: "嫩滑的牛小排用甜咸酱油姜汁腌制，烤至完美。配白饭和沙拉。" }
+    },
     tags: ["beef","bbq","savory","filling","big-hunger","classic","soy"],
     labels: ["Popular", "Filling"], featured: true,
     popularReason: "sweet, savory, fall-off-the-bone short ribs — people say it's the best thing on the menu."
   },
   {
-    id: "salted-egg-shrimp", name: "Salted Egg Yolk Shrimp", price: 20.75, withRice: true, image: "menu_pictures/compressed/salted-egg-shrimp.webp",
+    id: "salted-egg-shrimp", name: "Salted Egg Yolk Shrimp", price: 20.75, image: "menu_pictures/compressed/salted-egg-shrimp.webp",
     description: "A rich, umami-packed favorite. Crispy shrimp coated in a savory cured egg yolk sauce. Served with rice and salad.",
+    translations: {
+      es: { name: "Camarones con Yema de Huevo Salado", description: "Un favorito rico y lleno de umami. Camarones crujientes cubiertos con una sabrosa salsa de yema de huevo curado. Servido con arroz y ensalada." },
+      ja: { name: "塩卵エビ", description: "濃厚なうま味が凝縮した人気メニュー。カリカリのエビに塩漬け卵黄ソースをかけた一品。ライスとサラダ付き。" },
+      zh: { name: "咸蛋黄虾", description: "浓郁鲜美的人气菜品。酥脆的虾裹上咸蛋黄酱汁。配白饭和沙拉。" }
+    },
     tags: ["shrimp","savory","rich","medium-hunger","shellfish","eggs"],
     labels: ["Popular"], featured: true,
     popularReason: "an umami bomb that surprises first-timers in the best possible way."
   },
   {
-    id: "pork-chop", name: "Pork Chop", price: 20.75, withRice: true, image: "menu_pictures/compressed/pork-chop.webp",
+    id: "pork-chop", name: "Pork Chop", price: 20.75, image: "menu_pictures/compressed/pork-chop.webp",
     description: "Juicy pork chops simply seasoned and pan-fried until golden brown. Served with rice and salad.",
+    translations: {
+      es: { name: "Chuleta de Cerdo", description: "Jugosas chuletas de cerdo simplemente sazonadas y fritas hasta quedar doradas. Servido con arroz y ensalada." },
+      ja: { name: "ポークチョップ", description: "シンプルな味付けでジューシーに仕上げたポークチョップ。ライスとサラダ付き。" },
+      zh: { name: "猪排", description: "简单调味的多汁猪排，煎至金黄。配白饭和沙拉。" }
+    },
     tags: ["pork","savory","filling","medium-hunger","classic"],
     labels: ["Filling"], featured: false
   },
   {
-    id: "salt-pepper-shrimp", name: "Salt & Pepper Shrimp", price: 20.75, withRice: true, image: "menu_pictures/compressed/salt-pepper-shrimp.webp",
+    id: "salt-pepper-shrimp", name: "Salt & Pepper Shrimp", price: 20.75, image: "menu_pictures/compressed/salt-pepper-shrimp.webp",
     description: "Wok-tossed with fresh chili peppers, garlic, and sea salt for a crispy, spicy kick. Served with rice and salad.",
+    translations: {
+      es: { name: "Camarones Sal y Pimienta", description: "Salteados en wok con pimientos frescos, ajo y sal marina para un sabor crujiente y picante. Servido con arroz y ensalada." },
+      ja: { name: "塩コショウエビ", description: "新鮮な唐辛子、ニンニク、岩塩でウォックに炒めたスパイシーなエビ。ライスとサラダ付き。" },
+      zh: { name: "椒盐虾", description: "用新鲜辣椒、蒜和海盐大火翻炒，酥脆辛香。配白饭和沙拉。" }
+    },
     tags: ["shrimp","savory","spicy","medium-hunger","shellfish"],
     labels: ["Spicy"], featured: false
   },
   {
-    id: "steak", name: "Steak", price: 23.75, withRice: true, image: "menu_pictures/compressed/steak.webp",
+    id: "steak", name: "Steak", price: 23.75, image: "menu_pictures/compressed/steak.webp",
     description: "Juicy slices of beef seared hot and served with rice and salad.",
+    translations: {
+      es: { name: "Bistec", description: "Jugosas lonchas de carne de res selladas a fuego alto. Servido con arroz y ensalada." },
+      ja: { name: "ステーキ", description: "高温でサッと焼き上げたジューシーな牛肉スライス。ライスとサラダ付き。" },
+      zh: { name: "牛排", description: "多汁的牛肉片大火煎烤。配白饭和沙拉。" }
+    },
     tags: ["beef","savory","filling","big-hunger"],
     labels: ["Filling"], featured: false
   },
   {
-    id: "shaking-beef", name: "Shaking Beef", price: 23.75, withRice: true, image: "menu_pictures/compressed/shaking-beef.webp",
+    id: "shaking-beef", name: "Shaking Beef", price: 23.75, image: "menu_pictures/compressed/shaking-beef.webp",
     description: "Vietnamese-style wok-tossed beef cubes seared in a savory garlic and soy glaze. Tender, rich, and full of umami. Served with rice and salad.",
+    translations: {
+      es: { name: "Carne Agitada", description: "Cubos de carne estilo vietnamita salteados en wok con un glaseado sabroso de ajo y soja. Tierno, rico y lleno de umami. Servido con arroz y ensalada." },
+      ja: { name: "シェイキングビーフ", description: "ベトナム風のコロコロ牛肉をニンニク醤油グレーズでウォック炒め。やわらかくリッチなうま味。ライスとサラダ付き。" },
+      zh: { name: "摇摇牛肉（越式炒牛肉）", description: "越南风味的牛肉块用蒜香酱油大火翻炒，嫩滑鲜美。配白饭和沙拉。" }
+    },
     tags: ["beef","savory","garlic","filling","big-hunger","soy"],
     labels: ["Filling"], featured: false
   },
   {
-    id: "fish-fillet", name: "Garlic Butter Fish Fillet", price: 20.75, withRice: true, image: "menu_pictures/compressed/fish-fillet.webp",
+    id: "fish-fillet", name: "Garlic Butter Fish Fillet", price: 20.75, image: "menu_pictures/compressed/fish-fillet.webp",
     description: "Tender white fish fillets pan-seared and smothered in our famous garlic butter sauce. Served with rice and salad.",
+    translations: {
+      es: { name: "Filete de Pescado con Mantequilla de Ajo", description: "Filetes de pescado blanco tiernos sellados en sartén y bañados en nuestra famosa salsa de mantequilla y ajo. Servido con arroz y ensalada." },
+      ja: { name: "ガーリックバター白身魚フィレ", description: "やわらかい白身魚をソテーし、名物のガーリックバターソースをたっぷり絡めた一品。ライスとサラダ付き。" },
+      zh: { name: "蒜香黄油鱼柳", description: "嫩滑的白鱼柳煎至金黄，淋上我们招牌的蒜香黄油酱。配白饭和沙拉。" }
+    },
     tags: ["fish","savory","garlic","medium-hunger"],
     labels: ["Savory"], featured: false
   },
   {
     id: "fried-rice", name: "Fried Rice", price: 16.75, image: "menu_pictures/compressed/fried-rice.webp",
     description: "Wok-tossed jasmine rice with eggs, vegetables, and savory seasonings.",
+    translations: {
+      es: { name: "Arroz Frito", description: "Arroz jazmín salteado en wok con huevos, verduras y condimentos sabrosos." },
+      ja: { name: "チャーハン", description: "卵、野菜、うま味調味料をウォックで炒めたジャスミンライス。" },
+      zh: { name: "炒饭", description: "茉莉香米与鸡蛋、蔬菜和调味料大火翻炒。" }
+    },
     tags: ["savory","light-hunger","quick","soy","eggs"],
     labels: ["Light"], featured: false
   }
@@ -549,7 +618,7 @@ const MENU_ITEMS = [
 /* ── i18n ── */
 const TRANSLATIONS = {
   en: {
-    eyebrow: "Platewise", tagline: "Hawaii plate lunches. Asian roots. Open late.",
+    eyebrow: "Brilla", tagline: "Hawaii plate lunches. Asian roots. Open late.",
     blurb: "Not sure what to order? Take the quick quiz and we'll pick for you.",
     btnPick: "Pick My Order →", btnViewMenu: "View Menu", btnStaff: "❤️ People Loved",
     landingHint: "No more menus. Just pick.",
@@ -572,6 +641,22 @@ const TRANSLATIONS = {
     checkpointNow: "Show my pick →", checkpointTop3: "Show top 3", checkpointMore: "Make it more accurate",
     restrictionsSectionHard: "Hard allergies", restrictionsSectionSoft: "Preferences / dealbreakers",
     restrictionsOtherLabel: "Describe your restriction:", restrictionsOtherPlaceholder: "e.g. coconut, cilantro…",
+    hoursPill: "🕐 Open daily till midnight",
+    pilotNote: "🧪 We're testing Brilla with O'Sun Grill. Your feedback helps us improve it.",
+    feedbackTitle: "Did this help you decide?",
+    feedbackCommentLabel: "Anything else? (optional)",
+    feedbackCommentPlaceholder: "e.g. great suggestion, wanted more options…",
+    feedbackSubmit: "Submit →",
+    feedbackThanks: "🙏 Thanks — that really helps!",
+    popularReasonPrefix: "🌟 People love this: ",
+    labelPopular: "Popular", labelLight: "Light", labelClassic: "Classic", labelFilling: "Filling", labelSpicy: "Spicy", labelVegetarian: "Vegetarian", labelSavory: "Savory",
+    matchCravingShrimp: "Matches your shrimp craving", matchCravingChicken: "Matches your chicken craving", matchCravingBeef: "Matches your beef craving", matchCravingFish: "Matches your seafood craving", matchCravingPork: "Matches your pork craving", matchCravingDefault: "Matches your craving", matchSeafood: "Seafood option",
+    matchBudgetU15: "Under $15", matchBudgetRange: "In the $15–$20 range", matchBudgetPlus: "$20+ pick",
+    matchGuestFavorite: "Guest favorite", matchVeryFilling: "Very filling", matchLighterOption: "Lighter option", matchQuickToGet: "Quick to get", matchBestValue: "Best value pick", matchVegetarian: "Vegetarian-friendly", matchSpicy: "Spicy kick",
+    reasonFallback: "A crowd favorite we think you'll enjoy.",
+    reasonOne: "Picked because you wanted %s.",
+    reasonTwo: "Picked because you wanted %s and %s.",
+    reasons: { snack: "something light", normal: "a proper plate", starving: "something super filling", shrimp: "garlic shrimp", chicken: "BBQ chicken", beef: "Kalbi or beef", fish: "fish or seafood", pork: "pork chop", safe: "a local classic", popular: "the most popular pick", new: "something I haven't tried", light: "something light", cheapest: "great value", filling: "super filling", healthy: "something lighter", taste: "the tastiest thing", fast: "quick and easy" },
     questions: {
       hunger:       { prompt: "How hungry are you?",            options: ["🥟 Just a small bite","🍽️ Ready for a full plate","🔥 Starving — max plates"] },
       budget:       { prompt: "What's your budget?",            options: ["🤙 No budget — just pick the best","Under $15","$15–$20","$20+"] },
@@ -583,7 +668,7 @@ const TRANSLATIONS = {
     }
   },
   es: {
-    eyebrow: "Platewise",
+    eyebrow: "Brilla",
     tagline: "Platos hawaianos. Raíces asiáticas. Abierto hasta medianoche.",
     blurb: "¿No sabes qué pedir? Responde el cuestionario y te recomendamos.",
     btnPick: "Elige por mí →", btnViewMenu: "Ver menú", btnStaff: "❤️ Los más pedidos",
@@ -610,6 +695,22 @@ const TRANSLATIONS = {
     checkpointNow: "Muéstrame mi elección →", checkpointTop3: "Mostrar las 3 mejores", checkpointMore: "Hacerlo más preciso",
     restrictionsSectionHard: "Alergias graves", restrictionsSectionSoft: "Preferencias / restricciones",
     restrictionsOtherLabel: "Describe tu restricción:", restrictionsOtherPlaceholder: "ej. coco, cilantro…",
+    hoursPill: "🕐 Abierto todos los días hasta medianoche",
+    pilotNote: "🧪 Estamos probando Brilla con O'Sun Grill. Tu opinión nos ayuda a mejorar.",
+    feedbackTitle: "¿Te ayudó a decidir?",
+    feedbackCommentLabel: "¿Algo más? (opcional)",
+    feedbackCommentPlaceholder: "ej. buena sugerencia, quería más opciones…",
+    feedbackSubmit: "Enviar →",
+    feedbackThanks: "🙏 ¡Gracias — eso nos ayuda mucho!",
+    popularReasonPrefix: "🌟 La gente ama esto: ",
+    labelPopular: "Popular", labelLight: "Ligero", labelClassic: "Clásico", labelFilling: "Abundante", labelSpicy: "Picante", labelVegetarian: "Vegetariano", labelSavory: "Sabroso",
+    matchCravingShrimp: "Coincide con tu antojo de camarones", matchCravingChicken: "Coincide con tu antojo de pollo", matchCravingBeef: "Coincide con tu antojo de res", matchCravingFish: "Coincide con tu antojo de mariscos", matchCravingPork: "Coincide con tu antojo de cerdo", matchCravingDefault: "Coincide con tu antojo", matchSeafood: "Opción de mariscos",
+    matchBudgetU15: "Menos de $15", matchBudgetRange: "En el rango de $15–$20", matchBudgetPlus: "Opción $20+",
+    matchGuestFavorite: "Favorito de los clientes", matchVeryFilling: "Muy abundante", matchLighterOption: "Opción más ligera", matchQuickToGet: "Rápido de conseguir", matchBestValue: "Mejor relación calidad-precio", matchVegetarian: "Apto para vegetarianos", matchSpicy: "Con toque picante",
+    reasonFallback: "Un favorito que creemos que disfrutarás.",
+    reasonOne: "Elegido porque querías %s.",
+    reasonTwo: "Elegido porque querías %s y %s.",
+    reasons: { snack: "algo ligero", normal: "un plato completo", starving: "algo muy abundante", shrimp: "camarones al ajo", chicken: "pollo BBQ", beef: "Kalbi o res", fish: "pescado o mariscos", pork: "chuleta de cerdo", safe: "un clásico local", popular: "lo más popular", new: "algo nuevo", light: "algo ligero", cheapest: "buen precio", filling: "mucho volumen", healthy: "algo más ligero", taste: "lo más delicioso", fast: "algo rápido" },
     questions: {
       hunger:       { prompt: "¿Cuánta hambre tienes?",                     options: ["🥟 Solo un bocadillo","🍽️ Listo para un plato completo","🔥 Muy hambriento — al máximo"] },
       budget:       { prompt: "¿Cuál es tu presupuesto?",                   options: ["🤙 Sin límite — elige lo mejor","Menos de $15","$15–$20","$20+"] },
@@ -618,6 +719,114 @@ const TRANSLATIONS = {
       mood:         { prompt: "¿Cuál es tu estado de ánimo?",               options: ["✅ Clásico local","⭐ El más popular","🆕 Algo nuevo","🌞 Ligero y fácil"] },
       priority:     { prompt: "¿Qué es lo más importante?",                 options: ["💰 Lo más barato","🏋️ Lo más abundante","🥦 Opción más ligera","😋 Lo más delicioso","⚡ Rápido de conseguir"] },
       resultStyle:  { prompt: "¿Cómo quieres tu resultado?",                options: ["🎯 Solo elige uno por mí","🏆 Muéstrame las 3 mejores","❌ Déjame eliminar opciones"] }
+    }
+  },
+  ja: {
+    eyebrow: "Brilla",
+    tagline: "ハワイのプレートランチ。アジアのルーツ。深夜まで営業。",
+    blurb: "何を注文すればいいか迷ったら？クイズに答えてあなたにぴったりの一品を選びます。",
+    btnPick: "選んでもらう →", btnViewMenu: "メニューを見る", btnStaff: "❤️ 人気メニュー",
+    landingHint: "メニューいらず。ただ選ぶだけ。",
+    quizBack0: "← ホーム", quizBackN: "← 戻る", quizNext: "次へ →",
+    quizSeeMyPick: "結果を見る →",
+    dealbreakersSkip: "制限なし、次へ →",
+    dealbreakersSkipLast: "制限なし、結果を見る →",
+    topbarRetry: "← やり直す", topbarMenu: "メニュー", topbarMenuBack: "← ホーム",
+    topbarMenuPick: "選んでもらう", topbarStaffBack: "← ホーム", topbarStaffPick: "選んでもらう",
+    menuTitle: "メニュー", menuSub: "選び方がわからない場合は「選んでもらう」をタップ。",
+    staffTitle: "❤️ 人気メニュー", staffSub: "リピーターが多いメニュー。",
+    staffTopPick: "🏆 最も人気", staffPick: "❤️ みんなのお気に入り",
+    resultFallback: "ご予算に合うものがありませんでした — 最も近いものをご提案：",
+    resultTop3: "あなたのトップ3",
+    resultElimNote: "✕ をタップして消去 — 最後の1つがあなたの選択",
+    resultFinalPick: "🎉 あなたの選択！",
+    nextBest: "次のおすすめを表示", viewFullMenu: "全メニューを見る →",
+    softWarnOne: "⚠️ 含まれる可能性: %s。調整可能か確認してください。",
+    softWarnShort: "⚠️ 含まれる可能性: %s",
+    checkpointBack: "← 戻る", checkpointTitle: "選択できる状態です。",
+    checkpointHeadline: "今すぐ結果を見ますか？",
+    checkpointSub: "今すぐ選ぶか、精度を上げるためにいくつか質問を続けるか選べます。",
+    checkpointNow: "選択を見る →", checkpointTop3: "トップ3を表示", checkpointMore: "より正確にする",
+    restrictionsSectionHard: "アレルギー", restrictionsSectionSoft: "好み / 避けたいもの",
+    restrictionsOtherLabel: "制限の詳細：", restrictionsOtherPlaceholder: "例：ナッツ、パクチー…",
+    hoursPill: "🕐 毎日深夜まで営業中",
+    pilotNote: "🧪 O'Sun GrillでBrillaをテスト中です。ご意見をお聞かせください。",
+    feedbackTitle: "選ぶのに役立ちましたか？",
+    feedbackCommentLabel: "ご意見があれば（任意）",
+    feedbackCommentPlaceholder: "例：おすすめが良かった、もっと選択肢がほしかった…",
+    feedbackSubmit: "送信 →",
+    feedbackThanks: "🙏 ありがとうございます！",
+    popularReasonPrefix: "🌟 人気の理由: ",
+    labelPopular: "人気", labelLight: "軽め", labelClassic: "定番", labelFilling: "ボリューム満点", labelSpicy: "辛口", labelVegetarian: "ベジタリアン", labelSavory: "旨み",
+    matchCravingShrimp: "エビへの食欲と一致", matchCravingChicken: "チキンへの食欲と一致", matchCravingBeef: "ビーフへの食欲と一致", matchCravingFish: "魚介への食欲と一致", matchCravingPork: "ポークへの食欲と一致", matchCravingDefault: "ご希望と一致", matchSeafood: "魚介メニュー",
+    matchBudgetU15: "$15未満", matchBudgetRange: "$15〜$20の範囲", matchBudgetPlus: "$20以上のおすすめ",
+    matchGuestFavorite: "お客様のお気に入り", matchVeryFilling: "ボリューム満点", matchLighterOption: "ヘルシーな選択", matchQuickToGet: "すぐ食べられる", matchBestValue: "コスパ最高", matchVegetarian: "ベジタリアン向け", matchSpicy: "ピリ辛",
+    reasonFallback: "きっとお気に召す人気メニューです。",
+    reasonOne: "%sをご希望の方のために選びました。",
+    reasonTwo: "%sと%sをご希望の方のために選びました。",
+    reasons: { snack: "軽いもの", normal: "しっかりした一皿", starving: "ボリューム満点のもの", shrimp: "ガーリックシュリンプ", chicken: "BBQチキン", beef: "カルビ・ビーフ", fish: "魚介類", pork: "ポークチョップ", safe: "定番メニュー", popular: "人気メニュー", new: "新しいもの", light: "軽めのもの", cheapest: "コスパの良いもの", filling: "ボリューム満点のもの", healthy: "ヘルシーなもの", taste: "最もおいしいもの", fast: "すぐ食べられるもの" },
+    questions: {
+      hunger:       { prompt: "どのくらいお腹が空いていますか？",     options: ["🥟 軽くつまみたい","🍽️ しっかり食べたい","🔥 とても空腹 — 最大量"] },
+      budget:       { prompt: "予算はどのくらいですか？",              options: ["🤙 予算なし — 最高のものを","$15未満","$15～$20","$20以上"] },
+      craving:      { prompt: "今、何が食べたいですか？",              options: ["🍤 ガーリックシュリンプ","🍗 BBQまたはグリルチキン","🥩 カルビ / ビーフ","🐟 魚介類","🍖 ポークチョップ"] },
+      restrictions: { prompt: "アレルギーや制限はありますか？",        subtitle: "該当するものをすべて選択 — スキップするには次へをタップ。", options: ["🥜 ピーナッツ","🌰 ナッツ類","🦞 甲殻類","🐟 魚","🧀 乳製品","🥚 卵","🌾 グルテン / 小麦","🫘 大豆","🐷 豚肉","🐄 牛肉","🌶️ 辛いもの","🍬 甘すぎるもの","✏️ その他（以下に入力）"] },
+      mood:         { prompt: "今のムードは？",                        options: ["✅ ローカルの定番","⭐ 最も人気","🆕 新しいもの","🌞 軽め"] },
+      priority:     { prompt: "最も重視することは？",                  options: ["💰 最安値","🏋️ 一番ボリューム","🥦 ヘルシーな選択","😋 一番おいしい","⚡ すぐ食べられる"] },
+      resultStyle:  { prompt: "結果の表示方法は？",                    options: ["🎯 1つ選んでもらう","🏆 トップ3を表示","❌ 選択肢を絞り込む"] }
+    }
+  },
+  zh: {
+    eyebrow: "Brilla",
+    tagline: "夏威夷板饭。亚洲根源。深夜营业。",
+    blurb: "不知道点什么？回答几个问题，我们来帮你推荐。",
+    btnPick: "帮我选 →", btnViewMenu: "查看菜单", btnStaff: "❤️ 人气推荐",
+    landingHint: "无需看菜单，直接选。",
+    quizBack0: "← 主页", quizBackN: "← 返回", quizNext: "下一步 →",
+    quizSeeMyPick: "查看推荐 →",
+    dealbreakersSkip: "无限制，下一步 →",
+    dealbreakersSkipLast: "无限制，查看推荐 →",
+    topbarRetry: "← 重试", topbarMenu: "菜单", topbarMenuBack: "← 主页",
+    topbarMenuPick: "帮我选", topbarStaffBack: "← 主页", topbarStaffPick: "帮我选",
+    menuTitle: "菜单", menuSub: "如需帮助选择，请点击「帮我选」。",
+    staffTitle: "❤️ 人气推荐", staffSub: "回头客最爱的菜品。",
+    staffTopPick: "🏆 最受欢迎", staffPick: "❤️ 大家都爱",
+    resultFallback: "没有完全符合预算的选项 — 以下是最接近的：",
+    resultTop3: "您的前3名推荐",
+    resultElimNote: "点击 ✕ 排除 — 最后一个就是您的选择",
+    resultFinalPick: "🎉 您的选择！",
+    nextBest: "显示下一个推荐", viewFullMenu: "查看完整菜单 →",
+    softWarnOne: "⚠️ 可能含有：%s。请询问是否可以调整。",
+    softWarnShort: "⚠️ 可能含有：%s",
+    checkpointBack: "← 返回", checkpointTitle: "已可以做出选择。",
+    checkpointHeadline: "现在要看结果吗？",
+    checkpointSub: "我可以现在推荐，或再回答几个问题让推荐更准确。",
+    checkpointNow: "显示推荐 →", checkpointTop3: "显示前3名", checkpointMore: "提高准确度",
+    restrictionsSectionHard: "严重过敏", restrictionsSectionSoft: "偏好 / 不喜欢",
+    restrictionsOtherLabel: "描述您的限制：", restrictionsOtherPlaceholder: "例如：椰子、香菜…",
+    hoursPill: "🕐 每日营业至午夜",
+    pilotNote: "🧪 我们正在与 O'Sun Grill 合作测试 Brilla。您的反馈帮助我们改进。",
+    feedbackTitle: "这对您的选择有帮助吗？",
+    feedbackCommentLabel: "还有什么想说的吗？（可选）",
+    feedbackCommentPlaceholder: "例如：推荐不错，希望有更多选择…",
+    feedbackSubmit: "提交 →",
+    feedbackThanks: "🙏 谢谢您的反馈！",
+    popularReasonPrefix: "🌟 大家都爱这道菜: ",
+    labelPopular: "人气", labelLight: "清淡", labelClassic: "经典", labelFilling: "分量足", labelSpicy: "辣", labelVegetarian: "素食", labelSavory: "鲜美",
+    matchCravingShrimp: "符合您对虾的偏好", matchCravingChicken: "符合您对鸡肉的偏好", matchCravingBeef: "符合您对牛肉的偏好", matchCravingFish: "符合您对海鲜的偏好", matchCravingPork: "符合您对猪肉的偏好", matchCravingDefault: "符合您的偏好", matchSeafood: "海鲜选项",
+    matchBudgetU15: "$15以下", matchBudgetRange: "$15–$20范围内", matchBudgetPlus: "$20以上的选择",
+    matchGuestFavorite: "顾客最爱", matchVeryFilling: "非常有分量", matchLighterOption: "较清淡的选择", matchQuickToGet: "快速获取", matchBestValue: "性价比最高", matchVegetarian: "素食友好", matchSpicy: "微辣",
+    reasonFallback: "我们认为您会喜欢这道人气菜品。",
+    reasonOne: "根据您想要%s的偏好推荐。",
+    reasonTwo: "根据您想要%s和%s的偏好推荐。",
+    reasons: { snack: "清淡的", normal: "一整份", starving: "分量最足的", shrimp: "蒜香虾", chicken: "BBQ烤鸡", beef: "烤牛小排或牛肉", fish: "鱼或海鲜", pork: "猪排", safe: "当地经典", popular: "最受欢迎的", new: "没尝试过的", light: "清淡的", cheapest: "实惠的", filling: "有分量的", healthy: "较清淡的", taste: "最好吃的", fast: "快速获取的" },
+    questions: {
+      hunger:       { prompt: "您有多饿？",               options: ["🥟 随便吃点","🍽️ 想吃一整份","🔥 非常饿 — 最大份"] },
+      budget:       { prompt: "您的预算是多少？",          options: ["🤙 不限预算 — 选最好的","$15以下","$15–$20","$20以上"] },
+      craving:      { prompt: "现在想吃什么？",            options: ["🍤 蒜香虾","🍗 BBQ或烤鸡","🥩 短肋/牛肉","🐟 鱼或海鲜","🍖 猪排"] },
+      restrictions: { prompt: "有过敏或饮食限制吗？",     subtitle: "选择所有适用项 — 或点击下一步跳过。", options: ["🥜 花生","🌰 坚果","🦞 甲壳类","🐟 鱼","🧀 乳制品","🥚 鸡蛋","🌾 麸质/小麦","🫘 大豆","🐷 猪肉","🐄 牛肉","🌶️ 辛辣","🍬 高糖","✏️ 其他（请在下方输入）"] },
+      mood:         { prompt: "您现在的心情是？",          options: ["✅ 当地经典","⭐ 最受欢迎","🆕 尝试新品","🌞 清淡简单"] },
+      priority:     { prompt: "您最看重什么？",            options: ["💰 最便宜","🏋️ 最有分量","🥦 较清淡","😋 最好吃","⚡ 快速获取"] },
+      resultStyle:  { prompt: "您想如何查看结果？",        options: ["🎯 直接帮我选一个","🏆 显示前3名","❌ 让我排除选项"] }
     }
   }
 };
@@ -641,40 +850,40 @@ function buildMatchReasons(item,answers){
   const cravingOpt=cravingQ?.options.find(o=>o.value===answers.craving);
   const PROTEIN_TAG={shrimp:"shrimp",chicken:"chicken",beef:"beef",fish:"fish",pork:"pork"};
   const proteinTag=PROTEIN_TAG[answers.craving];
-  const cravingLabel={shrimp:"Matches your shrimp craving",chicken:"Matches your chicken craving",
-    beef:"Matches your beef craving",fish:"Matches your seafood craving",
-    pork:"Matches your pork craving"};
+  const cravingLabel={shrimp:t("matchCravingShrimp"),chicken:t("matchCravingChicken"),
+    beef:t("matchCravingBeef"),fish:t("matchCravingFish"),
+    pork:t("matchCravingPork")};
   if(proteinTag&&item.tags.includes(proteinTag)){
     // Exact protein match
-    reasons.push("✓ "+(cravingLabel[answers.craving]||"Matches your craving"));
+    reasons.push("✓ "+(cravingLabel[answers.craving]||t("matchCravingDefault")));
   }else if(proteinTag&&(answers.craving==="shrimp"||answers.craving==="fish")&&item.tags.includes("shellfish")){
     // Broader seafood match (e.g. calamari on shrimp craving, or shrimp item on fish craving)
-    reasons.push("✓ Seafood option");
-  }else if(!proteinTag&&cravingOpt?.tags?.some(t=>item.tags.includes(t))){
+    reasons.push("✓ "+t("matchSeafood"));
+  }else if(!proteinTag&&cravingOpt?.tags?.some(tag=>item.tags.includes(tag))){
     // Non-protein craving (light appetizers)
-    reasons.push("✓ "+(cravingLabel[answers.craving]||"Matches your craving"));
+    reasons.push("✓ "+(cravingLabel[answers.craving]||t("matchCravingDefault")));
   }
   // 2. Budget in range
   const{min:bmin,cap:bc}=resolveBudgetRange(answers);
   if(bc!=null||bmin!=null){
     const inBudget=(bc==null||item.price<=bc)&&(bmin==null||item.price>=bmin);
     if(inBudget){
-      const budgetLabel={u15:"Under $15",r15_20:"In the $15–$20 range",u20plus:"$20+ pick"};
+      const budgetLabel={u15:t("matchBudgetU15"),r15_20:t("matchBudgetRange"),u20plus:t("matchBudgetPlus")};
       if(budgetLabel[answers.budget])reasons.push("✓ "+budgetLabel[answers.budget]);
     }
   }
   // 3. Guest favorite
-  if(item.featured)reasons.push("✓ Guest favorite");
+  if(item.featured)reasons.push("✓ "+t("matchGuestFavorite"));
   // 4. Priority match
   const pv=answers.priority;
-  if(pv==="filling"&&item.tags.includes("filling"))reasons.push("✓ Very filling");
-  if(pv==="healthy"&&(item.tags.includes("light-hunger")||item.tags.includes("appetizer")))reasons.push("✓ Lighter option");
-  if(pv==="fast"&&item.tags.includes("quick"))reasons.push("✓ Quick to get");
-  if(pv==="cheapest")reasons.push("✓ Best value pick");
+  if(pv==="filling"&&item.tags.includes("filling"))reasons.push("✓ "+t("matchVeryFilling"));
+  if(pv==="healthy"&&(item.tags.includes("light-hunger")||item.tags.includes("appetizer")))reasons.push("✓ "+t("matchLighterOption"));
+  if(pv==="fast"&&item.tags.includes("quick"))reasons.push("✓ "+t("matchQuickToGet"));
+  if(pv==="cheapest")reasons.push("✓ "+t("matchBestValue"));
   // 5. Dietary flags
-  if(item.tags.includes("vegetarian"))reasons.push("✓ Vegetarian-friendly");
+  if(item.tags.includes("vegetarian"))reasons.push("✓ "+t("matchVegetarian"));
   const noSpicy=(answers.restrictions||[]).includes("no-spicy");
-  if(item.tags.includes("spicy")&&!noSpicy)reasons.push("✓ Spicy kick");
+  if(item.tags.includes("spicy")&&!noSpicy)reasons.push("✓ "+t("matchSpicy"));
   return reasons.slice(0,3);
 }
 function renderMatchReasons(item,answers,container){
@@ -687,11 +896,11 @@ function renderMatchReasons(item,answers,container){
 }
 
 function scoreItem(item,answers,questions){let score=0;const pOpt=questions.find(q=>q.id==="priority")?.options.find(o=>o.value===answers.priority);const mOpt=questions.find(q=>q.id==="mood")?.options.find(o=>o.value===answers.mood);questions.forEach(q=>{if(q.type==="budget"||q.id==="resultStyle"||q.id==="restrictions"||q.type==="multi")return;const w=q.weight??1;const opt=q.options.find(o=>o.value===answers[q.id]);if(!opt||!opt.tags)return;if(opt.tags.some(tag=>item.tags.includes(tag)))score+=SCORING.tagMatch*w;});const{min:bmin,cap:bc}=resolveBudgetRange(answers);const inBudget=(bc==null||item.price<=bc)&&(bmin==null||item.price>=bmin);if(inBudget)score+=4;if(item.featured)score+=SCORING.featuredBoost;if(mOpt?.boostFeatured&&item.featured)score+=SCORING.popularBoost;if(pOpt?.boostFeatured&&item.featured)score+=SCORING.popularBoost;if(pOpt?.value==="filling"&&item.tags.includes("filling"))score+=SCORING.fillingBoost;if(pOpt?.value==="healthy"&&(item.tags.includes("healthy")||item.tags.includes("fresh")))score+=SCORING.healthyBoost;return score;}
-function buildReason(item,answers,questions){const parts=[];questions.forEach(q=>{if(q.type==="budget"||q.id==="resultStyle"||q.id==="restrictions"||q.type==="multi")return;const opt=q.options.find(o=>o.value===answers[q.id]);if(!opt?.reason)return;const ov=(opt.tags||[]).some(t=>item.tags.includes(t));if(ov||opt.boostFeatured||opt.boostNew||opt.prioritizeCheap)parts.push({text:opt.reason,weight:q.weight??1});});parts.sort((a,b)=>b.weight-a.weight);const top=parts.slice(0,2).map(r=>r.text).filter(Boolean);if(!top.length)return"A crowd favorite we think you'll enjoy.";if(top.length===1)return`Picked because you wanted ${top[0]}.`;return`Picked because you wanted ${top[0]} and ${top[1]}.`;}
+function buildReason(item,answers,questions){const parts=[];questions.forEach(q=>{if(q.type==="budget"||q.id==="resultStyle"||q.id==="restrictions"||q.type==="multi")return;const opt=q.options.find(o=>o.value===answers[q.id]);if(!opt?.reason)return;const ov=(opt.tags||[]).some(tag=>item.tags.includes(tag));if(ov||opt.boostFeatured||opt.boostNew||opt.prioritizeCheap)parts.push({val:opt.value,text:opt.reason,weight:q.weight??1});});parts.sort((a,b)=>b.weight-a.weight);const rs=TRANSLATIONS[currentLang]?.reasons||TRANSLATIONS.en.reasons;const top=parts.slice(0,2).map(r=>rs[r.val]||r.text).filter(Boolean);if(!top.length)return t("reasonFallback");if(top.length===1)return t("reasonOne").replace("%s",top[0]);return t("reasonTwo").replace("%s",top[0]).replace("%s",top[1]);}
 function recommend(answers){const questions=QUIZ_QUESTIONS;const{min:bmin,cap:bc}=resolveBudgetRange(answers);const hasBudgetFilter=bc!=null||bmin!=null;const excl=getExcludedTags(answers);const sw=getSoftWarnings(answers);const style=answers.resultStyle||"one";const pOpt=questions.find(q=>q.id==="priority")?.options.find(o=>o.value===answers.priority);let pool=MENU_ITEMS.filter(i=>!excl.some(t=>i.tags.includes(t)));let fallback=false;let bp=hasBudgetFilter?pool.filter(i=>(bc==null||i.price<=bc)&&(bmin==null||i.price>=bmin)):pool;if(hasBudgetFilter&&!bp.length){bp=pool;fallback=true;}pool=bp;const scored=pool.map(i=>({item:i,score:scoreItem(i,answers,questions),softWarnings:buildSoftWarningsForItem(i,sw)}));if(pOpt?.prioritizeCheap)scored.sort((a,b)=>a.item.price-b.item.price||b.score-a.score);else scored.sort((a,b)=>b.score-a.score||a.item.price-b.item.price);if(style==="top3")return{style:"top3",items:scored.slice(0,3),ranked:scored,fallback};if(style==="eliminate")return{style:"eliminate",items:scored.slice(0,Math.min(5,scored.length)),ranked:scored,fallback};const c=scored[0];return{style:"one",item:c.item,score:c.score,fallback,ranked:scored,reason:buildReason(c.item,answers,QUIZ_QUESTIONS)};}
 
-const state={screen:"landing",answers:{},step:0,result:null,extendedMode:false,sessionStartedAt:Date.now()};
-const SCREENS=["landing","quiz","checkpoint","result","menu","staff","feedback"];
+let feedbackRating=0;const state={screen:"landing",answers:{},step:0,result:null,extendedMode:false,sessionStartedAt:Date.now()};
+const SCREENS=["landing","quiz","checkpoint","result","menu","staff"];
 function getScreenEl(n){return document.getElementById(`screen-${n}`);}
 function forceTop(el){if(el)el.scrollTop=0;document.body.scrollTop=0;document.documentElement.scrollTop=0;window.scrollTo(0,0);}
 function showScreen(name){state.screen=name;document.body.classList.add("is-switching");let ae=null;SCREENS.forEach(sn=>{const el=getScreenEl(sn);if(!el)return;const isA=sn===name;el.hidden=!isA;el.classList.toggle("is-active",isA);el.setAttribute("aria-hidden",String(!isA));if(isA)ae=el;});forceTop(ae);requestAnimationFrame(()=>{forceTop(ae);document.body.classList.remove("is-switching");});trackViewScreen(name);}
@@ -705,26 +914,25 @@ function submitQuiz(){state.result=recommend(state.answers);const _shown=state.r
 function buildResultActions(root,showNB,onNB,currentItem=null){
   const a=document.createElement("div");a.className="result-actions";
   if(showNB){const b=document.createElement("button");b.type="button";b.className="btn btn--secondary";b.textContent=t("nextBest");b.addEventListener("click",()=>{trackEvent("next_best_clicked",{from_item_id:currentItem?.id||null});onNB();});a.appendChild(b);}
-  const m=document.createElement("button");m.type="button";m.className="btn btn--primary";m.textContent=t("viewFullMenu");m.addEventListener("click",()=>{trackEvent("menu_clickthrough",{item_id:currentItem?.id||null,source:"result"});window.open("https://www.osungrill.com/menu","_blank","noopener,noreferrer");});a.appendChild(m);
-  const fb=document.createElement("button");fb.type="button";fb.className="btn btn--ghost";fb.style.marginTop="6px";fb.textContent="💬 Did this help?";fb.addEventListener("click",()=>{resetFeedback();showScreen("feedback");});a.appendChild(fb);
+  const m=document.createElement("button");m.type="button";m.className="btn btn--primary";m.textContent=t("viewFullMenu");m.addEventListener("click",()=>{trackEvent("menu_clickthrough",{item_id:currentItem?.id||null,source:"result"});showScreen("menu");});a.appendChild(m);
   root.appendChild(a);
 }
 
-function addPopularReason(item,container){if(item.featured&&item.popularReason){const pr=document.createElement("p");pr.className="popular-reason";pr.textContent="🌟 People love this: "+item.popularReason;container.appendChild(pr);}}
+function addPopularReason(item,container){if(item.featured&&item.popularReason){const pr=document.createElement("p");pr.className="popular-reason";pr.textContent=t("popularReasonPrefix")+item.popularReason;container.appendChild(pr);}}
 
-function renderResult(){const root=document.getElementById("result-body");root.innerHTML="";if(!state.result)return;const r=state.result;if(r.style==="one"){if(r.fallback){const fb=document.createElement("p");fb.className="result-note";fb.textContent=t("resultFallback");root.appendChild(fb);}let pi=r._pickIndex||0;const ranked=r.ranked||[];function renderOnePick(idx){const ez=root.querySelector(".one-pick-zone");if(ez)ez.remove();const ea=root.querySelector(".result-actions");if(ea)ea.remove();const entry=ranked[idx];const item=entry?.item||entry;const sw=entry?.softWarnings||[];const zone=document.createElement("div");zone.className="one-pick-zone";zone.appendChild(buildItemCard(item,true));renderMatchReasons(item,state.answers,zone);const why=document.createElement("p");why.className="result-reason";why.textContent=buildReason(item,state.answers,QUIZ_QUESTIONS);zone.appendChild(why);addPopularReason(item,zone);if(sw.length>0){const w=document.createElement("p");w.className="result-soft-warn";w.textContent=t("softWarnOne").replace("%s",sw.join(", "));zone.appendChild(w);}root.appendChild(zone);const hm=idx+1<ranked.length;buildResultActions(root,hm,()=>{pi=idx+1;r._pickIndex=pi;renderOnePick(pi);},item);}renderOnePick(pi);}else if(r.style==="top3"){const note=document.createElement("p");note.className="result-note";note.textContent=t("resultTop3");root.appendChild(note);r.items.forEach((entry,i)=>{const item=entry?.item||entry;const sw=entry?.softWarnings||[];const wrap=document.createElement("div");wrap.className="result-rank-wrap";const badge=document.createElement("span");badge.className="result-rank-badge";badge.textContent=["🥇","🥈","🥉"][i]||`#${i+1}`;wrap.appendChild(badge);wrap.appendChild(buildItemCard(item,i===0));renderMatchReasons(item,state.answers,wrap);if(i===0)addPopularReason(item,wrap);if(sw.length>0){const w=document.createElement("p");w.className="result-soft-warn";w.textContent=t("softWarnShort").replace("%s",sw.join(", "));wrap.appendChild(w);}root.appendChild(wrap);});buildResultActions(root,false,null);}else if(r.style==="eliminate"){const note=document.createElement("p");note.className="result-note";note.textContent=t("resultElimNote");root.appendChild(note);const pool=[...r.items];function renderElim(){const ep=root.querySelector(".elim-pool");if(ep)ep.remove();const ea=root.querySelector(".result-actions");if(ea)ea.remove();if(pool.length===1){root.innerHTML="";const f=document.createElement("p");f.className="result-note";f.textContent=t("resultFinalPick");root.appendChild(f);const fi=pool[0]?.item||pool[0];root.appendChild(buildItemCard(fi,true));addPopularReason(fi,root);buildResultActions(root,false,null);return;}const pe=document.createElement("div");pe.className="elim-pool";pool.forEach((entry,idx)=>{const item=entry?.item||entry;const row=document.createElement("div");row.className="elim-row";row.appendChild(buildItemCard(item,false));const xb=document.createElement("button");xb.type="button";xb.className="elim-x";xb.textContent="✕";xb.setAttribute("aria-label",`Remove ${item.name}`);xb.addEventListener("click",()=>{pool.splice(idx,1);renderElim();});row.appendChild(xb);pe.appendChild(row);});root.appendChild(pe);buildResultActions(root,false,null);}renderElim();}}
+function renderResult(){resetFeedbackInline();const root=document.getElementById("result-body");root.innerHTML="";if(!state.result)return;const r=state.result;if(r.style==="one"){if(r.fallback){const fb=document.createElement("p");fb.className="result-note";fb.textContent=t("resultFallback");root.appendChild(fb);}let pi=r._pickIndex||0;const ranked=r.ranked||[];function renderOnePick(idx){const ez=root.querySelector(".one-pick-zone");if(ez)ez.remove();const ea=root.querySelector(".result-actions");if(ea)ea.remove();const entry=ranked[idx];const item=entry?.item||entry;const sw=entry?.softWarnings||[];const zone=document.createElement("div");zone.className="one-pick-zone";zone.appendChild(buildItemCard(item,true));renderMatchReasons(item,state.answers,zone);const why=document.createElement("p");why.className="result-reason";why.textContent=buildReason(item,state.answers,QUIZ_QUESTIONS);zone.appendChild(why);addPopularReason(item,zone);if(sw.length>0){const w=document.createElement("p");w.className="result-soft-warn";w.textContent=t("softWarnOne").replace("%s",sw.join(", "));zone.appendChild(w);}root.appendChild(zone);const hm=idx+1<ranked.length;buildResultActions(root,hm,()=>{pi=idx+1;r._pickIndex=pi;renderOnePick(pi);},item);}renderOnePick(pi);}else if(r.style==="top3"){const note=document.createElement("p");note.className="result-note";note.textContent=t("resultTop3");root.appendChild(note);r.items.forEach((entry,i)=>{const item=entry?.item||entry;const sw=entry?.softWarnings||[];const wrap=document.createElement("div");wrap.className="result-rank-wrap";const badge=document.createElement("span");badge.className="result-rank-badge";badge.textContent=["🥇","🥈","🥉"][i]||`#${i+1}`;wrap.appendChild(badge);wrap.appendChild(buildItemCard(item,i===0));renderMatchReasons(item,state.answers,wrap);if(i===0)addPopularReason(item,wrap);if(sw.length>0){const w=document.createElement("p");w.className="result-soft-warn";w.textContent=t("softWarnShort").replace("%s",sw.join(", "));wrap.appendChild(w);}root.appendChild(wrap);});buildResultActions(root,false,null);}else if(r.style==="eliminate"){const note=document.createElement("p");note.className="result-note";note.textContent=t("resultElimNote");root.appendChild(note);const pool=[...r.items];function renderElim(){const ep=root.querySelector(".elim-pool");if(ep)ep.remove();const ea=root.querySelector(".result-actions");if(ea)ea.remove();if(pool.length===1){root.innerHTML="";const f=document.createElement("p");f.className="result-note";f.textContent=t("resultFinalPick");root.appendChild(f);const fi=pool[0]?.item||pool[0];root.appendChild(buildItemCard(fi,true));addPopularReason(fi,root);buildResultActions(root,false,null);return;}const pe=document.createElement("div");pe.className="elim-pool";pool.forEach((entry,idx)=>{const item=entry?.item||entry;const row=document.createElement("div");row.className="elim-row";row.appendChild(buildItemCard(item,false));const xb=document.createElement("button");xb.type="button";xb.className="elim-x";xb.textContent="✕";xb.setAttribute("aria-label",`Remove ${item.name}`);xb.addEventListener("click",()=>{pool.splice(idx,1);renderElim();});row.appendChild(xb);pe.appendChild(row);});root.appendChild(pe);buildResultActions(root,false,null);}renderElim();}}
 function renderMenu(){const root=document.getElementById("menu-list");root.innerHTML="";MENU_ITEMS.forEach(i=>root.appendChild(buildItemCard(i,false)));}
-function renderStaffFavorites(){const root=document.getElementById("staff-list");root.innerHTML="";const picks=MENU_ITEMS.filter(i=>i.featured);picks.forEach((item,i)=>{const w=document.createElement("div");w.className="staff-pick-wrap";const b=document.createElement("span");b.className="staff-pick-badge";b.textContent=i===0?t("staffTopPick"):t("staffPick");w.appendChild(b);w.appendChild(buildItemCard(item,i===0));if(item.popularReason){const pr=document.createElement("p");pr.className="popular-reason";pr.textContent="🌟 People love this: "+item.popularReason;w.appendChild(pr);}root.appendChild(w);});}
+function renderStaffFavorites(){const root=document.getElementById("staff-list");root.innerHTML="";const picks=MENU_ITEMS.filter(i=>i.featured);picks.forEach((item,i)=>{const w=document.createElement("div");w.className="staff-pick-wrap";const b=document.createElement("span");b.className="staff-pick-badge";b.textContent=i===0?t("staffTopPick"):t("staffPick");w.appendChild(b);w.appendChild(buildItemCard(item,i===0));if(item.popularReason){const pr=document.createElement("p");pr.className="popular-reason";pr.textContent=t("popularReasonPrefix")+item.popularReason;w.appendChild(pr);}root.appendChild(w);});}
 function openLightbox(src,alt){let lb=document.getElementById("img-lightbox");if(!lb){lb=document.createElement("div");lb.id="img-lightbox";lb.className="img-lightbox";const i=document.createElement("img");i.alt="";lb.appendChild(i);lb.addEventListener("click",()=>lb.classList.remove("is-open"));document.body.appendChild(lb);}lb.querySelector("img").src=src;lb.querySelector("img").alt=alt;lb.classList.add("is-open");}
-function buildItemCard(item,isHero){const card=document.createElement("article");card.className="item-card"+(isHero?" item-card--hero":"");if(item.image){const img=document.createElement("img");img.className="item-img";img.src=item.image;img.alt=item.name;img.loading="lazy";img.onerror=()=>img.remove();img.addEventListener("click",()=>openLightbox(item.image,item.name));card.appendChild(img);}const head=document.createElement("div");head.className="item-head";const name=document.createElement("h3");name.className="item-name";name.textContent=item.name;const price=document.createElement("span");price.className="item-price";price.textContent=`$${item.price.toFixed(2)}`;head.appendChild(name);head.appendChild(price);card.appendChild(head);const desc=document.createElement("p");desc.className="item-desc";desc.textContent=item.description;card.appendChild(desc);if(item.labels&&item.labels.length){const labels=document.createElement("div");labels.className="item-labels";item.labels.forEach(l=>{const tag=document.createElement("span");tag.className="label label--"+l.toLowerCase().replace(/\s+/g,"-");tag.textContent=l;labels.appendChild(tag);});card.appendChild(labels);}if(item.withRice){const ru=document.createElement("p");ru.className="rice-upgrade-note";ru.textContent="🍳 Want fried rice instead? Upgrade for +$6.";card.appendChild(ru);}return card;}
+function buildItemCard(item,isHero){const card=document.createElement("article");card.className="item-card"+(isHero?" item-card--hero":"");const tx=item.translations?.[currentLang]||{};const itemName=tx.name||item.name;const itemDesc=tx.description||item.description;if(item.image){const img=document.createElement("img");img.className="item-img";img.src=item.image;img.alt=itemName;img.loading="lazy";img.onerror=()=>img.remove();img.addEventListener("click",()=>openLightbox(item.image,itemName));card.appendChild(img);}const head=document.createElement("div");head.className="item-head";const name=document.createElement("h3");name.className="item-name";name.textContent=itemName;const price=document.createElement("span");price.className="item-price";price.textContent=`$${item.price.toFixed(2)}`;head.appendChild(name);head.appendChild(price);card.appendChild(head);const desc=document.createElement("p");desc.className="item-desc";desc.textContent=itemDesc;card.appendChild(desc);if(item.labels&&item.labels.length){const labels=document.createElement("div");labels.className="item-labels";item.labels.forEach(l=>{const tag=document.createElement("span");tag.className="label label--"+l.toLowerCase().replace(/\s+/g,"-");tag.textContent=t("label"+l)||l;labels.appendChild(tag);});card.appendChild(labels);}if(item.withRice){const ru=document.createElement("p");ru.className="rice-upgrade-note";ru.textContent="🍳 Want fried rice instead? Upgrade for +$6.";card.appendChild(ru);}return card;}
 
 /* ── Feedback ── */
-function resetFeedback(){document.querySelectorAll(".star").forEach(s=>s.classList.remove("is-active"));document.getElementById("btn-feedback-submit").disabled=true;const cw=document.getElementById("feedback-comment-wrap");if(cw)cw.style.display="none";const fc=document.getElementById("feedback-comment");if(fc)fc.value="";const fa=document.getElementById("feedback-actions");if(fa)fa.style.display="";const ft=document.getElementById("feedback-thanks");if(ft)ft.style.display="none";}
-function wireFeedback(){let rating=0;document.querySelectorAll(".star").forEach(star=>{star.addEventListener("click",()=>{rating=parseInt(star.dataset.val);document.querySelectorAll(".star").forEach((s,i)=>s.classList.toggle("is-active",i<rating));document.getElementById("btn-feedback-submit").disabled=false;document.getElementById("feedback-comment-wrap").style.display="";});});document.getElementById("btn-feedback-submit").addEventListener("click",()=>{const comment=document.getElementById("feedback-comment").value.trim();const _item_id=state.result?.item?.id||state.result?.ranked?.[0]?.item?.id||null;const _style=state.result?.style||null;trackEvent("feedback_submitted",{rating,comment,item_id:_item_id,style:_style});document.getElementById("feedback-actions").style.display="none";document.getElementById("feedback-comment-wrap").style.display="none";document.getElementById("feedback-thanks").style.display="";rating=0;});document.getElementById("btn-feedback-skip").addEventListener("click",()=>showScreen("result"));document.getElementById("btn-feedback-done").addEventListener("click",()=>showScreen("landing"));document.getElementById("btn-feedback-back").addEventListener("click",()=>showScreen("result"));}
+function resetFeedbackInline(){feedbackRating=0;document.querySelectorAll("#result-star-rating .star").forEach(s=>s.classList.remove("is-active"));const submit=document.getElementById("result-feedback-submit");if(submit){submit.disabled=true;submit.style.display="none";}const cw=document.getElementById("result-feedback-comment-wrap");if(cw)cw.style.display="none";const fc=document.getElementById("result-feedback-comment");if(fc)fc.value="";const form=document.getElementById("result-feedback-form");if(form)form.style.display="";const thanks=document.getElementById("result-feedback-thanks");if(thanks)thanks.style.display="none";}
+function wireFeedbackInline(){document.querySelectorAll("#result-star-rating .star").forEach(star=>{star.addEventListener("click",()=>{feedbackRating=parseInt(star.dataset.val);trackEvent("feedback_star_clicked",{rating:feedbackRating});document.querySelectorAll("#result-star-rating .star").forEach((s,i)=>s.classList.toggle("is-active",i<feedbackRating));document.getElementById("result-feedback-comment-wrap").style.display="";const sub=document.getElementById("result-feedback-submit");sub.style.display="";sub.disabled=false;});});document.getElementById("result-feedback-submit").addEventListener("click",()=>{const comment=document.getElementById("result-feedback-comment").value.trim();const _item_id=state.result?.item?.id||state.result?.ranked?.[0]?.item?.id||null;const _style=state.result?.style||null;trackEvent("feedback_submitted",{rating:feedbackRating,comment,item_id:_item_id,style:_style});document.getElementById("result-feedback-form").style.display="none";document.getElementById("result-feedback-thanks").style.display="";feedbackRating=0;});}
 
 function wireEvents(){
   document.getElementById("btn-pick").addEventListener("click",()=>startQuiz("landing"));
-  document.getElementById("btn-view-menu").addEventListener("click",()=>{trackEvent("menu_clickthrough",{item_id:null,source:"landing"});window.open("https://www.osungrill.com/menu","_blank","noopener,noreferrer");});
+  document.getElementById("btn-view-menu").addEventListener("click",()=>{trackEvent("menu_clickthrough",{item_id:null,source:"landing"});showScreen("menu");});
   document.getElementById("btn-staff").addEventListener("click",()=>showScreen("staff"));
   document.getElementById("btn-quiz-next").addEventListener("click",nextStep);
   document.getElementById("btn-quiz-back").addEventListener("click",prevStep);
@@ -739,10 +947,12 @@ function wireEvents(){
   document.getElementById("btn-staff-back").addEventListener("click",()=>showScreen("landing"));
   document.getElementById("btn-staff-pick").addEventListener("click",()=>startQuiz("staff"));
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){const dur=Math.round((Date.now()-state.sessionStartedAt)/1000);trackEvent("session_end",{duration_seconds:dur,from_screen:state.screen});if(state.screen==="quiz"){trackEvent("quiz_abandoned",{step:state.step,question_key:QUIZ_QUESTIONS[state.step]?.id||null,answers_so_far:state.answers});}}});
-  wireFeedback();
+  const rwl=document.getElementById("restaurant-website-link");if(rwl)rwl.addEventListener("click",()=>trackEvent("menu_clickthrough",{item_id:null,source:"restaurant_website_link"}));
+  const lwl=document.getElementById("landing-website-link");if(lwl)lwl.addEventListener("click",()=>trackEvent("menu_clickthrough",{item_id:null,source:"landing_website_link"}));
+  wireFeedbackInline();
 }
-function applyLang(lang){currentLang=lang;trackEvent("language_changed",{lang,from_screen:state.screen});document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===lang));document.getElementById("restaurant-tagline").textContent=t("tagline");document.getElementById("restaurant-blurb").textContent=t("blurb");document.querySelector(".eyebrow").textContent=t("eyebrow");document.getElementById("btn-pick").textContent=t("btnPick");document.getElementById("btn-view-menu").textContent=t("btnViewMenu");document.getElementById("btn-staff").textContent=t("btnStaff");document.querySelector(".landing-hint").textContent=t("landingHint");document.getElementById("btn-result-retry").textContent=t("topbarRetry");document.getElementById("btn-result-menu").textContent=t("topbarMenu");document.getElementById("btn-menu-back").textContent=t("topbarMenuBack");document.getElementById("btn-menu-pick").textContent=t("topbarMenuPick");document.getElementById("btn-staff-back").textContent=t("topbarStaffBack");document.getElementById("btn-staff-pick").textContent=t("topbarStaffPick");document.getElementById("menu-title").textContent=t("menuTitle");document.querySelector("#screen-menu .screen-sub").textContent=t("menuSub");document.getElementById("staff-title").textContent=t("staffTitle");document.querySelector("#screen-staff .screen-sub").textContent=t("staffSub");renderStaffFavorites();document.getElementById("btn-checkpoint-back").textContent=t("checkpointBack");document.getElementById("checkpoint-title").textContent=t("checkpointTitle");document.querySelector("#screen-checkpoint .checkpoint-headline").textContent=t("checkpointHeadline");document.querySelector("#screen-checkpoint .checkpoint-sub").textContent=t("checkpointSub");document.getElementById("btn-checkpoint-now").textContent=t("checkpointNow");document.getElementById("btn-checkpoint-top3").textContent=t("checkpointTop3");document.getElementById("btn-checkpoint-more").textContent=t("checkpointMore");if(state.screen==="quiz")renderQuizStep();if(state.screen==="result")renderResult();}
-function wireLangSelector(){const sel=document.getElementById("lang-selector");const tog=document.getElementById("lang-toggle");const lbl=document.getElementById("lang-toggle-label");const SHORT={en:"EN",es:"ES"};function open(){sel.classList.add("is-open");tog.setAttribute("aria-expanded","true");}function close(){sel.classList.remove("is-open");tog.setAttribute("aria-expanded","false");}tog.addEventListener("click",e=>{e.stopPropagation();sel.classList.contains("is-open")?close():open();});sel.addEventListener("click",e=>{const btn=e.target.closest(".lang-btn");if(!btn||!btn.dataset.lang)return;applyLang(btn.dataset.lang);lbl.textContent=SHORT[btn.dataset.lang]||btn.dataset.lang.toUpperCase();close();});document.addEventListener("click",()=>close());sel.addEventListener("touchstart",e=>e.stopPropagation(),{passive:true});}
+function applyLang(lang){currentLang=lang;trackEvent("language_changed",{lang,from_screen:state.screen});document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===lang));document.getElementById("restaurant-tagline").textContent=t("tagline");document.getElementById("restaurant-blurb").textContent=t("blurb");document.querySelector(".eyebrow").textContent=t("eyebrow");document.getElementById("btn-pick").textContent=t("btnPick");document.getElementById("btn-view-menu").textContent=t("btnViewMenu");document.getElementById("btn-staff").textContent=t("btnStaff");document.querySelector(".landing-hint").textContent=t("landingHint");document.getElementById("btn-result-retry").textContent=t("topbarRetry");document.getElementById("btn-result-menu").textContent=t("topbarMenu");document.getElementById("btn-menu-back").textContent=t("topbarMenuBack");document.getElementById("btn-menu-pick").textContent=t("topbarMenuPick");document.getElementById("btn-staff-back").textContent=t("topbarStaffBack");document.getElementById("btn-staff-pick").textContent=t("topbarStaffPick");document.getElementById("menu-title").textContent=t("menuTitle");document.querySelector("#screen-menu .screen-sub").textContent=t("menuSub");document.getElementById("staff-title").textContent=t("staffTitle");document.querySelector("#screen-staff .screen-sub").textContent=t("staffSub");renderMenu();renderStaffFavorites();document.getElementById("btn-checkpoint-back").textContent=t("checkpointBack");document.getElementById("checkpoint-title").textContent=t("checkpointTitle");document.querySelector("#screen-checkpoint .checkpoint-headline").textContent=t("checkpointHeadline");document.querySelector("#screen-checkpoint .checkpoint-sub").textContent=t("checkpointSub");document.getElementById("btn-checkpoint-now").textContent=t("checkpointNow");document.getElementById("btn-checkpoint-top3").textContent=t("checkpointTop3");document.getElementById("btn-checkpoint-more").textContent=t("checkpointMore");document.getElementById("hours-pill").textContent=t("hoursPill");document.getElementById("pilot-note").textContent=t("pilotNote");document.getElementById("feedback-inline-title").textContent=t("feedbackTitle");document.getElementById("feedback-comment-label").textContent=t("feedbackCommentLabel");document.getElementById("result-feedback-comment").placeholder=t("feedbackCommentPlaceholder");document.getElementById("result-feedback-submit").textContent=t("feedbackSubmit");document.getElementById("feedback-thanks-text").textContent=t("feedbackThanks");if(state.screen==="quiz")renderQuizStep();if(state.screen==="result")renderResult();}
+function wireLangSelector(){const sel=document.getElementById("lang-selector");const tog=document.getElementById("lang-toggle");const lbl=document.getElementById("lang-toggle-label");const SHORT={en:"EN",es:"ES",ja:"日本語",zh:"中文"};function open(){sel.classList.add("is-open");tog.setAttribute("aria-expanded","true");}function close(){sel.classList.remove("is-open");tog.setAttribute("aria-expanded","false");}tog.addEventListener("click",e=>{e.stopPropagation();sel.classList.contains("is-open")?close():open();});sel.addEventListener("click",e=>{const btn=e.target.closest(".lang-btn");if(!btn||!btn.dataset.lang)return;applyLang(btn.dataset.lang);lbl.textContent=SHORT[btn.dataset.lang]||btn.dataset.lang.toUpperCase();close();});document.addEventListener("click",()=>close());sel.addEventListener("touchstart",e=>e.stopPropagation(),{passive:true});}
 function init(){renderLanding();renderMenu();renderStaffFavorites();wireEvents();wireLangSelector();showScreen("landing");}
 document.addEventListener("DOMContentLoaded",init);
   </script>

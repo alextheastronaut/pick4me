@@ -7,3 +7,4 @@ API_BASE = "https://pick4me.fly.dev"
 
 [assets]
 directory = "./frontend"
+run_worker_first = true

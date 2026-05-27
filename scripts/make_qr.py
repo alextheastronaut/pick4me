@@ -5,7 +5,7 @@ Usage:
     uv run --with "qrcode[pil]" scripts/make_qr.py <url> <output.png>
 
 Example:
-    uv run --with "qrcode[pil]" scripts/make_qr.py https://plate-up.alextheastronaut.workers.dev/osun-grill qr-osun-grill.png
+    uv run --with "qrcode[pil]" scripts/make_qr.py https://brilla.alextheastronaut.workers.dev/osun-grill qr-osun-grill.png
 """
 import sys
 import qrcode

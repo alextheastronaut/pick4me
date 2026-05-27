@@ -6,7 +6,7 @@ QR-code restaurant menu recommender. Diner scans a QR code, answers a few questi
 
 | | URL |
 |---|---|
-| **Frontend** | https://plate-up.alextheastronaut.workers.dev/osun-grill |
+| **Frontend** | https://brilla.alextheastronaut.workers.dev/osun-grill |
 | **Backend** | https://pick4me.fly.dev |
 | **QR code** | `qr-osun-grill.png` in repo root |
 
@@ -16,7 +16,7 @@ QR-code restaurant menu recommender. Diner scans a QR code, answers a few questi
 **Dashboards:**
 - Neon: https://console.neon.tech/app/projects/orange-darkness-27487799
 - Fly.io: https://fly.io/apps/pick4me
-- Cloudflare: https://dash.cloudflare.com/66f706ad64f39336f657f65ad0286fc3/workers/services/view/plate-up/production/builds
+- Cloudflare: https://dash.cloudflare.com/66f706ad64f39336f657f65ad0286fc3/workers/services/view/brilla/production/builds
 - UptimeRobot: https://dashboard.uptimerobot.com/monitors
 
 **If something breaks:**

@@ -7,7 +7,7 @@ A QR-code restaurant menu recommender. Diner scans a QR code, answers ~5 quiz qu
 
 | Service | URL |
 |---|---|
-| Frontend | https://plate-up.alextheastronaut.workers.dev/osun-grill |
+| Frontend | https://brilla.alextheastronaut.workers.dev/osun-grill |
 | Backend API | https://pick4me.fly.dev |
 | Health check | https://pick4me.fly.dev/health |
 | Database | Neon — ep-proud-queen-akx6qgup (project: pick4me) |

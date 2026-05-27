@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import events, recommendations
+from app.settings import settings
 
 
 @asynccontextmanager
@@ -13,21 +14,22 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Pick4Me API", lifespan=lifespan)
 
-# TODO: add production Vercel/Fly domain here when deploying (e.g. "https://pick4me.vercel.app")
+_PROD_ORIGINS = [
+    "https://brilla.alextheastronaut.workers.dev",
+]
+_DEV_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+    "null",  # file:// during local testing
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        # local dev
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:5500",
-        "http://127.0.0.1:5500",
-        "null",  # file:// during local testing
-        # production (Cloudflare Workers static deploy)
-        "https://plate-up.alextheastronaut.workers.dev",
-    ],
+    allow_origins=_PROD_ORIGINS if settings.app_env == "production" else _DEV_ORIGINS,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type"],
 )

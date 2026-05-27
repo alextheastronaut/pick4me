@@ -6,6 +6,9 @@
 app = 'pick4me'
 primary_region = 'sjc'
 
+[env]
+  APP_ENV = "production"
+
 [build]
 
 [http_service]

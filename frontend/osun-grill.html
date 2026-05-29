@@ -181,13 +181,44 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
 /* ── Match-reason chips ── */
 .match-reasons { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 2px; }
 .match-chip { font-size: 0.75rem; font-weight: 800; padding: 4px 11px; border-radius: var(--radius-pill); background: rgba(184,105,26,0.09); color: var(--c-sea-deep); border: 1px solid rgba(184,105,26,0.22); letter-spacing: 0.01em; }
+/* ── Language first screen ── */
+.lang-first.is-active { background: var(--c-coral); padding: 0; display: flex; align-items: center; justify-content: center; }
+.lang-first-inner { width: 100%; max-width: 380px; padding: calc(28px + env(safe-area-inset-top)) 24px calc(28px + env(safe-area-inset-bottom)); text-align: center; }
+.lang-first-globe { font-size: 2.8rem; margin-bottom: 16px; }
+.lang-first-title { font-size: 1.6rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; margin-bottom: 5px; }
+.lang-first-sub { font-size: 0.88rem; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 22px; }
+.lang-first-btn { width: 100%; display: flex; align-items: center; gap: 12px; padding: 13px 17px; border-radius: var(--radius-s); border: 1.5px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.12); color: #fff; font-size: 0.92rem; font-weight: 700; cursor: pointer; text-align: left; margin-bottom: 10px; -webkit-tap-highlight-color: transparent; transition: background 0.1s; }
+.lang-first-btn:active { background: rgba(255,255,255,0.24); }
+.lang-first-native { margin-left: auto; font-size: 0.74rem; color: rgba(255,255,255,0.5); font-weight: 600; }
+.lang-first-hint { color: rgba(255,255,255,0.45); font-size: 0.74rem; font-weight: 600; margin-top: 8px; }
+/* ── Brilla credit in hero ── */
+.brilla-credit { font-size: 0.65rem; font-weight: 700; color: rgba(255,255,255,0.38); margin-top: 8px; letter-spacing: 0.05em; }
+/* ── Allergy warning on restrictions screen ── */
+.allergy-warning { font-size: 0.82rem; font-weight: 700; color: #7a4f00; background: #fff8e1; border: 1px solid #ffe082; border-radius: var(--radius-s); padding: 9px 13px; margin-bottom: 12px; line-height: 1.45; }
+/* ── Result nav (prev/next above item card) ── */
+.result-nav { display: flex; gap: 8px; margin-bottom: 14px; }
+.result-nav .btn { flex: 1; width: auto; font-size: 0.82rem; padding: 11px 10px; }
   </style>
 </head>
 <body>
   <main class="app" id="app">
 
+    <!-- ── Language Picker (first screen on QR scan) ── -->
+    <section id="screen-lang" class="screen lang-first" hidden aria-label="Language selection">
+      <div class="lang-first-inner">
+        <div class="lang-first-globe" aria-hidden="true">🌐</div>
+        <h1 class="lang-first-title">Choose Your Language</h1>
+        <p class="lang-first-sub">O'Sun Grill · Waikiki</p>
+        <button class="lang-first-btn" data-lang="en" type="button">🇺🇸 English<span class="lang-first-native">English</span></button>
+        <button class="lang-first-btn" data-lang="es" type="button">🇲🇽 Español<span class="lang-first-native">Spanish</span></button>
+        <button class="lang-first-btn" data-lang="ja" type="button">🇯🇵 日本語<span class="lang-first-native">Japanese</span></button>
+        <button class="lang-first-btn" data-lang="zh" type="button">🇨🇳 中文<span class="lang-first-native">Chinese</span></button>
+        <p class="lang-first-hint">Tap to continue in your language</p>
+      </div>
+    </section>
+
     <!-- ── Landing ── -->
-    <section id="screen-landing" class="screen landing is-active" aria-labelledby="restaurant-name">
+    <section id="screen-landing" class="screen landing" hidden aria-labelledby="restaurant-name">
       <div class="landing-hero-band">
         <div id="lang-selector" class="lang-selector" aria-label="Language">
           <button class="lang-toggle" id="lang-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
@@ -202,18 +233,17 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
             <button class="lang-btn" data-lang="zh" type="button">🇨🇳 中文</button>
           </div>
         </div>
-        <div class="logo-badge" aria-hidden="true">🌞</div>
-        <p class="eyebrow">Brilla</p>
         <h1 id="restaurant-name">O'Sun Grill</h1>
         <p id="restaurant-tagline" class="tagline">Hawaii plate lunches. Asian roots. Open late.</p>
-        <p id="hours-pill" class="hours-pill">🕐 Open daily till midnight</p>
+        <p id="hours-pill" class="hours-pill">Hours: Open every day until 12 am</p>
+        <p class="brilla-credit">Powered by Brilla</p>
       </div>
       <div class="landing-inner">
         <p id="restaurant-blurb" class="blurb">Garlic shrimp, BBQ chicken, Kalbi, and more. Tell us what you're feeling — we'll pick it.</p>
         <div class="landing-actions">
-          <button class="btn btn--cta btn--lg" id="btn-pick" type="button">Pick My Order →</button>
           <button class="btn btn--secondary btn--lg" id="btn-view-menu" type="button">View Menu</button>
           <button class="btn btn--staff btn--lg" id="btn-staff" type="button">❤️ People Loved</button>
+          <button class="btn btn--cta btn--lg" id="btn-pick" type="button">Pick My Order →</button>
         </div>
         <p class="landing-hint">Quick · Simple · Tourist-friendly</p>
         <a href="https://www.osungrill.com/" target="_blank" rel="noopener noreferrer" class="restaurant-website-link" id="landing-website-link">Visit osungrill.com →</a>
@@ -347,7 +377,7 @@ function trackViewScreen(screen) {
 const RESTAURANT = {
   name: "O'Sun Grill",
   tagline: "Hawaii plate lunches. Asian roots. Open late.",
-  blurb: "Not sure what to order? Take the quick quiz and we'll pick for you."
+  blurb: "Not sure what to order? Click \"Pick My Order,\" and we'll decide for you!"
 };
 
 const SCORING = { tagMatch: 10, featuredBoost: 4, popularBoost: 6, fillingBoost: 5, healthyBoost: 5, priceAsc: true };
@@ -389,19 +419,19 @@ const QUIZ_QUESTIONS = [
     id: "restrictions", prompt: "Any hard no's or allergies?",
     subtitle: "Pick all that apply — or tap Next to skip.", type: "multi", optional: true,
     options: [
-      { label: "🥜 Peanuts",        value: "peanuts",   excludeTags: ["peanuts"],           hard: true },
-      { label: "🌰 Tree nuts",      value: "tree-nuts", excludeTags: ["tree-nuts"],          hard: true },
-      { label: "🦞 Shellfish",      value: "shellfish", excludeTags: ["shrimp","shellfish"], hard: true },
-      { label: "🐟 Fish",           value: "fish",      excludeTags: ["fish"],               hard: true },
-      { label: "🧀 Dairy",          value: "dairy",     excludeTags: ["dairy"],              hard: true },
-      { label: "🥚 Eggs",           value: "eggs",      excludeTags: ["eggs"],               hard: true },
-      { label: "🌾 Gluten / Wheat", value: "gluten",    excludeTags: ["gluten"],             hard: true },
-      { label: "🫘 Soy",            value: "soy",       excludeTags: ["soy"],                hard: true },
-      { label: "🐷 Pork",           value: "pork",      excludeTags: ["pork"],               hard: true },
-      { label: "🐄 Beef",           value: "beef",      excludeTags: ["beef"],               hard: true },
-      { label: "🌶️ Spicy",         value: "no-spicy",  warnTags: ["spicy"], warnLabel: "spicy ingredients", soft: true },
-      { label: "🍬 Lots of sugar",  value: "no-sugar",  warnTags: ["sweet"], warnLabel: "sweet sauce or coating", soft: true },
-      { label: "✏️ Other (type below)", value: "other",                                                          soft: true }
+      { label: "Peanuts",        value: "peanuts",   excludeTags: ["peanuts"],           hard: true },
+      { label: "Tree Nuts",      value: "tree-nuts", excludeTags: ["tree-nuts"],          hard: true },
+      { label: "Shellfish",      value: "shellfish", excludeTags: ["shrimp","shellfish"], hard: true },
+      { label: "Fish",           value: "fish",      excludeTags: ["fish"],               hard: true },
+      { label: "Dairy",          value: "dairy",     excludeTags: ["dairy"],              hard: true },
+      { label: "Eggs",           value: "eggs",      excludeTags: ["eggs"],               hard: true },
+      { label: "Gluten / Wheat", value: "gluten",    excludeTags: ["gluten"],             hard: true },
+      { label: "Soy",            value: "soy",       excludeTags: ["soy"],                hard: true },
+      { label: "Pork",           value: "pork",      excludeTags: ["pork"],               hard: true },
+      { label: "Beef",           value: "beef",      excludeTags: ["beef"],               hard: true },
+      { label: "Spicy",          value: "no-spicy",  warnTags: ["spicy"], warnLabel: "spicy ingredients", soft: true },
+      { label: "Lots of Sugar",  value: "no-sugar",  warnTags: ["sweet"], warnLabel: "sweet sauce or coating", soft: true },
+      { label: "Other (type below)", value: "other",                                                          soft: true }
     ]
   },
   {
@@ -623,7 +653,7 @@ const MENU_ITEMS = [
 const TRANSLATIONS = {
   en: {
     eyebrow: "Brilla", tagline: "Hawaii plate lunches. Asian roots. Open late.",
-    blurb: "Not sure what to order? Take the quick quiz and we'll pick for you.",
+    blurb: "Not sure what to order? Click \"Pick My Order,\" and we'll decide for you!",
     btnPick: "Pick My Order →", btnViewMenu: "View Menu", btnStaff: "❤️ People Loved",
     landingHint: "No more menus. Just pick.",
     quizBack0: "← Home", quizBackN: "← Back", quizNext: "Next →",
@@ -636,7 +666,7 @@ const TRANSLATIONS = {
     staffTopPick: "🏆 Most loved", staffPick: "❤️ People love this",
     resultFallback: "Nothing fit your budget perfectly — here's the closest:",
     resultTop3: "Your top 3 picks", resultElimNote: "Tap ✕ to eliminate — last one standing is your pick",
-    resultFinalPick: "🎉 Your pick!", nextBest: "Show next best item", viewFullMenu: "View full menu →",
+    resultFinalPick: "🎉 Your pick!", nextBest: "Next Best Item for Me →", prevBest: "← Go Back", viewFullMenu: "View full menu →",
     softWarnOne: "⚠️ May include: %s. Ask if they can adjust.",
     softWarnShort: "⚠️ May include: %s",
     checkpointBack: "← Back", checkpointTitle: "Good enough to pick.",
@@ -645,7 +675,8 @@ const TRANSLATIONS = {
     checkpointNow: "Show my pick →", checkpointTop3: "Show top 3", checkpointMore: "Make it more accurate",
     restrictionsSectionHard: "Hard allergies", restrictionsSectionSoft: "Preferences / dealbreakers",
     restrictionsOtherLabel: "Describe your restriction:", restrictionsOtherPlaceholder: "e.g. coconut, cilantro…",
-    hoursPill: "🕐 Open daily till midnight",
+    hoursPill: "Hours: Open every day until 12 am",
+    allergyAdvisory: "⚠️ Allergy Advisory: Food may contain or have come into contact with peanuts, tree nuts, soy, milk, eggs, wheat, shellfish, or fish. Always ask a staff member about ingredients before ordering.",
     pilotNote: "🧪 We're testing Brilla with O'Sun Grill. Your feedback helps us improve it.",
     feedbackTitle: "Did this help you decide?",
     feedbackCommentLabel: "Anything else? (optional)",
@@ -665,7 +696,7 @@ const TRANSLATIONS = {
       hunger:       { prompt: "How hungry are you?",            options: ["🥟 Just a small bite","🍽️ Ready for a full plate","🔥 Starving — max plates"] },
       budget:       { prompt: "What's your budget?",            options: ["🤙 No budget — just pick the best","Under $15","$15–$20","$20+"] },
       craving:      { prompt: "What sounds good right now?",    options: ["🍤 Garlic shrimp","🍗 BBQ or grilled chicken","🥩 Kalbi / Beef","🐟 Fish or seafood","🍖 Pork chop"] },
-      restrictions: { prompt: "Any hard no's or allergies?",    subtitle: "Pick all that apply — or tap Next to skip.", options: ["🥜 Peanuts","🌰 Tree nuts","🦞 Shellfish","🐟 Fish","🧀 Dairy","🥚 Eggs","🌾 Gluten / Wheat","🫘 Soy","🐷 Pork","🐄 Beef","🌶️ Spicy","🍬 Lots of sugar","✏️ Other (type below)"] },
+      restrictions: { prompt: "Any hard no's or allergies?",    subtitle: "Pick all that apply — or tap Next to skip.", options: ["Peanuts","Tree Nuts","Shellfish","Fish","Dairy","Eggs","Gluten / Wheat","Soy","Pork","Beef","Spicy","Lots of Sugar","Other (type below)"] },
       mood:         { prompt: "What kind of mood are you in?",  options: ["✅ Local classic","⭐ Most popular","🆕 Something new","🌞 Light & easy"] },
       priority:     { prompt: "What matters most?",             options: ["💰 Cheapest pick","🏋️ Most filling","🥦 Lighter option","😋 Most delicious","⚡ Quick to get"] },
       resultStyle:  { prompt: "How do you want your result?",   options: ["🎯 Just pick one for me","🏆 Show my top 3","❌ Let me eliminate options"] }
@@ -690,7 +721,7 @@ const TRANSLATIONS = {
     resultTop3: "Tus 3 mejores opciones",
     resultElimNote: "Toca ✕ para eliminar — el último que quede es tu elección",
     resultFinalPick: "🎉 ¡Tu elección!",
-    nextBest: "Mostrar la siguiente mejor opción", viewFullMenu: "Ver el menú completo →",
+    nextBest: "Siguiente mejor opción →", prevBest: "← Volver", viewFullMenu: "Ver el menú completo →",
     softWarnOne: "⚠️ Puede contener: %s. Pregunta si pueden ajustarlo.",
     softWarnShort: "⚠️ Puede contener: %s",
     checkpointBack: "← Atrás", checkpointTitle: "Suficiente para elegir.",
@@ -699,7 +730,8 @@ const TRANSLATIONS = {
     checkpointNow: "Muéstrame mi elección →", checkpointTop3: "Mostrar las 3 mejores", checkpointMore: "Hacerlo más preciso",
     restrictionsSectionHard: "Alergias graves", restrictionsSectionSoft: "Preferencias / restricciones",
     restrictionsOtherLabel: "Describe tu restricción:", restrictionsOtherPlaceholder: "ej. coco, cilantro…",
-    hoursPill: "🕐 Abierto todos los días hasta medianoche",
+    hoursPill: "Horario: Abierto todos los días hasta las 12 am",
+    allergyAdvisory: "⚠️ Aviso de alergia: Los alimentos pueden contener o haber estado en contacto con cacahuetes, frutos secos, soja, leche, huevos, trigo, mariscos o pescado. Siempre consulta al personal sobre los ingredientes antes de pedir.",
     pilotNote: "🧪 Estamos probando Brilla con O'Sun Grill. Tu opinión nos ayuda a mejorar.",
     feedbackTitle: "¿Te ayudó a decidir?",
     feedbackCommentLabel: "¿Algo más? (opcional)",
@@ -719,7 +751,7 @@ const TRANSLATIONS = {
       hunger:       { prompt: "¿Cuánta hambre tienes?",                     options: ["🥟 Solo un bocadillo","🍽️ Listo para un plato completo","🔥 Muy hambriento — al máximo"] },
       budget:       { prompt: "¿Cuál es tu presupuesto?",                   options: ["🤙 Sin límite — elige lo mejor","Menos de $15","$15–$20","$20+"] },
       craving:      { prompt: "¿Qué te apetece ahora mismo?",               options: ["🍤 Camarones al ajillo","🍗 Pollo BBQ o a la parrilla","🥩 Kalbi / Res","🐟 Pescado o mariscos","🍖 Chuleta de cerdo"] },
-      restrictions: { prompt: "¿Tienes alguna alergia o restricción?",      subtitle: "Selecciona todo lo que aplique — o toca Siguiente para omitir.", options: ["🥜 Cacahuetes","🌰 Frutos secos","🦞 Mariscos","🐟 Pescado","🧀 Lácteos","🥚 Huevos","🌾 Gluten / Trigo","🫘 Soya","🐷 Cerdo","🐄 Res","🌶️ Picante","🍬 Mucha azúcar","✏️ Otro (escribe abajo)"] },
+      restrictions: { prompt: "¿Tienes alguna alergia o restricción?",      subtitle: "Selecciona todo lo que aplique — o toca Siguiente para omitir.", options: ["Cacahuetes","Frutos secos","Mariscos","Pescado","Lácteos","Huevos","Gluten / Trigo","Soya","Cerdo","Res","Picante","Mucha azúcar","Otro (escribe abajo)"] },
       mood:         { prompt: "¿Cuál es tu estado de ánimo?",               options: ["✅ Clásico local","⭐ El más popular","🆕 Algo nuevo","🌞 Ligero y fácil"] },
       priority:     { prompt: "¿Qué es lo más importante?",                 options: ["💰 Lo más barato","🏋️ Lo más abundante","🥦 Opción más ligera","😋 Lo más delicioso","⚡ Rápido de conseguir"] },
       resultStyle:  { prompt: "¿Cómo quieres tu resultado?",                options: ["🎯 Solo elige uno por mí","🏆 Muéstrame las 3 mejores","❌ Déjame eliminar opciones"] }
@@ -744,7 +776,7 @@ const TRANSLATIONS = {
     resultTop3: "あなたのトップ3",
     resultElimNote: "✕ をタップして消去 — 最後の1つがあなたの選択",
     resultFinalPick: "🎉 あなたの選択！",
-    nextBest: "次のおすすめを表示", viewFullMenu: "全メニューを見る →",
+    nextBest: "次のおすすめを見る →", prevBest: "← 戻る", viewFullMenu: "全メニューを見る →",
     softWarnOne: "⚠️ 含まれる可能性: %s。調整可能か確認してください。",
     softWarnShort: "⚠️ 含まれる可能性: %s",
     checkpointBack: "← 戻る", checkpointTitle: "選択できる状態です。",
@@ -753,7 +785,8 @@ const TRANSLATIONS = {
     checkpointNow: "選択を見る →", checkpointTop3: "トップ3を表示", checkpointMore: "より正確にする",
     restrictionsSectionHard: "アレルギー", restrictionsSectionSoft: "好み / 避けたいもの",
     restrictionsOtherLabel: "制限の詳細：", restrictionsOtherPlaceholder: "例：ナッツ、パクチー…",
-    hoursPill: "🕐 毎日深夜まで営業中",
+    hoursPill: "営業時間：毎日深夜12時まで",
+    allergyAdvisory: "⚠️ アレルギー注意：料理にはピーナッツ、木の実、大豆、牛乳、卵、小麦、甲殻類、魚が含まれているか、接触している可能性があります。注文前にスタッフに必ずご確認ください。",
     pilotNote: "🧪 O'Sun GrillでBrillaをテスト中です。ご意見をお聞かせください。",
     feedbackTitle: "選ぶのに役立ちましたか？",
     feedbackCommentLabel: "ご意見があれば（任意）",
@@ -773,7 +806,7 @@ const TRANSLATIONS = {
       hunger:       { prompt: "どのくらいお腹が空いていますか？",     options: ["🥟 軽くつまみたい","🍽️ しっかり食べたい","🔥 とても空腹 — 最大量"] },
       budget:       { prompt: "予算はどのくらいですか？",              options: ["🤙 予算なし — 最高のものを","$15未満","$15～$20","$20以上"] },
       craving:      { prompt: "今、何が食べたいですか？",              options: ["🍤 ガーリックシュリンプ","🍗 BBQまたはグリルチキン","🥩 カルビ / ビーフ","🐟 魚介類","🍖 ポークチョップ"] },
-      restrictions: { prompt: "アレルギーや制限はありますか？",        subtitle: "該当するものをすべて選択 — スキップするには次へをタップ。", options: ["🥜 ピーナッツ","🌰 ナッツ類","🦞 甲殻類","🐟 魚","🧀 乳製品","🥚 卵","🌾 グルテン / 小麦","🫘 大豆","🐷 豚肉","🐄 牛肉","🌶️ 辛いもの","🍬 甘すぎるもの","✏️ その他（以下に入力）"] },
+      restrictions: { prompt: "アレルギーや制限はありますか？",        subtitle: "該当するものをすべて選択 — スキップするには次へをタップ。", options: ["ピーナッツ","ナッツ類","甲殻類","魚","乳製品","卵","グルテン / 小麦","大豆","豚肉","牛肉","辛いもの","甘すぎるもの","その他（以下に入力）"] },
       mood:         { prompt: "今のムードは？",                        options: ["✅ ローカルの定番","⭐ 最も人気","🆕 新しいもの","🌞 軽め"] },
       priority:     { prompt: "最も重視することは？",                  options: ["💰 最安値","🏋️ 一番ボリューム","🥦 ヘルシーな選択","😋 一番おいしい","⚡ すぐ食べられる"] },
       resultStyle:  { prompt: "結果の表示方法は？",                    options: ["🎯 1つ選んでもらう","🏆 トップ3を表示","❌ 選択肢を絞り込む"] }
@@ -798,7 +831,7 @@ const TRANSLATIONS = {
     resultTop3: "您的前3名推荐",
     resultElimNote: "点击 ✕ 排除 — 最后一个就是您的选择",
     resultFinalPick: "🎉 您的选择！",
-    nextBest: "显示下一个推荐", viewFullMenu: "查看完整菜单 →",
+    nextBest: "查看下一个推荐 →", prevBest: "← 返回", viewFullMenu: "查看完整菜单 →",
     softWarnOne: "⚠️ 可能含有：%s。请询问是否可以调整。",
     softWarnShort: "⚠️ 可能含有：%s",
     checkpointBack: "← 返回", checkpointTitle: "已可以做出选择。",
@@ -807,7 +840,8 @@ const TRANSLATIONS = {
     checkpointNow: "显示推荐 →", checkpointTop3: "显示前3名", checkpointMore: "提高准确度",
     restrictionsSectionHard: "严重过敏", restrictionsSectionSoft: "偏好 / 不喜欢",
     restrictionsOtherLabel: "描述您的限制：", restrictionsOtherPlaceholder: "例如：椰子、香菜…",
-    hoursPill: "🕐 每日营业至午夜",
+    hoursPill: "营业时间：每天营业至凌晨12时",
+    allergyAdvisory: "⚠️ 过敏提示：食品可能含有或接触过花生、坚果、大豆、牛奶、鸡蛋、小麦、甲壳类或鱼类。点餐前请务必向工作人员询问具体成分。",
     pilotNote: "🧪 我们正在与 O'Sun Grill 合作测试 Brilla。您的反馈帮助我们改进。",
     feedbackTitle: "这对您的选择有帮助吗？",
     feedbackCommentLabel: "还有什么想说的吗？（可选）",
@@ -827,7 +861,7 @@ const TRANSLATIONS = {
       hunger:       { prompt: "您有多饿？",               options: ["🥟 随便吃点","🍽️ 想吃一整份","🔥 非常饿 — 最大份"] },
       budget:       { prompt: "您的预算是多少？",          options: ["🤙 不限预算 — 选最好的","$15以下","$15–$20","$20以上"] },
       craving:      { prompt: "现在想吃什么？",            options: ["🍤 蒜香虾","🍗 BBQ或烤鸡","🥩 短肋/牛肉","🐟 鱼或海鲜","🍖 猪排"] },
-      restrictions: { prompt: "有过敏或饮食限制吗？",     subtitle: "选择所有适用项 — 或点击下一步跳过。", options: ["🥜 花生","🌰 坚果","🦞 甲壳类","🐟 鱼","🧀 乳制品","🥚 鸡蛋","🌾 麸质/小麦","🫘 大豆","🐷 猪肉","🐄 牛肉","🌶️ 辛辣","🍬 高糖","✏️ 其他（请在下方输入）"] },
+      restrictions: { prompt: "有过敏或饮食限制吗？",     subtitle: "选择所有适用项 — 或点击下一步跳过。", options: ["花生","坚果","甲壳类","鱼","乳制品","鸡蛋","麸质/小麦","大豆","猪肉","牛肉","辛辣","高糖","其他（请在下方输入）"] },
       mood:         { prompt: "您现在的心情是？",          options: ["✅ 当地经典","⭐ 最受欢迎","🆕 尝试新品","🌞 清淡简单"] },
       priority:     { prompt: "您最看重什么？",            options: ["💰 最便宜","🏋️ 最有分量","🥦 较清淡","😋 最好吃","⚡ 快速获取"] },
       resultStyle:  { prompt: "您想如何查看结果？",        options: ["🎯 直接帮我选一个","🏆 显示前3名","❌ 让我排除选项"] }
@@ -904,12 +938,12 @@ function buildReason(item,answers,questions){const parts=[];questions.forEach(q=
 function recommend(answers){const questions=QUIZ_QUESTIONS;const{min:bmin,cap:bc}=resolveBudgetRange(answers);const hasBudgetFilter=bc!=null||bmin!=null;const excl=getExcludedTags(answers);const sw=getSoftWarnings(answers);const style=answers.resultStyle||"one";const pOpt=questions.find(q=>q.id==="priority")?.options.find(o=>o.value===answers.priority);let pool=MENU_ITEMS.filter(i=>!excl.some(t=>i.tags.includes(t)));let fallback=false;let bp=hasBudgetFilter?pool.filter(i=>(bc==null||i.price<=bc)&&(bmin==null||i.price>=bmin)):pool;if(hasBudgetFilter&&!bp.length){bp=pool;fallback=true;}pool=bp;const scored=pool.map(i=>({item:i,score:scoreItem(i,answers,questions),softWarnings:buildSoftWarningsForItem(i,sw)}));if(pOpt?.prioritizeCheap)scored.sort((a,b)=>a.item.price-b.item.price||b.score-a.score);else scored.sort((a,b)=>b.score-a.score||a.item.price-b.item.price);if(style==="top3")return{style:"top3",items:scored.slice(0,3),ranked:scored,fallback};if(style==="eliminate")return{style:"eliminate",items:scored.slice(0,Math.min(5,scored.length)),ranked:scored,fallback};const c=scored[0];return{style:"one",item:c.item,score:c.score,fallback,ranked:scored,reason:buildReason(c.item,answers,QUIZ_QUESTIONS)};}
 
 let feedbackRating=0;const state={screen:"landing",answers:{},step:0,result:null,extendedMode:false,sessionStartedAt:Date.now()};
-const SCREENS=["landing","quiz","checkpoint","result","menu","staff"];
+const SCREENS=["lang","landing","quiz","checkpoint","result","menu","staff"];
 function getScreenEl(n){return document.getElementById(`screen-${n}`);}
 function forceTop(el){if(el)el.scrollTop=0;document.body.scrollTop=0;document.documentElement.scrollTop=0;window.scrollTo(0,0);}
 function showScreen(name){state.screen=name;document.body.classList.add("is-switching");let ae=null;SCREENS.forEach(sn=>{const el=getScreenEl(sn);if(!el)return;const isA=sn===name;el.hidden=!isA;el.classList.toggle("is-active",isA);el.setAttribute("aria-hidden",String(!isA));if(isA)ae=el;});forceTop(ae);requestAnimationFrame(()=>{forceTop(ae);document.body.classList.remove("is-switching");});trackViewScreen(name);}
 function renderLanding(){document.getElementById("restaurant-name").textContent=RESTAURANT.name;document.getElementById("restaurant-tagline").textContent=RESTAURANT.tagline;document.getElementById("restaurant-blurb").textContent=RESTAURANT.blurb;}
-function renderQuizStep(){const q=QUIZ_QUESTIONS[state.step];const total=QUIZ_QUESTIONS.length;const root=document.getElementById("quiz-body");root.innerHTML="";const isCore=state.step<CORE_COUNT;if(isCore){document.getElementById("quiz-progress").textContent=`Question ${state.step+1} of ${CORE_COUNT}`;document.getElementById("quiz-bar-fill").style.width=`${((state.step+1)/CORE_COUNT)*100}%`;}else{const ei=state.step-CORE_COUNT+1;const et=QUIZ_QUESTIONS.length-CORE_COUNT;document.getElementById("quiz-progress").textContent=`Extra question ${ei} of ${et}`;document.getElementById("quiz-bar-fill").style.width=`${(ei/et)*100}%`;}document.getElementById("btn-quiz-back").textContent=state.step===0?t("quizBack0"):t("quizBackN");const prompt=document.createElement("h2");prompt.className="quiz-prompt";prompt.textContent=tQuestion(q.id,"prompt")||q.prompt;root.appendChild(prompt);const tSub=tQuestion(q.id,"subtitle");if(q.subtitle||tSub){const sub=document.createElement("p");sub.className="quiz-subtitle";sub.textContent=tSub||q.subtitle;root.appendChild(sub);}const opts=document.createElement("div");opts.className="quiz-options";const isLast=state.step===total-1;if(q.type==="multi"){if(!Array.isArray(state.answers[q.id]))state.answers[q.id]=[];const tOpts=tQuestion(q.id,"options")||[];const isR=q.id==="restrictions";let hh=false,sh=false;q.options.forEach((o,oi)=>{if(isR){if(o.hard&&!hh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionHard");opts.appendChild(l);hh=true;}if(o.soft&&!sh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionSoft");opts.appendChild(l);sh=true;}}const btn=document.createElement("button");btn.type="button";const sel=state.answers[q.id];btn.className="option"+(sel.includes(o.value)?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{let cur=state.answers[q.id];let _action;if(o.exclusive){_action=cur.includes(o.value)?"remove":"add";state.answers[q.id]=cur.includes(o.value)?[]:[o.value];}else{cur=cur.filter(v=>{const ex=q.options.find(x=>x.value===v);return!ex?.exclusive;});if(cur.includes(o.value)){_action="remove";state.answers[q.id]=cur.filter(v=>v!==o.value);}else{_action="add";state.answers[q.id]=[...cur,o.value];}}trackEvent("quiz_answer",{question:q.id,value:state.answers[q.id],action:_action});const ab=opts.querySelectorAll(".option");ab.forEach(b=>b.classList.remove("is-selected"));state.answers[q.id].forEach(v=>{const idx=q.options.findIndex(x=>x.value===v);if(idx>=0)ab[idx]?.classList.add("is-selected");});const nxt=document.getElementById("btn-quiz-next");const ne=state.answers[q.id].length===0;if(q.optional)nxt.textContent=ne?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));else nxt.disabled=ne;const tnxt=document.getElementById("btn-quiz-next-top");if(tnxt)tnxt.textContent=nxt.textContent;if(isR){const w=document.getElementById("other-restriction-wrap");if(w)w.style.display=state.answers[q.id].includes("other")?"":"none";}});opts.appendChild(btn);if(isR&&o.value==="other"){const ow=document.createElement("div");ow.className="custom-amount";ow.id="other-restriction-wrap";ow.style.display=state.answers[q.id].includes("other")?"":"none";const lbl=document.createElement("label");lbl.setAttribute("for","other-restriction-input");lbl.textContent=t("restrictionsOtherLabel");const inp=document.createElement("input");inp.type="text";inp.id="other-restriction-input";inp.placeholder=t("restrictionsOtherPlaceholder");inp.value=state.answers.restrictionOther||"";inp.addEventListener("input",()=>{state.answers.restrictionOther=inp.value;});ow.appendChild(lbl);ow.appendChild(inp);opts.appendChild(ow);}});}else{const tOpts=tQuestion(q.id,"options")||[];q.options.forEach((o,oi)=>{const btn=document.createElement("button");btn.type="button";btn.className="option"+(state.answers[q.id]===o.value?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{state.answers[q.id]=o.value;trackEvent("quiz_answer",{question:q.id,value:o.value});opts.querySelectorAll(".option").forEach(c=>c.classList.remove("is-selected"));btn.classList.add("is-selected");window.setTimeout(nextStep,140);});opts.appendChild(btn);});}if(q.type==="multi"){const tn=document.createElement("button");tn.type="button";tn.id="btn-quiz-next-top";tn.className="btn btn--secondary quiz-top-next";const ne0=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;tn.textContent=q.optional?(ne0?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"))):(isLast?t("quizSeeMyPick"):t("quizNext"));tn.addEventListener("click",nextStep);root.appendChild(tn);}root.appendChild(opts);const next=document.getElementById("btn-quiz-next");if(q.type==="multi"){const ie=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;if(q.optional){next.textContent=ie?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));next.style.display="";next.disabled=false;}else{next.textContent=isLast?t("quizSeeMyPick"):t("quizNext");next.style.display="";next.disabled=ie;}}else{next.style.display="none";next.disabled=true;}forceTop(getScreenEl("quiz"));}
+function renderQuizStep(){const q=QUIZ_QUESTIONS[state.step];const total=QUIZ_QUESTIONS.length;const root=document.getElementById("quiz-body");root.innerHTML="";const isCore=state.step<CORE_COUNT;if(isCore){document.getElementById("quiz-progress").textContent=`Question ${state.step+1} of ${CORE_COUNT}`;document.getElementById("quiz-bar-fill").style.width=`${((state.step+1)/CORE_COUNT)*100}%`;}else{const ei=state.step-CORE_COUNT+1;const et=QUIZ_QUESTIONS.length-CORE_COUNT;document.getElementById("quiz-progress").textContent=`Extra question ${ei} of ${et}`;document.getElementById("quiz-bar-fill").style.width=`${(ei/et)*100}%`;}document.getElementById("btn-quiz-back").textContent=state.step===0?t("quizBack0"):t("quizBackN");const prompt=document.createElement("h2");prompt.className="quiz-prompt";prompt.textContent=tQuestion(q.id,"prompt")||q.prompt;root.appendChild(prompt);const tSub=tQuestion(q.id,"subtitle");if(q.subtitle||tSub){const sub=document.createElement("p");sub.className="quiz-subtitle";sub.textContent=tSub||q.subtitle;root.appendChild(sub);}const opts=document.createElement("div");opts.className="quiz-options";const isLast=state.step===total-1;if(q.type==="multi"){if(!Array.isArray(state.answers[q.id]))state.answers[q.id]=[];const tOpts=tQuestion(q.id,"options")||[];const isR=q.id==="restrictions";if(isR){const aw=document.createElement("div");aw.className="allergy-warning";aw.textContent=t("allergyAdvisory");root.appendChild(aw);}let hh=false,sh=false;q.options.forEach((o,oi)=>{if(isR){if(o.hard&&!hh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionHard");opts.appendChild(l);hh=true;}if(o.soft&&!sh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionSoft");opts.appendChild(l);sh=true;}}const btn=document.createElement("button");btn.type="button";const sel=state.answers[q.id];btn.className="option"+(sel.includes(o.value)?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{let cur=state.answers[q.id];let _action;if(o.exclusive){_action=cur.includes(o.value)?"remove":"add";state.answers[q.id]=cur.includes(o.value)?[]:[o.value];}else{cur=cur.filter(v=>{const ex=q.options.find(x=>x.value===v);return!ex?.exclusive;});if(cur.includes(o.value)){_action="remove";state.answers[q.id]=cur.filter(v=>v!==o.value);}else{_action="add";state.answers[q.id]=[...cur,o.value];}}trackEvent("quiz_answer",{question:q.id,value:state.answers[q.id],action:_action});const ab=opts.querySelectorAll(".option");ab.forEach(b=>b.classList.remove("is-selected"));state.answers[q.id].forEach(v=>{const idx=q.options.findIndex(x=>x.value===v);if(idx>=0)ab[idx]?.classList.add("is-selected");});const nxt=document.getElementById("btn-quiz-next");const ne=state.answers[q.id].length===0;if(q.optional)nxt.textContent=ne?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));else nxt.disabled=ne;const tnxt=document.getElementById("btn-quiz-next-top");if(tnxt)tnxt.textContent=nxt.textContent;if(isR){const w=document.getElementById("other-restriction-wrap");if(w)w.style.display=state.answers[q.id].includes("other")?"":"none";}});opts.appendChild(btn);if(isR&&o.value==="other"){const ow=document.createElement("div");ow.className="custom-amount";ow.id="other-restriction-wrap";ow.style.display=state.answers[q.id].includes("other")?"":"none";const lbl=document.createElement("label");lbl.setAttribute("for","other-restriction-input");lbl.textContent=t("restrictionsOtherLabel");const inp=document.createElement("input");inp.type="text";inp.id="other-restriction-input";inp.placeholder=t("restrictionsOtherPlaceholder");inp.value=state.answers.restrictionOther||"";inp.addEventListener("input",()=>{state.answers.restrictionOther=inp.value;});ow.appendChild(lbl);ow.appendChild(inp);opts.appendChild(ow);}});}else{const tOpts=tQuestion(q.id,"options")||[];q.options.forEach((o,oi)=>{const btn=document.createElement("button");btn.type="button";btn.className="option"+(state.answers[q.id]===o.value?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{state.answers[q.id]=o.value;trackEvent("quiz_answer",{question:q.id,value:o.value});opts.querySelectorAll(".option").forEach(c=>c.classList.remove("is-selected"));btn.classList.add("is-selected");window.setTimeout(nextStep,140);});opts.appendChild(btn);});}if(q.type==="multi"){const tn=document.createElement("button");tn.type="button";tn.id="btn-quiz-next-top";tn.className="btn btn--secondary quiz-top-next";const ne0=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;tn.textContent=q.optional?(ne0?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"))):(isLast?t("quizSeeMyPick"):t("quizNext"));tn.addEventListener("click",nextStep);root.appendChild(tn);}root.appendChild(opts);const next=document.getElementById("btn-quiz-next");if(q.type==="multi"){const ie=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;if(q.optional){next.textContent=ie?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));next.style.display="";next.disabled=false;}else{next.textContent=isLast?t("quizSeeMyPick"):t("quizNext");next.style.display="";next.disabled=ie;}}else{next.style.display="none";next.disabled=true;}forceTop(getScreenEl("quiz"));}
 function nextStep(){const q=QUIZ_QUESTIONS[state.step];const ans=state.answers[q.id];const ha=q.type==="multi"?(q.optional||(Array.isArray(ans)&&ans.length>0)):ans!=null;if(!ha)return;if(state.step===CORE_COUNT-1&&!state.extendedMode){showScreen("checkpoint");return;}if(state.step<QUIZ_QUESTIONS.length-1){state.step+=1;renderQuizStep();}else{submitQuiz();}}
 function prevStep(){if(state.step===CORE_COUNT&&state.extendedMode){showScreen("checkpoint");return;}if(state.step>0){state.step-=1;renderQuizStep();}else{showScreen("landing");}}
 function startQuiz(entryPoint){state.step=0;state.extendedMode=false;renderQuizStep();showScreen("quiz");trackEvent("quiz_started",{entry_point:entryPoint||null});}
@@ -924,7 +958,7 @@ function buildResultActions(root,showNB,onNB,currentItem=null){
 
 function addPopularReason(item,container){if(item.featured&&item.popularReason){const pr=document.createElement("p");pr.className="popular-reason";pr.textContent=t("popularReasonPrefix")+item.popularReason;container.appendChild(pr);}}
 
-function renderResult(){resetFeedbackInline();const root=document.getElementById("result-body");root.innerHTML="";if(!state.result)return;const r=state.result;if(r.style==="one"){if(r.fallback){const fb=document.createElement("p");fb.className="result-note";fb.textContent=t("resultFallback");root.appendChild(fb);}let pi=r._pickIndex||0;const ranked=r.ranked||[];function renderOnePick(idx){const ez=root.querySelector(".one-pick-zone");if(ez)ez.remove();const ea=root.querySelector(".result-actions");if(ea)ea.remove();const entry=ranked[idx];const item=entry?.item||entry;const sw=entry?.softWarnings||[];const zone=document.createElement("div");zone.className="one-pick-zone";zone.appendChild(buildItemCard(item,true));renderMatchReasons(item,state.answers,zone);const why=document.createElement("p");why.className="result-reason";why.textContent=buildReason(item,state.answers,QUIZ_QUESTIONS);zone.appendChild(why);addPopularReason(item,zone);if(sw.length>0){const w=document.createElement("p");w.className="result-soft-warn";w.textContent=t("softWarnOne").replace("%s",sw.join(", "));zone.appendChild(w);}root.appendChild(zone);const hm=idx+1<ranked.length;buildResultActions(root,hm,()=>{pi=idx+1;r._pickIndex=pi;renderOnePick(pi);},item);}renderOnePick(pi);}else if(r.style==="top3"){const note=document.createElement("p");note.className="result-note";note.textContent=t("resultTop3");root.appendChild(note);r.items.forEach((entry,i)=>{const item=entry?.item||entry;const sw=entry?.softWarnings||[];const wrap=document.createElement("div");wrap.className="result-rank-wrap";const badge=document.createElement("span");badge.className="result-rank-badge";badge.textContent=["🥇","🥈","🥉"][i]||`#${i+1}`;wrap.appendChild(badge);wrap.appendChild(buildItemCard(item,i===0));renderMatchReasons(item,state.answers,wrap);if(i===0)addPopularReason(item,wrap);if(sw.length>0){const w=document.createElement("p");w.className="result-soft-warn";w.textContent=t("softWarnShort").replace("%s",sw.join(", "));wrap.appendChild(w);}root.appendChild(wrap);});buildResultActions(root,false,null);}else if(r.style==="eliminate"){const note=document.createElement("p");note.className="result-note";note.textContent=t("resultElimNote");root.appendChild(note);const pool=[...r.items];function renderElim(){const ep=root.querySelector(".elim-pool");if(ep)ep.remove();const ea=root.querySelector(".result-actions");if(ea)ea.remove();if(pool.length===1){root.innerHTML="";const f=document.createElement("p");f.className="result-note";f.textContent=t("resultFinalPick");root.appendChild(f);const fi=pool[0]?.item||pool[0];root.appendChild(buildItemCard(fi,true));addPopularReason(fi,root);buildResultActions(root,false,null);return;}const pe=document.createElement("div");pe.className="elim-pool";pool.forEach((entry,idx)=>{const item=entry?.item||entry;const row=document.createElement("div");row.className="elim-row";row.appendChild(buildItemCard(item,false));const xb=document.createElement("button");xb.type="button";xb.className="elim-x";xb.textContent="✕";xb.setAttribute("aria-label",`Remove ${item.name}`);xb.addEventListener("click",()=>{pool.splice(idx,1);renderElim();});row.appendChild(xb);pe.appendChild(row);});root.appendChild(pe);buildResultActions(root,false,null);}renderElim();}}
+function renderResult(){resetFeedbackInline();const root=document.getElementById("result-body");root.innerHTML="";if(!state.result)return;const r=state.result;if(r.style==="one"){if(r.fallback){const fb=document.createElement("p");fb.className="result-note";fb.textContent=t("resultFallback");root.appendChild(fb);}let pi=r._pickIndex||0;const ranked=r.ranked||[];function renderOnePick(idx){const ez=root.querySelector(".one-pick-zone");if(ez)ez.remove();const ea=root.querySelector(".result-actions");if(ea)ea.remove();const en=root.querySelector(".result-nav");if(en)en.remove();const entry=ranked[idx];const item=entry?.item||entry;const sw=entry?.softWarnings||[];const nav=document.createElement("div");nav.className="result-nav";const bb=document.createElement("button");bb.type="button";bb.className="btn btn--ghost";bb.textContent=t("prevBest");if(idx>0){bb.addEventListener("click",()=>{pi=idx-1;r._pickIndex=pi;renderOnePick(pi);});}else{bb.disabled=true;}nav.appendChild(bb);const nb=document.createElement("button");nb.type="button";nb.className="btn btn--ghost";nb.textContent=t("nextBest");const hasNext=idx+1<ranked.length;if(hasNext){nb.addEventListener("click",()=>{trackEvent("next_best_clicked",{from_item_id:item?.id||null});pi=idx+1;r._pickIndex=pi;renderOnePick(pi);});}else{nb.disabled=true;}nav.appendChild(nb);root.appendChild(nav);const zone=document.createElement("div");zone.className="one-pick-zone";zone.appendChild(buildItemCard(item,true));renderMatchReasons(item,state.answers,zone);const why=document.createElement("p");why.className="result-reason";why.textContent=buildReason(item,state.answers,QUIZ_QUESTIONS);zone.appendChild(why);addPopularReason(item,zone);if(sw.length>0){const w=document.createElement("p");w.className="result-soft-warn";w.textContent=t("softWarnOne").replace("%s",sw.join(", "));zone.appendChild(w);}root.appendChild(zone);}renderOnePick(pi);}else if(r.style==="top3"){const note=document.createElement("p");note.className="result-note";note.textContent=t("resultTop3");root.appendChild(note);r.items.forEach((entry,i)=>{const item=entry?.item||entry;const sw=entry?.softWarnings||[];const wrap=document.createElement("div");wrap.className="result-rank-wrap";const badge=document.createElement("span");badge.className="result-rank-badge";badge.textContent=["🥇","🥈","🥉"][i]||`#${i+1}`;wrap.appendChild(badge);wrap.appendChild(buildItemCard(item,i===0));renderMatchReasons(item,state.answers,wrap);if(i===0)addPopularReason(item,wrap);if(sw.length>0){const w=document.createElement("p");w.className="result-soft-warn";w.textContent=t("softWarnShort").replace("%s",sw.join(", "));wrap.appendChild(w);}root.appendChild(wrap);});buildResultActions(root,false,null);}else if(r.style==="eliminate"){const note=document.createElement("p");note.className="result-note";note.textContent=t("resultElimNote");root.appendChild(note);const pool=[...r.items];function renderElim(){const ep=root.querySelector(".elim-pool");if(ep)ep.remove();const ea=root.querySelector(".result-actions");if(ea)ea.remove();if(pool.length===1){root.innerHTML="";const f=document.createElement("p");f.className="result-note";f.textContent=t("resultFinalPick");root.appendChild(f);const fi=pool[0]?.item||pool[0];root.appendChild(buildItemCard(fi,true));addPopularReason(fi,root);buildResultActions(root,false,null);return;}const pe=document.createElement("div");pe.className="elim-pool";pool.forEach((entry,idx)=>{const item=entry?.item||entry;const row=document.createElement("div");row.className="elim-row";row.appendChild(buildItemCard(item,false));const xb=document.createElement("button");xb.type="button";xb.className="elim-x";xb.textContent="✕";xb.setAttribute("aria-label",`Remove ${item.name}`);xb.addEventListener("click",()=>{pool.splice(idx,1);renderElim();});row.appendChild(xb);pe.appendChild(row);});root.appendChild(pe);buildResultActions(root,false,null);}renderElim();}}
 function renderMenu(){const root=document.getElementById("menu-list");root.innerHTML="";MENU_ITEMS.forEach(i=>root.appendChild(buildItemCard(i,false)));}
 function renderStaffFavorites(){const root=document.getElementById("staff-list");root.innerHTML="";const picks=MENU_ITEMS.filter(i=>i.featured);picks.forEach((item,i)=>{const w=document.createElement("div");w.className="staff-pick-wrap";const b=document.createElement("span");b.className="staff-pick-badge";b.textContent=i===0?t("staffTopPick"):t("staffPick");w.appendChild(b);w.appendChild(buildItemCard(item,i===0));if(item.popularReason){const pr=document.createElement("p");pr.className="popular-reason";pr.textContent=t("popularReasonPrefix")+item.popularReason;w.appendChild(pr);}root.appendChild(w);});}
 function openLightbox(src,alt){let lb=document.getElementById("img-lightbox");if(!lb){lb=document.createElement("div");lb.id="img-lightbox";lb.className="img-lightbox";const i=document.createElement("img");i.alt="";lb.appendChild(i);lb.addEventListener("click",()=>lb.classList.remove("is-open"));document.body.appendChild(lb);}lb.querySelector("img").src=src;lb.querySelector("img").alt=alt;lb.classList.add("is-open");}
@@ -950,14 +984,16 @@ function wireEvents(){
   document.getElementById("btn-menu-pick").addEventListener("click",()=>startQuiz("menu"));
   document.getElementById("btn-staff-back").addEventListener("click",()=>showScreen("landing"));
   document.getElementById("btn-staff-pick").addEventListener("click",()=>startQuiz("staff"));
+  const SHORT_LANG={en:"EN",es:"ES",ja:"日本語",zh:"中文"};
+  document.querySelectorAll("#screen-lang .lang-first-btn").forEach(btn=>{btn.addEventListener("click",()=>{const lang=btn.dataset.lang;applyLang(lang);document.getElementById("lang-toggle-label").textContent=SHORT_LANG[lang]||lang.toUpperCase();showScreen("landing");});});
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){const dur=Math.round((Date.now()-state.sessionStartedAt)/1000);trackEvent("session_end",{duration_seconds:dur,from_screen:state.screen});if(state.screen==="quiz"){trackEvent("quiz_abandoned",{step:state.step,question_key:QUIZ_QUESTIONS[state.step]?.id||null,answers_so_far:state.answers});}}});
   const rwl=document.getElementById("restaurant-website-link");if(rwl)rwl.addEventListener("click",()=>trackEvent("menu_clickthrough",{item_id:null,source:"restaurant_website_link"}));
   const lwl=document.getElementById("landing-website-link");if(lwl)lwl.addEventListener("click",()=>trackEvent("menu_clickthrough",{item_id:null,source:"landing_website_link"}));
   wireFeedbackInline();
 }
-function applyLang(lang){currentLang=lang;trackEvent("language_changed",{lang,from_screen:state.screen});document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===lang));document.getElementById("restaurant-tagline").textContent=t("tagline");document.getElementById("restaurant-blurb").textContent=t("blurb");document.querySelector(".eyebrow").textContent=t("eyebrow");document.getElementById("btn-pick").textContent=t("btnPick");document.getElementById("btn-view-menu").textContent=t("btnViewMenu");document.getElementById("btn-staff").textContent=t("btnStaff");document.querySelector(".landing-hint").textContent=t("landingHint");document.getElementById("btn-result-retry").textContent=t("topbarRetry");document.getElementById("btn-result-menu").textContent=t("topbarMenu");document.getElementById("btn-menu-back").textContent=t("topbarMenuBack");document.getElementById("btn-menu-pick").textContent=t("topbarMenuPick");document.getElementById("btn-staff-back").textContent=t("topbarStaffBack");document.getElementById("btn-staff-pick").textContent=t("topbarStaffPick");document.getElementById("menu-title").textContent=t("menuTitle");document.querySelector("#screen-menu .screen-sub").textContent=t("menuSub");document.getElementById("staff-title").textContent=t("staffTitle");document.querySelector("#screen-staff .screen-sub").textContent=t("staffSub");renderMenu();renderStaffFavorites();document.getElementById("btn-checkpoint-back").textContent=t("checkpointBack");document.getElementById("checkpoint-title").textContent=t("checkpointTitle");document.querySelector("#screen-checkpoint .checkpoint-headline").textContent=t("checkpointHeadline");document.querySelector("#screen-checkpoint .checkpoint-sub").textContent=t("checkpointSub");document.getElementById("btn-checkpoint-now").textContent=t("checkpointNow");document.getElementById("btn-checkpoint-top3").textContent=t("checkpointTop3");document.getElementById("btn-checkpoint-more").textContent=t("checkpointMore");document.getElementById("hours-pill").textContent=t("hoursPill");document.getElementById("pilot-note").textContent=t("pilotNote");document.getElementById("feedback-inline-title").textContent=t("feedbackTitle");document.getElementById("feedback-comment-label").textContent=t("feedbackCommentLabel");document.getElementById("result-feedback-comment").placeholder=t("feedbackCommentPlaceholder");document.getElementById("result-feedback-submit").textContent=t("feedbackSubmit");document.getElementById("feedback-thanks-text").textContent=t("feedbackThanks");if(state.screen==="quiz")renderQuizStep();if(state.screen==="result")renderResult();}
+function applyLang(lang){currentLang=lang;trackEvent("language_changed",{lang,from_screen:state.screen});document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===lang));document.getElementById("restaurant-tagline").textContent=t("tagline");document.getElementById("restaurant-blurb").textContent=t("blurb");document.getElementById("btn-pick").textContent=t("btnPick");document.getElementById("btn-view-menu").textContent=t("btnViewMenu");document.getElementById("btn-staff").textContent=t("btnStaff");document.querySelector(".landing-hint").textContent=t("landingHint");document.getElementById("btn-result-retry").textContent=t("topbarRetry");document.getElementById("btn-result-menu").textContent=t("topbarMenu");document.getElementById("btn-menu-back").textContent=t("topbarMenuBack");document.getElementById("btn-menu-pick").textContent=t("topbarMenuPick");document.getElementById("btn-staff-back").textContent=t("topbarStaffBack");document.getElementById("btn-staff-pick").textContent=t("topbarStaffPick");document.getElementById("menu-title").textContent=t("menuTitle");document.querySelector("#screen-menu .screen-sub").textContent=t("menuSub");document.getElementById("staff-title").textContent=t("staffTitle");document.querySelector("#screen-staff .screen-sub").textContent=t("staffSub");renderMenu();renderStaffFavorites();document.getElementById("btn-checkpoint-back").textContent=t("checkpointBack");document.getElementById("checkpoint-title").textContent=t("checkpointTitle");document.querySelector("#screen-checkpoint .checkpoint-headline").textContent=t("checkpointHeadline");document.querySelector("#screen-checkpoint .checkpoint-sub").textContent=t("checkpointSub");document.getElementById("btn-checkpoint-now").textContent=t("checkpointNow");document.getElementById("btn-checkpoint-top3").textContent=t("checkpointTop3");document.getElementById("btn-checkpoint-more").textContent=t("checkpointMore");document.getElementById("hours-pill").textContent=t("hoursPill");document.getElementById("pilot-note").textContent=t("pilotNote");document.getElementById("feedback-inline-title").textContent=t("feedbackTitle");document.getElementById("feedback-comment-label").textContent=t("feedbackCommentLabel");document.getElementById("result-feedback-comment").placeholder=t("feedbackCommentPlaceholder");document.getElementById("result-feedback-submit").textContent=t("feedbackSubmit");document.getElementById("feedback-thanks-text").textContent=t("feedbackThanks");if(state.screen==="quiz")renderQuizStep();if(state.screen==="result")renderResult();}
 function wireLangSelector(){const sel=document.getElementById("lang-selector");const tog=document.getElementById("lang-toggle");const lbl=document.getElementById("lang-toggle-label");const SHORT={en:"EN",es:"ES",ja:"日本語",zh:"中文"};function open(){sel.classList.add("is-open");tog.setAttribute("aria-expanded","true");}function close(){sel.classList.remove("is-open");tog.setAttribute("aria-expanded","false");}tog.addEventListener("click",e=>{e.stopPropagation();sel.classList.contains("is-open")?close():open();});sel.addEventListener("click",e=>{const btn=e.target.closest(".lang-btn");if(!btn||!btn.dataset.lang)return;applyLang(btn.dataset.lang);lbl.textContent=SHORT[btn.dataset.lang]||btn.dataset.lang.toUpperCase();close();});document.addEventListener("click",()=>close());sel.addEventListener("touchstart",e=>e.stopPropagation(),{passive:true});}
-function init(){renderLanding();renderMenu();renderStaffFavorites();wireEvents();wireLangSelector();showScreen("landing");}
+function init(){renderLanding();renderMenu();renderStaffFavorites();wireEvents();wireLangSelector();showScreen("lang");}
 document.addEventListener("DOMContentLoaded",init);
   </script>
 </body>

@@ -9,3 +9,7 @@ API_BASE = "https://pick4me.fly.dev"
 directory = "./frontend"
 binding = "ASSETS"
 run_worker_first = true
+
+[[custom_domains]]
+zone_name = "plate-up.app"
+host = "plate-up.app"

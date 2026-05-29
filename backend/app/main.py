@@ -16,6 +16,7 @@ app = FastAPI(title="Pick4Me API", lifespan=lifespan)
 
 _PROD_ORIGINS = [
     "https://brilla.alextheastronaut.workers.dev",
+    "https://plate-up.app",
 ]
 _DEV_ORIGINS = [
     "http://localhost:8000",

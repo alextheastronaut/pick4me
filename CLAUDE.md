@@ -13,6 +13,17 @@ A QR-code restaurant menu recommender. Diner scans a QR code, answers ~5 quiz qu
 | Database | Neon — ep-proud-queen-akx6qgup (project: pick4me) |
 | Uptime monitoring | UptimeRobot (2 monitors, 5-min checks, alerts → alextheastronaut@gmail.com) |
 
+## Git workflow
+
+**Never push directly to `master`.** The frontend auto-deploys to production on every master push via Cloudflare/Wrangler. All changes must go through a feature branch:
+
+1. `git checkout -b feature/<short-description>`
+2. Develop and test locally
+3. Push the feature branch and open a PR against `master`
+4. Merge only after verifying the change works as expected
+
+This protects live diners from broken deploys. Treat `master` as the production branch.
+
 ## Deploy commands
 
 ```bash

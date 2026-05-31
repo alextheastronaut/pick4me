@@ -42,9 +42,13 @@ body {
 button, input, textarea { font: inherit; }
 button { touch-action: manipulation; }
 .app {
-  position: fixed; inset: 0;
-  width: 100%; max-width: 460px;
-  height: 100svh; margin: 0 auto;
+  position: fixed;
+  inset: 0;
+  width: min(100vw, 460px);
+  max-width: 460px;
+  height: 100vh;
+  height: 100svh;
+  margin: 0 auto;
   overflow: hidden;
   background: #fdf3e0;
 }
@@ -53,24 +57,25 @@ button { touch-action: manipulation; }
 .screen[hidden] { display: none !important; }
 .screen.is-active {
   display: block; position: absolute; inset: 0;
-  width: 100%; height: 100%;
+  width: 100%; max-width: 100%; height: 100%;
+  background: #fdf3e0;
   overflow-x: hidden; overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  padding: calc(20px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));
+  padding: calc(14px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
 }
 body.is-switching .screen.is-active { scroll-behavior: auto !important; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   gap: 8px; width: 100%; border: none; cursor: pointer;
-  font-weight: 800; font-size: 1.08rem; padding: 18px 20px;
+  font-weight: 800; font-size: 1.03rem; padding: 15px 18px;
   border-radius: var(--radius-pill);
   transition: transform 0.12s ease, filter 0.2s ease, opacity 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 .btn:active { transform: translateY(1px) scale(0.99); }
-.btn--lg { padding: 20px 22px; font-size: 1.18rem; }
+.btn--lg { padding: 16px 20px; font-size: 1.08rem; }
 .btn--primary { color: #fff; background: var(--c-coral); box-shadow: var(--shadow-btn); }
 .btn--primary:disabled { background: #e8c080; box-shadow: none; opacity: 0.8; }
 .btn--secondary { color: var(--c-sea-deep); background: #fff; border: 2.5px solid var(--c-sea); box-shadow: var(--shadow-s); }
@@ -95,21 +100,21 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
 .landing-actions { display: flex; flex-direction: column; gap: 12px; }
 .landing-hint { margin-top: 14px; font-size: 0.85rem; font-weight: 600; color: var(--c-ink-soft); opacity: 0.85; }
 .pilot-note { margin-top: 16px; font-size: 0.76rem; font-weight: 600; color: var(--c-ink-soft); opacity: 0.65; line-height: 1.5; }
-.topbar { position: sticky; top: calc(-20px - env(safe-area-inset-top)); z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: calc(-20px - env(safe-area-inset-top)) -18px 16px; padding: calc(14px + env(safe-area-inset-top)) 18px 14px; background: rgba(253,243,224,0.96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--c-line); }
+.topbar { position: sticky; top: calc(-14px - env(safe-area-inset-top)); z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: calc(-14px - env(safe-area-inset-top)) -16px 12px; padding: calc(11px + env(safe-area-inset-top)) 16px 11px; background: rgba(253,243,224,0.96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--c-line); }
 .topbar-back, .topbar-action { border: none; cursor: pointer; font-weight: 800; -webkit-tap-highlight-color: transparent; }
 .topbar-back { background: none; color: var(--c-sea-deep); padding: 8px 4px; font-size: 1rem; }
 .topbar-action { color: #fff; background: var(--c-coral); padding: 10px 18px; border-radius: var(--radius-pill); box-shadow: var(--shadow-btn); }
 .topbar-progress { font-size: 0.82rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--c-sea-deep); }
-.screen-head { margin-bottom: 18px; }
+.screen-head { margin-bottom: 12px; }
 .screen-title { font-size: 1.9rem; font-weight: 900; letter-spacing: -0.03em; color: var(--c-ink); }
 .screen-sub { color: var(--c-ink-soft); font-weight: 600; }
 .quiz-bar { height: 8px; background: #e8c080; border-radius: var(--radius-pill); overflow: hidden; margin-bottom: 22px; }
 .quiz-bar-fill { height: 100%; width: 20%; background: var(--c-coral); border-radius: var(--radius-pill); transition: width 0.25s ease; }
-.quiz-body { min-height: 46vh; }
-.quiz-prompt { font-size: 1.65rem; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--c-ink); }
+.quiz-body { min-height: 40vh; }
+.quiz-prompt { font-size: 1.45rem; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--c-ink); }
 .quiz-subtitle { color: var(--c-ink-soft); font-weight: 650; margin-bottom: 18px; }
-.quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
-.option { width: 100%; text-align: left; font-weight: 700; font-size: 1.12rem; padding: 20px 20px; color: var(--c-ink); background: var(--c-card); border: 2px solid var(--c-line); border-radius: var(--radius-s); cursor: pointer; box-shadow: var(--shadow-s); -webkit-tap-highlight-color: transparent; line-height: 1.3; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.option { width: 100%; text-align: left; font-weight: 700; font-size: 1.02rem; padding: 15px 16px; color: var(--c-ink); background: var(--c-card); border: 2px solid var(--c-line); border-radius: var(--radius-s); cursor: pointer; box-shadow: var(--shadow-s); -webkit-tap-highlight-color: transparent; line-height: 1.3; }
 .option:active { transform: scale(0.99); }
 .option.is-selected { border-color: var(--c-coral); background: #f5e4c0; color: var(--c-sea-deep); box-shadow: 0 0 0 3px rgba(184,105,26,0.15), var(--shadow-s); }
 .custom-amount { margin-top: 16px; }
@@ -148,12 +153,12 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
 .elim-x:active { transform: scale(0.92); }
 .elim-row .item-card { padding-right: 52px; }
 .restriction-section-label { font-size: 0.72rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; color: var(--c-ink-soft); padding: 10px 0 2px; }
-.checkpoint-body { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 32px 4px 24px; }
-.checkpoint-icon { font-size: 2.6rem; margin-bottom: 18px; width: 80px; height: 80px; display: grid; place-items: center; background: var(--c-coral); border-radius: 24px; box-shadow: var(--shadow-btn); }
-.checkpoint-title { font-size: 1.9rem; font-weight: 900; letter-spacing: -0.03em; color: var(--c-ink); line-height: 1.1; margin-bottom: 6px; }
+.checkpoint-body { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 14px 4px 16px; min-height: calc(100svh - 64px); justify-content: center; }
+.checkpoint-icon { font-size: 2.1rem; margin-bottom: 12px; width: 62px; height: 62px; display: grid; place-items: center; background: var(--c-coral); border-radius: 20px; box-shadow: var(--shadow-btn); }
+.checkpoint-title { font-size: 1.55rem; font-weight: 900; letter-spacing: -0.03em; color: var(--c-ink); line-height: 1.08; margin-bottom: 8px; }
 .checkpoint-headline { font-size: 1.2rem; font-weight: 800; color: var(--c-sea-deep); margin-bottom: 12px; }
-.checkpoint-sub { color: var(--c-ink-soft); font-weight: 600; max-width: 30ch; margin: 0 auto 28px; font-size: 0.98rem; line-height: 1.55; }
-.checkpoint-actions { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.checkpoint-sub { color: var(--c-ink-soft); font-weight: 650; max-width: 40ch; margin: 0 auto 16px; font-size: 0.9rem; line-height: 1.38; }
+.checkpoint-actions { display: flex; flex-direction: column; gap: 9px; width: 100%; }
 @media (max-height: 700px) { .logo-badge { width: 64px; height: 64px; font-size: 2rem; margin-bottom: 12px; } }
 .lang-selector { position: absolute; top: calc(14px + env(safe-area-inset-top)); right: 16px; z-index: 200; }
 .lang-toggle { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.22); border: 1.5px solid rgba(255,255,255,0.45); border-radius: var(--radius-pill); padding: 7px 12px 7px 10px; cursor: pointer; font-size: 0.82rem; font-weight: 800; color: #fff; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
@@ -194,10 +199,53 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
 /* ── Brilla credit in hero ── */
 .brilla-credit { font-size: 0.65rem; font-weight: 700; color: rgba(255,255,255,0.38); margin-top: 8px; letter-spacing: 0.05em; }
 /* ── Allergy warning on restrictions screen ── */
-.allergy-warning { font-size: 0.82rem; font-weight: 700; color: #7a4f00; background: #fff8e1; border: 1px solid #ffe082; border-radius: var(--radius-s); padding: 9px 13px; margin-bottom: 12px; line-height: 1.45; }
+.allergy-warning { font-size: 0.76rem; font-weight: 650; color: #7a4f00; background: #fff8e1; border: 1px solid #ffe082; border-radius: var(--radius-s); padding: 8px 11px; margin: 14px 0 0; line-height: 1.35; }
 /* ── Result nav (prev/next above item card) ── */
 .result-nav { display: flex; gap: 8px; margin-bottom: 14px; }
 .result-nav .btn { flex: 1; width: auto; font-size: 0.82rem; padding: 11px 10px; }
+/* ── Customer Favorites screen ── */
+.cust-fav-topbar { display: flex; align-items: center; justify-content: space-between; margin: calc(-14px - env(safe-area-inset-top)) -16px 12px; padding: calc(11px + env(safe-area-inset-top)) 16px 11px; background: rgba(253,243,224,0.96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--c-line); position: sticky; top: calc(-20px - env(safe-area-inset-top)); z-index: 10; }
+.cust-fav-res-name { font-size: 1.08rem; font-weight: 900; color: var(--c-ink); letter-spacing: -0.02em; }
+.cust-fav-hero { position: relative; background: var(--c-card); border: 1.5px solid var(--c-line); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; box-shadow: var(--shadow-s); }
+.cust-fav-hero-img { width: 100%; height: 200px; object-fit: cover; display: block; cursor: zoom-in; background: var(--c-sand); }
+.cust-fav-img-placeholder { width: 100%; height: 200px; background: var(--c-sand); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+.cust-fav-badge { position: absolute; top: 12px; left: 12px; font-size: 0.72rem; font-weight: 900; padding: 5px 12px; border-radius: var(--radius-pill); letter-spacing: 0.04em; text-transform: uppercase; }
+.cust-fav-badge--top { background: var(--c-coral); color: #fff; box-shadow: 0 2px 8px rgba(184,105,26,0.4); }
+.cust-fav-badge--fav { background: #c0392b; color: #fff; box-shadow: 0 2px 8px rgba(192,57,43,0.4); }
+.cust-fav-badge--val { background: var(--c-mango); color: #7a4f00; box-shadow: 0 2px 8px rgba(255,181,71,0.4); }
+.cust-fav-card-body { padding: 14px 16px 16px; }
+.cust-fav-name { font-size: 1.18rem; font-weight: 900; color: var(--c-ink); margin-bottom: 3px; letter-spacing: -0.02em; }
+.cust-fav-desc { font-size: 0.9rem; color: var(--c-ink-soft); font-weight: 600; }
+.cust-fav-price { display:inline-block; margin: 4px 0 6px; color: var(--c-coral-deep); font-size: 1.08rem; font-weight: 900; }
+.cust-fav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+.cust-fav-small { position: relative; background: var(--c-card); border: 1.5px solid var(--c-line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-s); }
+.cust-fav-small-img { width: 100%; height: 120px; object-fit: cover; display: block; cursor: zoom-in; background: var(--c-sand); }
+.cust-fav-small-img-placeholder { width: 100%; height: 120px; background: var(--c-sand); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; }
+.cust-fav-small-body { padding: 10px 12px 12px; }
+.cust-fav-small-name { font-size: 0.98rem; font-weight: 900; color: var(--c-ink); margin-bottom: 2px; line-height: 1.2; }
+.cust-fav-small-desc { font-size: 0.8rem; color: var(--c-ink-soft); font-weight: 600; }
+.cust-fav-small-price { display:inline-block; margin: 3px 0 5px; color: var(--c-coral-deep); font-size: 0.9rem; font-weight: 900; }
+.cust-fav-cta { border-top: 1.5px solid var(--c-line); margin-top: 4px; padding-top: 22px; text-align: center; padding-bottom: 8px; }
+.cust-fav-cta-headline { font-size: 1.45rem; font-weight: 900; color: var(--c-ink); letter-spacing: -0.02em; margin-bottom: 16px; }
+.cust-fav-cta-support { font-size: 0.88rem; font-weight: 600; color: var(--c-ink-soft); margin-top: 10px; line-height: 1.5; }
+
+.checkpoint-helper { font-size: 0.82rem; font-weight: 700; color: var(--c-ink-soft); margin-top: -4px; margin-bottom: 4px; opacity: 0.8; }
+
+.cust-fav-topbar .lang-selector { position: static; top: auto; right: auto; z-index: 11; flex-shrink: 0; }
+.cust-fav-topbar .lang-toggle { color: var(--c-sea-deep); background: #fff; border-color: var(--c-line); }
+.cust-fav-topbar .lang-dropdown { right: 0; }
+
+
+#btn-checkpoint-now { background: var(--c-green); color: #fff; }
+#btn-checkpoint-top3 { background: #fff; color: var(--c-sea-deep); }
+#btn-checkpoint-more { background: #fffaf0; color: var(--c-ink-soft); border-color: var(--c-line); }
+
+
+.app, .screen, .cust-fav-hero, .cust-fav-small, .item-card { max-width: 100%; }
+.cust-fav-grid { width: 100%; min-width: 0; }
+.cust-fav-small { min-width: 0; }
+.cust-fav-small-name, .cust-fav-desc, .cust-fav-small-desc { overflow-wrap: anywhere; }
+
   </style>
 </head>
 <body>
@@ -214,6 +262,37 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
         <button class="lang-first-btn" data-lang="ja" type="button">🇯🇵 日本語<span class="lang-first-native">Japanese</span></button>
         <button class="lang-first-btn" data-lang="zh" type="button">🇨🇳 中文<span class="lang-first-native">Chinese</span></button>
         <p class="lang-first-hint">Tap to continue in your language</p>
+      </div>
+    </section>
+
+    <!-- ── Customer Favorites (post-language entry point) ── -->
+    <section id="screen-customer_favorites" class="screen" hidden aria-labelledby="cust-fav-title">
+      <div class="cust-fav-topbar">
+        <span class="cust-fav-res-name">O'Sun Grill</span>
+        <div id="lang-selector-fav" class="lang-selector" aria-label="Language">
+          <button class="lang-toggle" id="lang-toggle-fav" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span aria-hidden="true">🌐</span>
+            <span id="lang-toggle-fav-label">EN</span>
+            <span class="lang-toggle-caret" aria-hidden="true">▼</span>
+          </button>
+          <div class="lang-dropdown" role="listbox">
+            <button class="lang-btn" data-lang="en" type="button">🇺🇸 English</button>
+            <button class="lang-btn" data-lang="es" type="button">🇲🇽 Español</button>
+            <button class="lang-btn" data-lang="ja" type="button">🇯🇵 日本語</button>
+            <button class="lang-btn" data-lang="zh" type="button">🇨🇳 中文</button>
+          </div>
+        </div>
+      </div>
+      <div class="screen-head" style="padding-top:8px">
+        <h2 class="screen-title" id="cust-fav-title">Customer Favorites</h2>
+        <p id="cust-fav-sub" class="screen-sub">What people keep coming back for</p>
+      </div>
+      <div id="cust-fav-items"></div>
+      <div class="cust-fav-cta">
+        <p id="cust-fav-cta-headline" class="cust-fav-cta-headline">Still not sure?</p>
+        <button class="btn btn--cta btn--lg" id="btn-help-me-decide" type="button">Help Me Decide</button>
+        <p id="cust-fav-cta-support" class="cust-fav-cta-support">Get a personalized recommendation in under 30 seconds.</p>
+        <button class="btn btn--ghost" id="btn-cust-fav-menu" type="button" style="margin-top:10px">View Full Menu →</button>
       </div>
     </section>
 
@@ -268,8 +347,8 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
     <!-- ── Result ── -->
     <section id="screen-result" class="screen" hidden aria-labelledby="result-title">
       <div class="topbar">
-        <button class="topbar-back" id="btn-result-retry" type="button">← Retry</button>
-        <button class="topbar-action" id="btn-result-menu" type="button">Menu</button>
+        <button class="topbar-back" id="btn-result-retry" type="button">← Back</button>
+        <button class="topbar-action" id="btn-result-menu" type="button">Home</button>
       </div>
       <div class="result-body" id="result-body"></div>
       <div class="feedback-inline">
@@ -297,12 +376,12 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
     <!-- ── Menu ── -->
     <section id="screen-menu" class="screen" hidden aria-labelledby="menu-title">
       <div class="topbar">
-        <button class="topbar-back" id="btn-menu-back" type="button">← Home</button>
-        <button class="topbar-action" id="btn-menu-pick" type="button">Pick for me</button>
+        <button class="topbar-back" id="btn-menu-back" type="button">← Back</button>
+        <button class="topbar-action" id="btn-menu-pick" type="button">Help Me Decide</button>
       </div>
       <div class="screen-head">
         <h2 class="screen-title" id="menu-title">Menu</h2>
-        <p class="screen-sub">Tap "Pick for me" if you want help choosing.</p>
+        <p class="screen-sub">Tap "Help Me Decide" if you want a recommendation.</p>
         <a href="https://www.osungrill.com/" id="restaurant-website-link" target="_blank" rel="noopener noreferrer" class="restaurant-website-link">Visit osungrill.com →</a>
       </div>
       <div class="menu-list" id="menu-list"></div>
@@ -316,21 +395,21 @@ body.is-switching .screen.is-active { scroll-behavior: auto !important; }
       </div>
       <div class="checkpoint-body">
         <div class="checkpoint-icon" aria-hidden="true">🎯</div>
-        <h2 class="checkpoint-title" id="checkpoint-title">Good enough to pick.</h2>
-        <p class="checkpoint-headline">Want the result now?</p>
-        <p class="checkpoint-sub">I can choose now, or ask a few more questions to make it more accurate.</p>
+        <h2 class="checkpoint-title" id="checkpoint-title">Ready to order?</h2>
+        <p class="checkpoint-headline" style="display:none"></p>
+        <p class="checkpoint-sub">See your recommendation, compare top picks, or continue for more accurate results.</p>
         <div class="checkpoint-actions">
-          <button class="btn btn--cta btn--lg" id="btn-checkpoint-now" type="button">Show my pick →</button>
-          <button class="btn btn--secondary btn--lg" id="btn-checkpoint-top3" type="button">Show top 3</button>
-          <button class="btn btn--secondary btn--lg" id="btn-checkpoint-more" type="button">Make it more accurate</button>
-        </div>
+          <button class="btn btn--cta btn--lg" id="btn-checkpoint-now" type="button">Recommendation</button>
+          <button class="btn btn--secondary btn--lg" id="btn-checkpoint-top3" type="button">Top 3</button>
+          <button class="btn btn--secondary btn--lg" id="btn-checkpoint-more" type="button">Continue</button>
+          <p class="checkpoint-helper">3 more questions</p></div>
       </div>
     </section>
 
     <!-- ── People Loved ── -->
     <section id="screen-staff" class="screen" hidden aria-labelledby="staff-title">
       <div class="topbar">
-        <button class="topbar-back" id="btn-staff-back" type="button">← Home</button>
+        <button class="topbar-back" id="btn-staff-back" type="button">← Back</button>
         <button class="topbar-action" id="btn-staff-pick" type="button">Pick for me</button>
       </div>
       <div class="screen-head">
@@ -357,6 +436,8 @@ function getSessionId() {
 }
 
 let _viewScreenTimer = null;
+let _screenEnteredAt = null;
+let _prevScreen = null;
 function trackEvent(eventType, payload = {}) {
   const body = JSON.stringify({
     session_id: getSessionId(), event_type: eventType, payload,
@@ -371,6 +452,8 @@ function trackEvent(eventType, payload = {}) {
 }
 function trackViewScreen(screen) {
   clearTimeout(_viewScreenTimer);
+  _prevScreen = screen;
+  _screenEnteredAt = Date.now();
   _viewScreenTimer = setTimeout(() => trackEvent("view_screen", { screen }), 200);
 }
 
@@ -659,9 +742,9 @@ const TRANSLATIONS = {
     quizBack0: "← Home", quizBackN: "← Back", quizNext: "Next →",
     quizSeeMyPick: "See my pick →", dealbreakersSkip: "No restrictions, next →",
     dealbreakersSkipLast: "No restrictions, see my pick →",
-    topbarRetry: "← Retry", topbarMenu: "Menu", topbarMenuBack: "← Home",
-    topbarMenuPick: "Pick for me", topbarStaffBack: "← Home", topbarStaffPick: "Pick for me",
-    menuTitle: "Menu", menuSub: "Tap \"Pick for me\" if you want help choosing.",
+    topbarRetry: "← Back", topbarMenu: "Home", topbarMenuBack: "← Back",
+    topbarMenuPick: "Help Me Decide", topbarStaffBack: "← Back", topbarStaffPick: "Pick for me",
+    menuTitle: "Menu", menuSub: "Tap \"Help Me Decide\" if you want a recommendation.",
     staffTitle: "❤️ People Loved", staffSub: "Items guests keep coming back for.",
     staffTopPick: "🏆 Most loved", staffPick: "❤️ People love this",
     resultFallback: "Nothing fit your budget perfectly — here's the closest:",
@@ -669,10 +752,10 @@ const TRANSLATIONS = {
     resultFinalPick: "🎉 Your pick!", nextBest: "Next Best Item for Me →", prevBest: "← Go Back", viewFullMenu: "View full menu →",
     softWarnOne: "⚠️ May include: %s. Ask if they can adjust.",
     softWarnShort: "⚠️ May include: %s",
-    checkpointBack: "← Back", checkpointTitle: "Good enough to pick.",
-    checkpointHeadline: "Want the result now?",
-    checkpointSub: "I can choose now, or ask a few more questions to make it more accurate.",
-    checkpointNow: "Show my pick →", checkpointTop3: "Show top 3", checkpointMore: "Make it more accurate",
+    checkpointBack: "← Back", checkpointTitle: "Ready to order?",
+    checkpointHeadline: "",
+    checkpointSub: "See your recommendation, compare top picks, or continue for more accurate results.",
+    checkpointNow: "Recommendation", checkpointTop3: "Top 3", checkpointMore: "Continue",
     restrictionsSectionHard: "Hard allergies", restrictionsSectionSoft: "Preferences / dealbreakers",
     restrictionsOtherLabel: "Describe your restriction:", restrictionsOtherPlaceholder: "e.g. coconut, cilantro…",
     hoursPill: "Hours: Open every day until 12 am",
@@ -691,6 +774,10 @@ const TRANSLATIONS = {
     reasonFallback: "A crowd favorite we think you'll enjoy.",
     reasonOne: "Picked because you wanted %s.",
     reasonTwo: "Picked because you wanted %s and %s.",
+    favScreenTitle: "Customer Favorites", favScreenSub: "What people keep coming back for",
+    favBadge1: "Most Ordered", favBadge2: "Customer Favorite", favBadge3: "Best Value",
+    favDesc1: "Rich, garlicky, and impossible to share", favDesc2: "Korean BBQ short ribs, a Waikiki staple", favDesc3: "Tender grilled steak with two sides",
+    favCtaHeadline: "Still not sure?", favCtaBtn: "Help Me Decide", favCtaSupport: "Get a personalized recommendation in under 30 seconds.", favCtaMenu: "View Full Menu →",
     reasons: { snack: "something light", normal: "a proper plate", starving: "something super filling", shrimp: "garlic shrimp", chicken: "BBQ chicken", beef: "Kalbi or beef", fish: "fish or seafood", pork: "pork chop", safe: "a local classic", popular: "the most popular pick", new: "something I haven't tried", light: "something light", cheapest: "great value", filling: "super filling", healthy: "something lighter", taste: "the tastiest thing", fast: "quick and easy" },
     questions: {
       hunger:       { prompt: "How hungry are you?",            options: ["🥟 Just a small bite","🍽️ Ready for a full plate","🔥 Starving — max plates"] },
@@ -712,8 +799,8 @@ const TRANSLATIONS = {
     quizSeeMyPick: "Ver mi elección →",
     dealbreakersSkip: "Sin restricciones, siguiente →",
     dealbreakersSkipLast: "Sin restricciones, ver mi elección →",
-    topbarRetry: "← Volver", topbarMenu: "Menú", topbarMenuBack: "← Inicio",
-    topbarMenuPick: "Elige por mí", topbarStaffBack: "← Inicio", topbarStaffPick: "Elige por mí",
+    topbarRetry: "← Atrás", topbarMenu: "Inicio", topbarMenuBack: "← Inicio",
+    topbarMenuPick: "Ayúdame a decidir", topbarStaffBack: "← Inicio", topbarStaffPick: "Elige por mí",
     menuTitle: "Menú", menuSub: "Toca \"Elige por mí\" si necesitas ayuda para elegir.",
     staffTitle: "❤️ Los más pedidos", staffSub: "Platos a los que los clientes regresan.",
     staffTopPick: "🏆 El favorito", staffPick: "❤️ A la gente le encanta",
@@ -725,9 +812,9 @@ const TRANSLATIONS = {
     softWarnOne: "⚠️ Puede contener: %s. Pregunta si pueden ajustarlo.",
     softWarnShort: "⚠️ Puede contener: %s",
     checkpointBack: "← Atrás", checkpointTitle: "Suficiente para elegir.",
-    checkpointHeadline: "¿Quieres el resultado ahora?",
-    checkpointSub: "Puedo elegir ahora, o hacer unas preguntas más para ser más preciso.",
-    checkpointNow: "Muéstrame mi elección →", checkpointTop3: "Mostrar las 3 mejores", checkpointMore: "Hacerlo más preciso",
+    checkpointHeadline: "",
+    checkpointSub: "Ve tu recomendación, compara las mejores opciones o personalízala más.",
+    checkpointNow: "Mostrarme", checkpointTop3: "Ver mis 3 mejores", checkpointMore: "Personalizar más",
     restrictionsSectionHard: "Alergias graves", restrictionsSectionSoft: "Preferencias / restricciones",
     restrictionsOtherLabel: "Describe tu restricción:", restrictionsOtherPlaceholder: "ej. coco, cilantro…",
     hoursPill: "Horario: Abierto todos los días hasta las 12 am",
@@ -746,6 +833,10 @@ const TRANSLATIONS = {
     reasonFallback: "Un favorito que creemos que disfrutarás.",
     reasonOne: "Elegido porque querías %s.",
     reasonTwo: "Elegido porque querías %s y %s.",
+    favScreenTitle: "Favoritos de los clientes", favScreenSub: "Lo que la gente pide una y otra vez",
+    favBadge1: "Lo más pedido", favBadge2: "Favorito de clientes", favBadge3: "Mejor relación calidad-precio",
+    favDesc1: "Rico, con ajo y difícil de compartir", favDesc2: "Costillas cortas coreanas BBQ, un clásico de Waikiki", favDesc3: "Filete a la parrilla con dos guarniciones",
+    favCtaHeadline: "¿Todavía no estás seguro?", favCtaBtn: "Ayúdame a decidir", favCtaSupport: "Obtén una recomendación personalizada en menos de 30 segundos.", favCtaMenu: "Ver el menú completo →",
     reasons: { snack: "algo ligero", normal: "un plato completo", starving: "algo muy abundante", shrimp: "camarones al ajo", chicken: "pollo BBQ", beef: "Kalbi o res", fish: "pescado o mariscos", pork: "chuleta de cerdo", safe: "un clásico local", popular: "lo más popular", new: "algo nuevo", light: "algo ligero", cheapest: "buen precio", filling: "mucho volumen", healthy: "algo más ligero", taste: "lo más delicioso", fast: "algo rápido" },
     questions: {
       hunger:       { prompt: "¿Cuánta hambre tienes?",                     options: ["🥟 Solo un bocadillo","🍽️ Listo para un plato completo","🔥 Muy hambriento — al máximo"] },
@@ -767,8 +858,8 @@ const TRANSLATIONS = {
     quizSeeMyPick: "結果を見る →",
     dealbreakersSkip: "制限なし、次へ →",
     dealbreakersSkipLast: "制限なし、結果を見る →",
-    topbarRetry: "← やり直す", topbarMenu: "メニュー", topbarMenuBack: "← ホーム",
-    topbarMenuPick: "選んでもらう", topbarStaffBack: "← ホーム", topbarStaffPick: "選んでもらう",
+    topbarRetry: "← 戻る", topbarMenu: "ホーム", topbarMenuBack: "← ホーム",
+    topbarMenuPick: "選ぶのを手伝って", topbarStaffBack: "← ホーム", topbarStaffPick: "選んでもらう",
     menuTitle: "メニュー", menuSub: "選び方がわからない場合は「選んでもらう」をタップ。",
     staffTitle: "❤️ 人気メニュー", staffSub: "リピーターが多いメニュー。",
     staffTopPick: "🏆 最も人気", staffPick: "❤️ みんなのお気に入り",
@@ -780,9 +871,9 @@ const TRANSLATIONS = {
     softWarnOne: "⚠️ 含まれる可能性: %s。調整可能か確認してください。",
     softWarnShort: "⚠️ 含まれる可能性: %s",
     checkpointBack: "← 戻る", checkpointTitle: "選択できる状態です。",
-    checkpointHeadline: "今すぐ結果を見ますか？",
-    checkpointSub: "今すぐ選ぶか、精度を上げるためにいくつか質問を続けるか選べます。",
-    checkpointNow: "選択を見る →", checkpointTop3: "トップ3を表示", checkpointMore: "より正確にする",
+    checkpointHeadline: "",
+    checkpointSub: "おすすめを確認する、上位の候補を比べる、またはさらに調整できます。",
+    checkpointNow: "見せて", checkpointTop3: "トップ3を見る", checkpointMore: "さらに調整",
     restrictionsSectionHard: "アレルギー", restrictionsSectionSoft: "好み / 避けたいもの",
     restrictionsOtherLabel: "制限の詳細：", restrictionsOtherPlaceholder: "例：ナッツ、パクチー…",
     hoursPill: "営業時間：毎日深夜12時まで",
@@ -801,6 +892,10 @@ const TRANSLATIONS = {
     reasonFallback: "きっとお気に召す人気メニューです。",
     reasonOne: "%sをご希望の方のために選びました。",
     reasonTwo: "%sと%sをご希望の方のために選びました。",
+    favScreenTitle: "人気メニュー", favScreenSub: "お客様がリピートするメニュー",
+    favBadge1: "最も注文される", favBadge2: "お客様のお気に入り", favBadge3: "コスパ最高",
+    favDesc1: "濃厚なガーリック風味、やみつきに", favDesc2: "韓国BBQ風ショートリブ、ワイキキの定番", favDesc3: "柔らかいグリルステーキに2品付き",
+    favCtaHeadline: "まだ迷っていますか？", favCtaBtn: "選ぶのを手伝って", favCtaSupport: "30秒以内に個人に合ったおすすめを見つけましょう。", favCtaMenu: "全メニューを見る →",
     reasons: { snack: "軽いもの", normal: "しっかりした一皿", starving: "ボリューム満点のもの", shrimp: "ガーリックシュリンプ", chicken: "BBQチキン", beef: "カルビ・ビーフ", fish: "魚介類", pork: "ポークチョップ", safe: "定番メニュー", popular: "人気メニュー", new: "新しいもの", light: "軽めのもの", cheapest: "コスパの良いもの", filling: "ボリューム満点のもの", healthy: "ヘルシーなもの", taste: "最もおいしいもの", fast: "すぐ食べられるもの" },
     questions: {
       hunger:       { prompt: "どのくらいお腹が空いていますか？",     options: ["🥟 軽くつまみたい","🍽️ しっかり食べたい","🔥 とても空腹 — 最大量"] },
@@ -822,8 +917,8 @@ const TRANSLATIONS = {
     quizSeeMyPick: "查看推荐 →",
     dealbreakersSkip: "无限制，下一步 →",
     dealbreakersSkipLast: "无限制，查看推荐 →",
-    topbarRetry: "← 重试", topbarMenu: "菜单", topbarMenuBack: "← 主页",
-    topbarMenuPick: "帮我选", topbarStaffBack: "← 主页", topbarStaffPick: "帮我选",
+    topbarRetry: "← 返回", topbarMenu: "主页", topbarMenuBack: "← 主页",
+    topbarMenuPick: "帮我决定", topbarStaffBack: "← 主页", topbarStaffPick: "帮我选",
     menuTitle: "菜单", menuSub: "如需帮助选择，请点击「帮我选」。",
     staffTitle: "❤️ 人气推荐", staffSub: "回头客最爱的菜品。",
     staffTopPick: "🏆 最受欢迎", staffPick: "❤️ 大家都爱",
@@ -835,9 +930,9 @@ const TRANSLATIONS = {
     softWarnOne: "⚠️ 可能含有：%s。请询问是否可以调整。",
     softWarnShort: "⚠️ 可能含有：%s",
     checkpointBack: "← 返回", checkpointTitle: "已可以做出选择。",
-    checkpointHeadline: "现在要看结果吗？",
-    checkpointSub: "我可以现在推荐，或再回答几个问题让推荐更准确。",
-    checkpointNow: "显示推荐 →", checkpointTop3: "显示前3名", checkpointMore: "提高准确度",
+    checkpointHeadline: "",
+    checkpointSub: "查看您的推荐、比较前几个选择，或进行更多个性化。",
+    checkpointNow: "给我看", checkpointTop3: "查看我的前3名", checkpointMore: "更多个性化",
     restrictionsSectionHard: "严重过敏", restrictionsSectionSoft: "偏好 / 不喜欢",
     restrictionsOtherLabel: "描述您的限制：", restrictionsOtherPlaceholder: "例如：椰子、香菜…",
     hoursPill: "营业时间：每天营业至凌晨12时",
@@ -856,6 +951,10 @@ const TRANSLATIONS = {
     reasonFallback: "我们认为您会喜欢这道人气菜品。",
     reasonOne: "根据您想要%s的偏好推荐。",
     reasonTwo: "根据您想要%s和%s的偏好推荐。",
+    favScreenTitle: "顾客最爱", favScreenSub: "大家一再回来点的菜",
+    favBadge1: "最多点单", favBadge2: "顾客最爱", favBadge3: "最佳性价比",
+    favDesc1: "浓郁蒜香，令人无法割舍", favDesc2: "韩式烤牛小排，威基基的经典", favDesc3: "嫩煎牛排配两道小菜",
+    favCtaHeadline: "还不确定？", favCtaBtn: "帮我决定", favCtaSupport: "30秒内获得个性化推荐。", favCtaMenu: "查看完整菜单 →",
     reasons: { snack: "清淡的", normal: "一整份", starving: "分量最足的", shrimp: "蒜香虾", chicken: "BBQ烤鸡", beef: "烤牛小排或牛肉", fish: "鱼或海鲜", pork: "猪排", safe: "当地经典", popular: "最受欢迎的", new: "没尝试过的", light: "清淡的", cheapest: "实惠的", filling: "有分量的", healthy: "较清淡的", taste: "最好吃的", fast: "快速获取的" },
     questions: {
       hunger:       { prompt: "您有多饿？",               options: ["🥟 随便吃点","🍽️ 想吃一整份","🔥 非常饿 — 最大份"] },
@@ -937,16 +1036,60 @@ function scoreItem(item,answers,questions){let score=0;const pOpt=questions.find
 function buildReason(item,answers,questions){const parts=[];questions.forEach(q=>{if(q.type==="budget"||q.id==="resultStyle"||q.id==="restrictions"||q.type==="multi")return;const opt=q.options.find(o=>o.value===answers[q.id]);if(!opt?.reason)return;const ov=(opt.tags||[]).some(tag=>item.tags.includes(tag));if(ov||opt.boostFeatured||opt.boostNew||opt.prioritizeCheap)parts.push({val:opt.value,text:opt.reason,weight:q.weight??1});});parts.sort((a,b)=>b.weight-a.weight);const rs=TRANSLATIONS[currentLang]?.reasons||TRANSLATIONS.en.reasons;const top=parts.slice(0,2).map(r=>rs[r.val]||r.text).filter(Boolean);if(!top.length)return t("reasonFallback");if(top.length===1)return t("reasonOne").replace("%s",top[0]);return t("reasonTwo").replace("%s",top[0]).replace("%s",top[1]);}
 function recommend(answers){const questions=QUIZ_QUESTIONS;const{min:bmin,cap:bc}=resolveBudgetRange(answers);const hasBudgetFilter=bc!=null||bmin!=null;const excl=getExcludedTags(answers);const sw=getSoftWarnings(answers);const style=answers.resultStyle||"one";const pOpt=questions.find(q=>q.id==="priority")?.options.find(o=>o.value===answers.priority);let pool=MENU_ITEMS.filter(i=>!excl.some(t=>i.tags.includes(t)));let fallback=false;let bp=hasBudgetFilter?pool.filter(i=>(bc==null||i.price<=bc)&&(bmin==null||i.price>=bmin)):pool;if(hasBudgetFilter&&!bp.length){bp=pool;fallback=true;}pool=bp;const scored=pool.map(i=>({item:i,score:scoreItem(i,answers,questions),softWarnings:buildSoftWarningsForItem(i,sw)}));if(pOpt?.prioritizeCheap)scored.sort((a,b)=>a.item.price-b.item.price||b.score-a.score);else scored.sort((a,b)=>b.score-a.score||a.item.price-b.item.price);if(style==="top3")return{style:"top3",items:scored.slice(0,3),ranked:scored,fallback};if(style==="eliminate")return{style:"eliminate",items:scored.slice(0,Math.min(5,scored.length)),ranked:scored,fallback};const c=scored[0];return{style:"one",item:c.item,score:c.score,fallback,ranked:scored,reason:buildReason(c.item,answers,QUIZ_QUESTIONS)};}
 
-let feedbackRating=0;const state={screen:"landing",answers:{},step:0,result:null,extendedMode:false,sessionStartedAt:Date.now()};
-const SCREENS=["lang","landing","quiz","checkpoint","result","menu","staff"];
+const CUSTOMER_FAVORITES_DATA=[
+  {id:"garlic-shrimp",badgeKey:"favBadge1",descKey:"favDesc1",badgeClass:"cust-fav-badge--top"},
+  {id:"kalbi",        badgeKey:"favBadge2",descKey:"favDesc2",badgeClass:"cust-fav-badge--fav"},
+  {id:"steak",        badgeKey:"favBadge3",descKey:"favDesc3",badgeClass:"cust-fav-badge--val"},
+];
+function renderCustomerFavorites(){
+  const root=document.getElementById("cust-fav-items");if(!root)return;root.innerHTML="";
+  const items=CUSTOMER_FAVORITES_DATA.map(f=>{return{id:f.id,badgeKey:f.badgeKey,descKey:f.descKey,badgeClass:f.badgeClass,item:MENU_ITEMS.find(m=>m.id===f.id)};}).filter(f=>f.item);
+  if(!items.length)return;
+  // Hero card
+  const hero=items[0];const htx=hero.item.translations?.[currentLang]||{};
+  const heroEl=document.createElement("div");heroEl.className="cust-fav-hero";
+  if(hero.item.image){const img=document.createElement("img");img.className="cust-fav-hero-img";img.src=hero.item.image;img.alt=htx.name||hero.item.name;img.loading="eager";img.addEventListener("click",()=>openLightbox(hero.item.image,htx.name||hero.item.name));img.onerror=()=>{img.remove();const ph=document.createElement("div");ph.className="cust-fav-img-placeholder";ph.textContent="🍤";heroEl.prepend(ph);};heroEl.appendChild(img);}else{const ph=document.createElement("div");ph.className="cust-fav-img-placeholder";ph.textContent="🍤";heroEl.appendChild(ph);}
+  const hbadge=document.createElement("span");hbadge.className=`cust-fav-badge ${hero.badgeClass}`;hbadge.textContent=t(hero.badgeKey);heroEl.appendChild(hbadge);
+  const hbody=document.createElement("div");hbody.className="cust-fav-card-body";
+  const hname=document.createElement("p");hname.className="cust-fav-name";hname.textContent=htx.name||hero.item.name;
+  const hdesc=document.createElement("p");hdesc.className="cust-fav-desc";hdesc.textContent=t(hero.descKey);
+  const hprice=document.createElement("span");hprice.className="cust-fav-price";hprice.textContent=`$${hero.item.price.toFixed(2)}`;
+  hbody.appendChild(hname);hbody.appendChild(hprice);hbody.appendChild(hdesc);heroEl.appendChild(hbody);root.appendChild(heroEl);
+  // Grid (items 1 & 2)
+  const grid=document.createElement("div");grid.className="cust-fav-grid";
+  items.slice(1).forEach(fav=>{
+    const tx=fav.item.translations?.[currentLang]||{};
+    const card=document.createElement("div");card.className="cust-fav-small";
+    if(fav.item.image){const img=document.createElement("img");img.className="cust-fav-small-img";img.src=fav.item.image;img.alt=tx.name||fav.item.name;img.loading="lazy";img.addEventListener("click",()=>openLightbox(fav.item.image,tx.name||fav.item.name));img.onerror=()=>{img.remove();const ph=document.createElement("div");ph.className="cust-fav-small-img-placeholder";ph.textContent="🍽️";card.prepend(ph);};card.appendChild(img);}else{const ph=document.createElement("div");ph.className="cust-fav-small-img-placeholder";ph.textContent="🍽️";card.appendChild(ph);}
+    const sb2=document.createElement("span");sb2.className=`cust-fav-badge ${fav.badgeClass}`;sb2.textContent=t(fav.badgeKey);card.appendChild(sb2);
+    const sbody=document.createElement("div");sbody.className="cust-fav-small-body";
+    const sname=document.createElement("p");sname.className="cust-fav-small-name";sname.textContent=tx.name||fav.item.name;
+    const sdesc=document.createElement("p");sdesc.className="cust-fav-small-desc";sdesc.textContent=t(fav.descKey);
+    const sprice=document.createElement("span");sprice.className="cust-fav-small-price";sprice.textContent=`$${fav.item.price.toFixed(2)}`;
+    sbody.appendChild(sname);sbody.appendChild(sprice);sbody.appendChild(sdesc);card.appendChild(sbody);grid.appendChild(card);
+  });
+  root.appendChild(grid);
+  // Update text elements
+  const el=id=>document.getElementById(id);
+  if(el("cust-fav-title"))el("cust-fav-title").textContent=t("favScreenTitle");
+  if(el("cust-fav-sub"))el("cust-fav-sub").textContent=t("favScreenSub");
+  if(el("cust-fav-cta-headline"))el("cust-fav-cta-headline").textContent=t("favCtaHeadline");
+  if(el("btn-help-me-decide"))el("btn-help-me-decide").textContent=t("favCtaBtn");
+  if(el("cust-fav-cta-support"))el("cust-fav-cta-support").textContent=t("favCtaSupport");
+  if(el("btn-cust-fav-menu"))el("btn-cust-fav-menu").textContent=t("favCtaMenu");
+}
+
+let feedbackRating=0;const state={screen:"landing",answers:{},step:0,result:null,extendedMode:false,quizFrom:"customer_favorites",sessionStartedAt:Date.now()};
+function resetQuizState(){state.answers={};state.step=0;state.result=null;state.extendedMode=false;if(state.result)delete state.result._pickIndex;}
+const SCREENS=["lang","landing","customer_favorites","quiz","checkpoint","result","menu","staff"];
 function getScreenEl(n){return document.getElementById(`screen-${n}`);}
 function forceTop(el){if(el)el.scrollTop=0;document.body.scrollTop=0;document.documentElement.scrollTop=0;window.scrollTo(0,0);}
-function showScreen(name){state.screen=name;document.body.classList.add("is-switching");let ae=null;SCREENS.forEach(sn=>{const el=getScreenEl(sn);if(!el)return;const isA=sn===name;el.hidden=!isA;el.classList.toggle("is-active",isA);el.setAttribute("aria-hidden",String(!isA));if(isA)ae=el;});forceTop(ae);requestAnimationFrame(()=>{forceTop(ae);document.body.classList.remove("is-switching");});trackViewScreen(name);}
+function showScreen(name){const target=getScreenEl(name);if(!target){console.error("Missing screen:",name,"expected id:",`screen-${name}`);name="customer_favorites";}state.screen=name;document.body.classList.add("is-switching");let ae=null;SCREENS.forEach(sn=>{const el=getScreenEl(sn);if(!el)return;const isA=sn===name;el.hidden=!isA;el.classList.toggle("is-active",isA);el.setAttribute("aria-hidden",String(!isA));if(isA)ae=el;});forceTop(ae);requestAnimationFrame(()=>{forceTop(ae);document.body.classList.remove("is-switching");});trackViewScreen(name);}
 function renderLanding(){document.getElementById("restaurant-name").textContent=RESTAURANT.name;document.getElementById("restaurant-tagline").textContent=RESTAURANT.tagline;document.getElementById("restaurant-blurb").textContent=RESTAURANT.blurb;}
-function renderQuizStep(){const q=QUIZ_QUESTIONS[state.step];const total=QUIZ_QUESTIONS.length;const root=document.getElementById("quiz-body");root.innerHTML="";const isCore=state.step<CORE_COUNT;if(isCore){document.getElementById("quiz-progress").textContent=`Question ${state.step+1} of ${CORE_COUNT}`;document.getElementById("quiz-bar-fill").style.width=`${((state.step+1)/CORE_COUNT)*100}%`;}else{const ei=state.step-CORE_COUNT+1;const et=QUIZ_QUESTIONS.length-CORE_COUNT;document.getElementById("quiz-progress").textContent=`Extra question ${ei} of ${et}`;document.getElementById("quiz-bar-fill").style.width=`${(ei/et)*100}%`;}document.getElementById("btn-quiz-back").textContent=state.step===0?t("quizBack0"):t("quizBackN");const prompt=document.createElement("h2");prompt.className="quiz-prompt";prompt.textContent=tQuestion(q.id,"prompt")||q.prompt;root.appendChild(prompt);const tSub=tQuestion(q.id,"subtitle");if(q.subtitle||tSub){const sub=document.createElement("p");sub.className="quiz-subtitle";sub.textContent=tSub||q.subtitle;root.appendChild(sub);}const opts=document.createElement("div");opts.className="quiz-options";const isLast=state.step===total-1;if(q.type==="multi"){if(!Array.isArray(state.answers[q.id]))state.answers[q.id]=[];const tOpts=tQuestion(q.id,"options")||[];const isR=q.id==="restrictions";if(isR){const aw=document.createElement("div");aw.className="allergy-warning";aw.textContent=t("allergyAdvisory");root.appendChild(aw);}let hh=false,sh=false;q.options.forEach((o,oi)=>{if(isR){if(o.hard&&!hh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionHard");opts.appendChild(l);hh=true;}if(o.soft&&!sh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionSoft");opts.appendChild(l);sh=true;}}const btn=document.createElement("button");btn.type="button";const sel=state.answers[q.id];btn.className="option"+(sel.includes(o.value)?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{let cur=state.answers[q.id];let _action;if(o.exclusive){_action=cur.includes(o.value)?"remove":"add";state.answers[q.id]=cur.includes(o.value)?[]:[o.value];}else{cur=cur.filter(v=>{const ex=q.options.find(x=>x.value===v);return!ex?.exclusive;});if(cur.includes(o.value)){_action="remove";state.answers[q.id]=cur.filter(v=>v!==o.value);}else{_action="add";state.answers[q.id]=[...cur,o.value];}}trackEvent("quiz_answer",{question:q.id,value:state.answers[q.id],action:_action});const ab=opts.querySelectorAll(".option");ab.forEach(b=>b.classList.remove("is-selected"));state.answers[q.id].forEach(v=>{const idx=q.options.findIndex(x=>x.value===v);if(idx>=0)ab[idx]?.classList.add("is-selected");});const nxt=document.getElementById("btn-quiz-next");const ne=state.answers[q.id].length===0;if(q.optional)nxt.textContent=ne?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));else nxt.disabled=ne;const tnxt=document.getElementById("btn-quiz-next-top");if(tnxt)tnxt.textContent=nxt.textContent;if(isR){const w=document.getElementById("other-restriction-wrap");if(w)w.style.display=state.answers[q.id].includes("other")?"":"none";}});opts.appendChild(btn);if(isR&&o.value==="other"){const ow=document.createElement("div");ow.className="custom-amount";ow.id="other-restriction-wrap";ow.style.display=state.answers[q.id].includes("other")?"":"none";const lbl=document.createElement("label");lbl.setAttribute("for","other-restriction-input");lbl.textContent=t("restrictionsOtherLabel");const inp=document.createElement("input");inp.type="text";inp.id="other-restriction-input";inp.placeholder=t("restrictionsOtherPlaceholder");inp.value=state.answers.restrictionOther||"";inp.addEventListener("input",()=>{state.answers.restrictionOther=inp.value;});ow.appendChild(lbl);ow.appendChild(inp);opts.appendChild(ow);}});}else{const tOpts=tQuestion(q.id,"options")||[];q.options.forEach((o,oi)=>{const btn=document.createElement("button");btn.type="button";btn.className="option"+(state.answers[q.id]===o.value?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{state.answers[q.id]=o.value;trackEvent("quiz_answer",{question:q.id,value:o.value});opts.querySelectorAll(".option").forEach(c=>c.classList.remove("is-selected"));btn.classList.add("is-selected");window.setTimeout(nextStep,140);});opts.appendChild(btn);});}if(q.type==="multi"){const tn=document.createElement("button");tn.type="button";tn.id="btn-quiz-next-top";tn.className="btn btn--secondary quiz-top-next";const ne0=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;tn.textContent=q.optional?(ne0?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"))):(isLast?t("quizSeeMyPick"):t("quizNext"));tn.addEventListener("click",nextStep);root.appendChild(tn);}root.appendChild(opts);const next=document.getElementById("btn-quiz-next");if(q.type==="multi"){const ie=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;if(q.optional){next.textContent=ie?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));next.style.display="";next.disabled=false;}else{next.textContent=isLast?t("quizSeeMyPick"):t("quizNext");next.style.display="";next.disabled=ie;}}else{next.style.display="none";next.disabled=true;}forceTop(getScreenEl("quiz"));}
+function renderQuizStep(){const q=QUIZ_QUESTIONS[state.step];const total=QUIZ_QUESTIONS.length;const root=document.getElementById("quiz-body");root.innerHTML="";const isCore=state.step<CORE_COUNT;if(isCore){document.getElementById("quiz-progress").textContent=`Question ${state.step+1} of ${CORE_COUNT}`;document.getElementById("quiz-bar-fill").style.width=`${((state.step+1)/CORE_COUNT)*100}%`;}else{const ei=state.step-CORE_COUNT+1;const et=QUIZ_QUESTIONS.length-CORE_COUNT;document.getElementById("quiz-progress").textContent=`Extra question ${ei} of ${et}`;document.getElementById("quiz-bar-fill").style.width=`${(ei/et)*100}%`;}document.getElementById("btn-quiz-back").textContent=state.step===0?t("quizBack0"):t("quizBackN");const prompt=document.createElement("h2");prompt.className="quiz-prompt";prompt.textContent=tQuestion(q.id,"prompt")||q.prompt;root.appendChild(prompt);const tSub=tQuestion(q.id,"subtitle");if(q.subtitle||tSub){const sub=document.createElement("p");sub.className="quiz-subtitle";sub.textContent=tSub||q.subtitle;root.appendChild(sub);}const opts=document.createElement("div");opts.className="quiz-options";const isLast=state.step===total-1;let isR=false;let allergyWarningEl=null;if(q.type==="multi"){if(!Array.isArray(state.answers[q.id]))state.answers[q.id]=[];const tOpts=tQuestion(q.id,"options")||[];isR=q.id==="restrictions";if(isR){const aw=document.createElement("div");aw.className="allergy-warning";aw.textContent=t("allergyAdvisory");allergyWarningEl=aw;}let hh=false,sh=false;q.options.forEach((o,oi)=>{if(isR){if(o.hard&&!hh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionHard");opts.appendChild(l);hh=true;}if(o.soft&&!sh){const l=document.createElement("p");l.className="restriction-section-label";l.textContent=t("restrictionsSectionSoft");opts.appendChild(l);sh=true;}}const btn=document.createElement("button");btn.type="button";const sel=state.answers[q.id];btn.className="option"+(sel.includes(o.value)?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{let cur=state.answers[q.id];let _action;if(o.exclusive){_action=cur.includes(o.value)?"remove":"add";state.answers[q.id]=cur.includes(o.value)?[]:[o.value];}else{cur=cur.filter(v=>{const ex=q.options.find(x=>x.value===v);return!ex?.exclusive;});if(cur.includes(o.value)){_action="remove";state.answers[q.id]=cur.filter(v=>v!==o.value);}else{_action="add";state.answers[q.id]=[...cur,o.value];}}trackEvent("quiz_answer",{question:q.id,value:state.answers[q.id],action:_action});const ab=opts.querySelectorAll(".option");ab.forEach(b=>b.classList.remove("is-selected"));state.answers[q.id].forEach(v=>{const idx=q.options.findIndex(x=>x.value===v);if(idx>=0)ab[idx]?.classList.add("is-selected");});const nxt=document.getElementById("btn-quiz-next");const ne=state.answers[q.id].length===0;if(q.optional)nxt.textContent=ne?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));else nxt.disabled=ne;const tnxt=document.getElementById("btn-quiz-next-top");if(tnxt)tnxt.textContent=nxt.textContent;if(isR){const w=document.getElementById("other-restriction-wrap");if(w)w.style.display=state.answers[q.id].includes("other")?"":"none";}});opts.appendChild(btn);if(isR&&o.value==="other"){const ow=document.createElement("div");ow.className="custom-amount";ow.id="other-restriction-wrap";ow.style.display=state.answers[q.id].includes("other")?"":"none";const lbl=document.createElement("label");lbl.setAttribute("for","other-restriction-input");lbl.textContent=t("restrictionsOtherLabel");const inp=document.createElement("input");inp.type="text";inp.id="other-restriction-input";inp.placeholder=t("restrictionsOtherPlaceholder");inp.value=state.answers.restrictionOther||"";inp.addEventListener("input",()=>{state.answers.restrictionOther=inp.value;});ow.appendChild(lbl);ow.appendChild(inp);opts.appendChild(ow);}});}else{const tOpts=tQuestion(q.id,"options")||[];q.options.forEach((o,oi)=>{const btn=document.createElement("button");btn.type="button";btn.className="option"+(state.answers[q.id]===o.value?" is-selected":"");btn.textContent=tOpts[oi]||o.label;btn.addEventListener("click",()=>{state.answers[q.id]=o.value;trackEvent("quiz_answer",{question:q.id,value:o.value});opts.querySelectorAll(".option").forEach(c=>c.classList.remove("is-selected"));btn.classList.add("is-selected");window.setTimeout(nextStep,140);});opts.appendChild(btn);});}if(q.type==="multi"){const tn=document.createElement("button");tn.type="button";tn.id="btn-quiz-next-top";tn.className="btn btn--secondary quiz-top-next";const ne0=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;tn.textContent=q.optional?(ne0?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"))):(isLast?t("quizSeeMyPick"):t("quizNext"));tn.addEventListener("click",nextStep);root.appendChild(tn);}root.appendChild(opts);if(isR&&allergyWarningEl){root.appendChild(allergyWarningEl);}const next=document.getElementById("btn-quiz-next");if(q.type==="multi"){const ie=!Array.isArray(state.answers[q.id])||state.answers[q.id].length===0;if(q.optional){next.textContent=ie?(isLast?t("dealbreakersSkipLast"):t("dealbreakersSkip")):(isLast?t("quizSeeMyPick"):t("quizNext"));next.style.display="";next.disabled=false;}else{next.textContent=isLast?t("quizSeeMyPick"):t("quizNext");next.style.display="";next.disabled=ie;}}else{next.style.display="none";next.disabled=true;}forceTop(getScreenEl("quiz"));}
 function nextStep(){const q=QUIZ_QUESTIONS[state.step];const ans=state.answers[q.id];const ha=q.type==="multi"?(q.optional||(Array.isArray(ans)&&ans.length>0)):ans!=null;if(!ha)return;if(state.step===CORE_COUNT-1&&!state.extendedMode){showScreen("checkpoint");return;}if(state.step<QUIZ_QUESTIONS.length-1){state.step+=1;renderQuizStep();}else{submitQuiz();}}
-function prevStep(){if(state.step===CORE_COUNT&&state.extendedMode){showScreen("checkpoint");return;}if(state.step>0){state.step-=1;renderQuizStep();}else{showScreen("landing");}}
-function startQuiz(entryPoint){state.step=0;state.extendedMode=false;renderQuizStep();showScreen("quiz");trackEvent("quiz_started",{entry_point:entryPoint||null});}
+function prevStep(){if(state.step===CORE_COUNT&&state.extendedMode){showScreen("checkpoint");return;}if(state.step>0){state.step-=1;renderQuizStep();}else{showScreen(state.quizFrom||"customer_favorites");}}
+function startQuiz(entryPoint){state.quizFrom=state.screen;state.step=0;state.extendedMode=false;renderQuizStep();showScreen("quiz");trackEvent("quiz_started",{entry_point:entryPoint||null});}
 function submitQuiz(){state.result=recommend(state.answers);const _shown=state.result.items?state.result.items.map(e=>e.item||e):(state.result.item?[state.result.item]:[]);const _rankedIds=_shown.map(i=>i.id);const _topId=_rankedIds[0]||null;trackEvent("recommendation_shown",{answers:state.answers,ranked_ids:_rankedIds,top_item_id:_topId});renderResult();showScreen("result");}
 
 function buildResultActions(root,showNB,onNB,currentItem=null){
@@ -962,7 +1105,7 @@ function renderResult(){resetFeedbackInline();const root=document.getElementById
 function renderMenu(){const root=document.getElementById("menu-list");root.innerHTML="";MENU_ITEMS.forEach(i=>root.appendChild(buildItemCard(i,false)));}
 function renderStaffFavorites(){const root=document.getElementById("staff-list");root.innerHTML="";const picks=MENU_ITEMS.filter(i=>i.featured);picks.forEach((item,i)=>{const w=document.createElement("div");w.className="staff-pick-wrap";const b=document.createElement("span");b.className="staff-pick-badge";b.textContent=i===0?t("staffTopPick"):t("staffPick");w.appendChild(b);w.appendChild(buildItemCard(item,i===0));if(item.popularReason){const pr=document.createElement("p");pr.className="popular-reason";pr.textContent=t("popularReasonPrefix")+item.popularReason;w.appendChild(pr);}root.appendChild(w);});}
 function openLightbox(src,alt){let lb=document.getElementById("img-lightbox");if(!lb){lb=document.createElement("div");lb.id="img-lightbox";lb.className="img-lightbox";const i=document.createElement("img");i.alt="";lb.appendChild(i);lb.addEventListener("click",()=>lb.classList.remove("is-open"));document.body.appendChild(lb);}lb.querySelector("img").src=src;lb.querySelector("img").alt=alt;lb.classList.add("is-open");}
-function buildItemCard(item,isHero){const card=document.createElement("article");card.className="item-card"+(isHero?" item-card--hero":"");const tx=item.translations?.[currentLang]||{};const itemName=tx.name||item.name;const itemDesc=tx.description||item.description;if(item.image){const img=document.createElement("img");img.className="item-img";img.src=item.image;img.alt=itemName;img.loading="lazy";img.onerror=()=>img.remove();img.addEventListener("click",()=>openLightbox(item.image,itemName));card.appendChild(img);}const head=document.createElement("div");head.className="item-head";const name=document.createElement("h3");name.className="item-name";name.textContent=itemName;const price=document.createElement("span");price.className="item-price";price.textContent=`$${item.price.toFixed(2)}`;head.appendChild(name);head.appendChild(price);card.appendChild(head);const desc=document.createElement("p");desc.className="item-desc";desc.textContent=itemDesc;card.appendChild(desc);if(item.labels&&item.labels.length){const labels=document.createElement("div");labels.className="item-labels";item.labels.forEach(l=>{const tag=document.createElement("span");tag.className="label label--"+l.toLowerCase().replace(/\s+/g,"-");tag.textContent=t("label"+l)||l;labels.appendChild(tag);});card.appendChild(labels);}if(item.withRice){const ru=document.createElement("p");ru.className="rice-upgrade-note";ru.textContent="🍳 Want fried rice instead? Upgrade for +$6.";card.appendChild(ru);}return card;}
+function buildItemCard(item,isHero){const card=document.createElement("article");card.className="item-card"+(isHero?" item-card--hero":"");const tx=item.translations?.[currentLang]||{};const itemName=tx.name||item.name;const itemDesc=tx.description||item.description;if(item.image){const img=document.createElement("img");img.className="item-img";img.src=item.image;img.alt=itemName;img.loading="lazy";img.onerror=()=>img.remove();img.addEventListener("click",()=>openLightbox(item.image,itemName));card.appendChild(img);}const head=document.createElement("div");head.className="item-head";const name=document.createElement("h3");name.className="item-name";name.textContent=itemName;head.appendChild(name);const price=document.createElement("span");price.className="item-price";price.textContent=`$${item.price.toFixed(2)}`;head.appendChild(price);card.appendChild(head);const desc=document.createElement("p");desc.className="item-desc";desc.textContent=itemDesc;card.appendChild(desc);if(item.labels&&item.labels.length){const labels=document.createElement("div");labels.className="item-labels";item.labels.forEach(l=>{const tag=document.createElement("span");tag.className="label label--"+l.toLowerCase().replace(/\s+/g,"-");tag.textContent=t("label"+l)||l;labels.appendChild(tag);});card.appendChild(labels);}if(item.withRice){const ru=document.createElement("p");ru.className="rice-upgrade-note";ru.textContent="🍳 Want fried rice instead? Upgrade for +$6.";card.appendChild(ru);}return card;}
 
 /* ── Feedback ── */
 function resetFeedbackInline(){feedbackRating=0;document.querySelectorAll("#result-star-rating .star").forEach(s=>s.classList.remove("is-active"));const submit=document.getElementById("result-feedback-submit");if(submit){submit.disabled=true;submit.style.display="none";}const cw=document.getElementById("result-feedback-comment-wrap");if(cw)cw.style.display="none";const fc=document.getElementById("result-feedback-comment");if(fc)fc.value="";const form=document.getElementById("result-feedback-form");if(form)form.style.display="";const thanks=document.getElementById("result-feedback-thanks");if(thanks)thanks.style.display="none";}
@@ -974,26 +1117,30 @@ function wireEvents(){
   document.getElementById("btn-staff").addEventListener("click",()=>showScreen("staff"));
   document.getElementById("btn-quiz-next").addEventListener("click",nextStep);
   document.getElementById("btn-quiz-back").addEventListener("click",prevStep);
-  document.getElementById("btn-result-menu").addEventListener("click",()=>showScreen("menu"));
+  document.getElementById("btn-result-menu").addEventListener("click",()=>{showScreen("customer_favorites");});
   document.getElementById("btn-checkpoint-back").addEventListener("click",()=>{state.step=CORE_COUNT-1;renderQuizStep();showScreen("quiz");});
-  document.getElementById("btn-checkpoint-now").addEventListener("click",()=>{trackEvent("quiz_checkpoint_choice",{choice:"now"});submitQuiz();});
+  document.getElementById("btn-checkpoint-now").addEventListener("click",()=>{trackEvent("quiz_checkpoint_choice",{choice:"now"});state.answers.resultStyle="one";submitQuiz();});
   document.getElementById("btn-checkpoint-top3").addEventListener("click",()=>{trackEvent("quiz_checkpoint_choice",{choice:"top3"});state.answers.resultStyle="top3";submitQuiz();});
   document.getElementById("btn-checkpoint-more").addEventListener("click",()=>{trackEvent("quiz_checkpoint_choice",{choice:"more"});state.extendedMode=true;state.step=CORE_COUNT;renderQuizStep();showScreen("quiz");});
-  document.getElementById("btn-result-retry").addEventListener("click",()=>{trackEvent("retry_clicked",{});state.answers={};state.extendedMode=false;if(state.result)delete state.result._pickIndex;startQuiz("retry");});
-  document.getElementById("btn-menu-back").addEventListener("click",()=>showScreen("landing"));
+  const checkpointRetry=document.getElementById("btn-checkpoint-retry");if(checkpointRetry)checkpointRetry.addEventListener("click",()=>{trackEvent("retry_clicked",{source:"checkpoint"});state.answers={};state.step=0;state.result=null;state.extendedMode=false;renderQuizStep();showScreen("quiz");});
+  document.getElementById("btn-result-retry").addEventListener("click",()=>{showScreen("checkpoint");});
+  document.getElementById("btn-menu-back").addEventListener("click",()=>showScreen("customer_favorites"));
   document.getElementById("btn-menu-pick").addEventListener("click",()=>startQuiz("menu"));
-  document.getElementById("btn-staff-back").addEventListener("click",()=>showScreen("landing"));
+  document.getElementById("btn-staff-back").addEventListener("click",()=>showScreen("customer_favorites"));
   document.getElementById("btn-staff-pick").addEventListener("click",()=>startQuiz("staff"));
   const SHORT_LANG={en:"EN",es:"ES",ja:"日本語",zh:"中文"};
-  document.querySelectorAll("#screen-lang .lang-first-btn").forEach(btn=>{btn.addEventListener("click",()=>{const lang=btn.dataset.lang;applyLang(lang);document.getElementById("lang-toggle-label").textContent=SHORT_LANG[lang]||lang.toUpperCase();showScreen("landing");});});
+  document.querySelectorAll("#screen-lang .lang-first-btn").forEach(btn=>{btn.addEventListener("click",()=>{const lang=btn.dataset.lang;applyLang(lang);document.getElementById("lang-toggle-label").textContent=SHORT_LANG[lang]||lang.toUpperCase();document.getElementById("lang-toggle-fav-label").textContent=SHORT_LANG[lang]||lang.toUpperCase();showScreen("customer_favorites");});});
+  document.getElementById("btn-help-me-decide").addEventListener("click",()=>startQuiz("customer_favorites"));
+  document.getElementById("btn-cust-fav-menu").addEventListener("click",()=>{trackEvent("menu_clickthrough",{item_id:null,source:"customer_favorites"});showScreen("menu");});
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){const dur=Math.round((Date.now()-state.sessionStartedAt)/1000);trackEvent("session_end",{duration_seconds:dur,from_screen:state.screen});if(state.screen==="quiz"){trackEvent("quiz_abandoned",{step:state.step,question_key:QUIZ_QUESTIONS[state.step]?.id||null,answers_so_far:state.answers});}}});
   const rwl=document.getElementById("restaurant-website-link");if(rwl)rwl.addEventListener("click",()=>trackEvent("menu_clickthrough",{item_id:null,source:"restaurant_website_link"}));
   const lwl=document.getElementById("landing-website-link");if(lwl)lwl.addEventListener("click",()=>trackEvent("menu_clickthrough",{item_id:null,source:"landing_website_link"}));
   wireFeedbackInline();
 }
-function applyLang(lang){currentLang=lang;trackEvent("language_changed",{lang,from_screen:state.screen});document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===lang));document.getElementById("restaurant-tagline").textContent=t("tagline");document.getElementById("restaurant-blurb").textContent=t("blurb");document.getElementById("btn-pick").textContent=t("btnPick");document.getElementById("btn-view-menu").textContent=t("btnViewMenu");document.getElementById("btn-staff").textContent=t("btnStaff");document.querySelector(".landing-hint").textContent=t("landingHint");document.getElementById("btn-result-retry").textContent=t("topbarRetry");document.getElementById("btn-result-menu").textContent=t("topbarMenu");document.getElementById("btn-menu-back").textContent=t("topbarMenuBack");document.getElementById("btn-menu-pick").textContent=t("topbarMenuPick");document.getElementById("btn-staff-back").textContent=t("topbarStaffBack");document.getElementById("btn-staff-pick").textContent=t("topbarStaffPick");document.getElementById("menu-title").textContent=t("menuTitle");document.querySelector("#screen-menu .screen-sub").textContent=t("menuSub");document.getElementById("staff-title").textContent=t("staffTitle");document.querySelector("#screen-staff .screen-sub").textContent=t("staffSub");renderMenu();renderStaffFavorites();document.getElementById("btn-checkpoint-back").textContent=t("checkpointBack");document.getElementById("checkpoint-title").textContent=t("checkpointTitle");document.querySelector("#screen-checkpoint .checkpoint-headline").textContent=t("checkpointHeadline");document.querySelector("#screen-checkpoint .checkpoint-sub").textContent=t("checkpointSub");document.getElementById("btn-checkpoint-now").textContent=t("checkpointNow");document.getElementById("btn-checkpoint-top3").textContent=t("checkpointTop3");document.getElementById("btn-checkpoint-more").textContent=t("checkpointMore");document.getElementById("hours-pill").textContent=t("hoursPill");document.getElementById("pilot-note").textContent=t("pilotNote");document.getElementById("feedback-inline-title").textContent=t("feedbackTitle");document.getElementById("feedback-comment-label").textContent=t("feedbackCommentLabel");document.getElementById("result-feedback-comment").placeholder=t("feedbackCommentPlaceholder");document.getElementById("result-feedback-submit").textContent=t("feedbackSubmit");document.getElementById("feedback-thanks-text").textContent=t("feedbackThanks");if(state.screen==="quiz")renderQuizStep();if(state.screen==="result")renderResult();}
-function wireLangSelector(){const sel=document.getElementById("lang-selector");const tog=document.getElementById("lang-toggle");const lbl=document.getElementById("lang-toggle-label");const SHORT={en:"EN",es:"ES",ja:"日本語",zh:"中文"};function open(){sel.classList.add("is-open");tog.setAttribute("aria-expanded","true");}function close(){sel.classList.remove("is-open");tog.setAttribute("aria-expanded","false");}tog.addEventListener("click",e=>{e.stopPropagation();sel.classList.contains("is-open")?close():open();});sel.addEventListener("click",e=>{const btn=e.target.closest(".lang-btn");if(!btn||!btn.dataset.lang)return;applyLang(btn.dataset.lang);lbl.textContent=SHORT[btn.dataset.lang]||btn.dataset.lang.toUpperCase();close();});document.addEventListener("click",()=>close());sel.addEventListener("touchstart",e=>e.stopPropagation(),{passive:true});}
-function init(){renderLanding();renderMenu();renderStaffFavorites();wireEvents();wireLangSelector();showScreen("lang");}
+function applyLang(lang){currentLang=lang;trackEvent("language_changed",{lang,from_screen:state.screen});renderCustomerFavorites();document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("is-active",b.dataset.lang===lang));document.getElementById("restaurant-tagline").textContent=t("tagline");document.getElementById("restaurant-blurb").textContent=t("blurb");document.getElementById("btn-pick").textContent=t("btnPick");document.getElementById("btn-view-menu").textContent=t("btnViewMenu");document.getElementById("btn-staff").textContent=t("btnStaff");document.querySelector(".landing-hint").textContent=t("landingHint");document.getElementById("btn-result-retry").textContent="← Back";document.getElementById("btn-result-menu").textContent="Home";document.getElementById("btn-menu-back").textContent="← Back";document.getElementById("btn-menu-pick").textContent=t("topbarMenuPick");document.getElementById("btn-staff-back").textContent="← Back";document.getElementById("btn-staff-pick").textContent=t("topbarStaffPick");document.getElementById("menu-title").textContent=t("menuTitle");document.querySelector("#screen-menu .screen-sub").textContent=t("menuSub");document.getElementById("staff-title").textContent=t("staffTitle");document.querySelector("#screen-staff .screen-sub").textContent=t("staffSub");renderMenu();renderStaffFavorites();document.getElementById("btn-checkpoint-back").textContent=t("checkpointBack");document.getElementById("checkpoint-title").textContent=t("checkpointTitle");document.querySelector("#screen-checkpoint .checkpoint-headline").textContent=t("checkpointHeadline");document.querySelector("#screen-checkpoint .checkpoint-sub").textContent=t("checkpointSub");document.getElementById("btn-checkpoint-now").textContent=t("checkpointNow");document.getElementById("btn-checkpoint-top3").textContent=t("checkpointTop3");document.getElementById("btn-checkpoint-more").textContent=t("checkpointMore");document.getElementById("hours-pill").textContent=t("hoursPill");document.getElementById("pilot-note").textContent=t("pilotNote");document.getElementById("feedback-inline-title").textContent=t("feedbackTitle");document.getElementById("feedback-comment-label").textContent=t("feedbackCommentLabel");document.getElementById("result-feedback-comment").placeholder=t("feedbackCommentPlaceholder");document.getElementById("result-feedback-submit").textContent=t("feedbackSubmit");document.getElementById("feedback-thanks-text").textContent=t("feedbackThanks");if(state.screen==="quiz")renderQuizStep();if(state.screen==="result")renderResult();}
+function wireLangSelectorEl(selId,togId,lblId){const sel=document.getElementById(selId);const tog=document.getElementById(togId);const lbl=document.getElementById(lblId);if(!sel||!tog||!lbl)return;const SHORT={en:"EN",es:"ES",ja:"日本語",zh:"中文"};function open(){sel.classList.add("is-open");tog.setAttribute("aria-expanded","true");}function close(){sel.classList.remove("is-open");tog.setAttribute("aria-expanded","false");}tog.addEventListener("click",e=>{e.stopPropagation();sel.classList.contains("is-open")?close():open();});sel.addEventListener("click",e=>{const btn=e.target.closest(".lang-btn");if(!btn||!btn.dataset.lang)return;applyLang(btn.dataset.lang);document.getElementById("lang-toggle-label").textContent=SHORT[btn.dataset.lang]||btn.dataset.lang.toUpperCase();document.getElementById("lang-toggle-fav-label").textContent=SHORT[btn.dataset.lang]||btn.dataset.lang.toUpperCase();close();});document.addEventListener("click",()=>close());sel.addEventListener("touchstart",e=>e.stopPropagation(),{passive:true});}
+function wireLangSelector(){wireLangSelectorEl("lang-selector","lang-toggle","lang-toggle-label");wireLangSelectorEl("lang-selector-fav","lang-toggle-fav","lang-toggle-fav-label");}
+function init(){renderLanding();renderMenu();renderStaffFavorites();renderCustomerFavorites();wireEvents();wireLangSelector();showScreen("lang");}
 document.addEventListener("DOMContentLoaded",init);
   </script>
 </body>

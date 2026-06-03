@@ -65,6 +65,7 @@
 
   /* ── Question block ── */
   .q-wrap { padding: 12px 16px 0; flex-shrink: 0; }
+  .q-wrap--sticky { position: sticky; top: 0; z-index: 20; background: var(--c-bg); padding-bottom: 8px; box-shadow: 0 4px 12px rgba(39,20,0,0.07); }
 
   /* Q1 — priority picker, no progress */
   .q1-card { background: #fff; border: 2px solid var(--c-line); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow-s); }
@@ -437,9 +438,10 @@ function getRanked() {
 function renderQ() {
   const wrap = document.getElementById("q-wrap");
   wrap.innerHTML = "";
+  wrap.classList.toggle("q-wrap--sticky", quizStep === -1);
 
   if (quizStep === -1) {
-    // Q1 — priority picker, no progress, no count
+    // Q1 — priority picker, sticky, no progress, no count
     const card = document.createElement("div");
     card.className = "q1-card";
     const prompt = document.createElement("div");
@@ -526,6 +528,7 @@ function answerQ1(value) {
   quizStep = 0;
   renderQ();
   renderMenu();
+  document.getElementById("menu-list").scrollTop = 0;
 }
 
 function answerStep(qId, value) {

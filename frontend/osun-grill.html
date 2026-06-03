@@ -165,7 +165,7 @@
   .popup-close { width: 100%; padding: 14px; background: var(--c-coral); color: #fff; border: none; border-radius: var(--radius-pill); font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: var(--shadow-btn); }
 
   /* ── Floating feedback ── */
-  .float-fb { position: absolute; bottom: 20px; left: 16px; z-index: 400; background: var(--c-ink); color: #fff; border: none; border-radius: var(--radius-pill); padding: 9px 14px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 16px rgba(39,20,0,0.28); opacity: 0.82; transition: opacity 0.2s; display: flex; align-items: center; gap: 5px; }
+  .float-fb { position: fixed; bottom: 20px; left: 16px; z-index: 400; background: var(--c-ink); color: #fff; border: none; border-radius: var(--radius-pill); padding: 9px 14px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 16px rgba(39,20,0,0.28); opacity: 0.82; transition: opacity 0.2s; display: flex; align-items: center; gap: 5px; }
   .float-fb:hover { opacity: 1; }
   .float-fb.hidden { opacity: 0; pointer-events: none; }
   .fb-overlay { display: none; position: fixed; inset: 0; background: rgba(39,20,0,0.45); z-index: 450; align-items: flex-end; justify-content: center; }
@@ -267,10 +267,11 @@
       <div class="sm-title">O'Sun Grill</div>
       <div class="sm-right"></div>
     </div>
-    <!-- Question block (JS-rendered) -->
-    <div class="q-wrap" id="q-wrap"></div>
-    <!-- Menu list (JS-rendered) -->
-    <div class="menu-list" id="menu-list" style="overflow-y:auto;flex:1;"></div>
+    <!-- Scroll container: q-wrap sticky inside here -->
+    <div id="scroll-container" style="overflow-y:auto;flex:1;">
+      <div class="q-wrap" id="q-wrap"></div>
+      <div class="menu-list" id="menu-list"></div>
+    </div>
   </div>
 
   <!-- ══ SCREEN: Detail ══ -->
@@ -528,7 +529,7 @@ function answerQ1(value) {
   quizStep = 0;
   renderQ();
   renderMenu();
-  document.getElementById("menu-list").scrollTop = 0;
+  document.getElementById("scroll-container").scrollTop = 0;
 }
 
 function answerStep(qId, value) {

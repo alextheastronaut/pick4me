@@ -37,6 +37,12 @@
   .screen { display: none; flex-direction: column; flex: 1; overflow: hidden; }
   .screen.active { display: flex; }
 
+  /* ── Mobile: fill viewport so scroll-container is the real scroll context ── */
+  @media (max-width: 480px) {
+    body { padding: 0; align-items: stretch; }
+    .phone { width: 100%; min-height: 0; height: 100svh; border-radius: 0; box-shadow: none; }
+  }
+
   /* ── Home screen ── */
   .home-hero { background: var(--c-coral); padding: 52px 24px 28px; text-align: center; flex-shrink: 0; }
   .brilla-logo { font-size: 2rem; font-weight: 900; color: #fff; letter-spacing: -0.04em; margin-bottom: 4px; }
@@ -65,8 +71,6 @@
 
   /* ── Question block ── */
   .q-wrap { padding: 12px 16px 0; flex-shrink: 0; }
-  .q-wrap--sticky { position: sticky; top: 0; z-index: 20; background: var(--c-bg); padding-bottom: 8px; box-shadow: 0 4px 12px rgba(39,20,0,0.07); }
-
   /* Q1 — priority picker, no progress */
   .q1-card { background: #fff; border: 2px solid var(--c-line); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow-s); }
   .q1-prompt { font-size: 1.05rem; font-weight: 900; color: var(--c-ink); margin-bottom: 10px; }
@@ -109,9 +113,29 @@
   .q-thumb-btn.selected { border-color: var(--c-coral); background: rgba(184,105,26,0.1); }
   .q-thumbs-thanks { font-size: 0.8rem; font-weight: 800; color: var(--c-green); text-align: center; padding: 8px 14px 4px; }
 
+  /* ── Q1 full-screen modal ── */
+  #q1-modal {
+    position: absolute; inset: 0; z-index: 200;
+    background: var(--c-bg);
+    display: flex; flex-direction: column;
+  }
+  #q1-modal.hidden { display: none; }
+  .q1-modal-topbar {
+    background: var(--c-coral); padding: 14px 16px 12px;
+    display: grid; grid-template-columns: 1.5fr auto 0.5fr; align-items: center; flex-shrink: 0;
+  }
+  .q1-modal-title { font-size: 1rem; font-weight: 900; color: #fff; text-align: center; }
+  .q1-modal-body {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 24px 20px;
+  }
+  .q1-modal-eyebrow {
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--c-ink-soft); margin-bottom: 14px; text-align: center;
+  }
+
   /* ── Full menu list ── */
   .menu-list { padding: 12px 16px 80px; display: flex; flex-direction: column; gap: 8px; }
-  .menu-list-header { font-size: 0.68rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-ink-soft); padding: 4px 0 2px; }
 
   @keyframes itemEnter {
     from { opacity: 0; transform: translateY(6px); }
@@ -260,6 +284,22 @@
     </div>
   </div>
 
+  <!-- ══ Q1 MODAL ══ -->
+  <div id="q1-modal">
+    <div class="q1-modal-topbar">
+      <div></div>
+      <div class="q1-modal-title">O'Sun Grill</div>
+      <div></div>
+    </div>
+    <div class="q1-modal-body">
+      <div class="q1-modal-eyebrow">Personalize your menu</div>
+      <div class="q1-card" style="width:100%;">
+        <div class="q1-prompt">What matters most?</div>
+        <div class="q1-options" id="q1-modal-options"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ SCREEN: Smart Menu ══ -->
   <div class="screen active" id="screen-smart">
     <div class="sm-topbar">
@@ -288,8 +328,7 @@
           <div style="font-size:1.25rem;font-weight:900;color:var(--c-coral-deep);white-space:nowrap;" id="detail-price"></div>
         </div>
         <div class="detail-labels" id="detail-labels"></div>
-        <div class="detail-why" id="detail-why" style="display:none;"></div>
-        <div class="detail-desc" id="detail-desc"></div>
+<div class="detail-desc" id="detail-desc"></div>
       </div>
       <div style="padding:16px 20px 36px;">
         <button class="btn-green" onclick="showOrderPopup()">Order Now →</button>
@@ -439,10 +478,9 @@ function getRanked() {
 function renderQ() {
   const wrap = document.getElementById("q-wrap");
   wrap.innerHTML = "";
-  wrap.classList.toggle("q-wrap--sticky", quizStep === -1);
 
   if (quizStep === -1) {
-    // Q1 — priority picker, sticky, no progress, no count
+    // Q1 — priority picker, centered, no progress, no count
     const card = document.createElement("div");
     card.className = "q1-card";
     const prompt = document.createElement("div");
@@ -690,7 +728,6 @@ function openDetail(item) {
     s.textContent = l;
     labelsEl.appendChild(s);
   });
-  document.getElementById("detail-why").style.display = "none";
   trackEvent("result_item_clicked", { item_id: item.id, source: "smart_menu" });
   goScreen("detail");
 }
@@ -755,10 +792,27 @@ function fireEnd() {
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") fireEnd(); });
 window.addEventListener("pagehide", () => fireEnd());
 
+/* ─── Q1 Modal ─── */
+function initQ1Modal() {
+  const grid = document.getElementById("q1-modal-options");
+  Q1_OPTIONS.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "q1-btn";
+    btn.textContent = opt.label;
+    btn.onclick = () => {
+      btn.style.pointerEvents = "none";
+      document.getElementById("q1-modal").classList.add("hidden");
+      answerQ1(opt.value);
+    };
+    grid.appendChild(btn);
+  });
+}
+
 /* ─── Init ─── */
 document.getElementById("order-popup").addEventListener("click", e => {
   if (e.target === document.getElementById("order-popup")) closeOrderPopup();
 });
+initQ1Modal();
 renderQ();
 renderMenu();
 trackViewScreen("smart");

@@ -569,14 +569,27 @@ let currentLang = "en";
 let _viewScreenTimer = null;
 let _screenEnteredAt = Date.now();
 
+function safeStorage(fn, fallback) {
+  try { return fn(); } catch(e) { return fallback; }
+}
 function getSessionId() {
-  let id = sessionStorage.getItem("pw_session_id");
-  if (!id) { id = crypto.randomUUID(); sessionStorage.setItem("pw_session_id", id); }
+  let id = safeStorage(() => sessionStorage.getItem("pw_session_id"), null);
+  if (!id) { id = crypto.randomUUID(); safeStorage(() => sessionStorage.setItem("pw_session_id", id), null); }
   return id;
 }
+function getExperimentVariant() {
+  let variant = safeStorage(() => sessionStorage.getItem("brilla_ab_variant"), null);
+  if (!variant) {
+    variant = Math.random() < 0.5 ? "home_first" : "direct_sorted_menu";
+    safeStorage(() => sessionStorage.setItem("brilla_ab_variant", variant), null);
+  }
+  return variant;
+}
 function trackEvent(eventType, payload = {}) {
+  const variant = getExperimentVariant();
+  const enrichedPayload = { ...payload, variant };
   const body = JSON.stringify({
-    session_id: getSessionId(), event_type: eventType, payload,
+    session_id: getSessionId(), event_type: eventType, payload: enrichedPayload,
     client_ts: new Date().toISOString(), language: currentLang || null,
   });
   const url = `${API_BASE}/api/v1/restaurants/${RESTAURANT_SLUG}/events`;
@@ -821,10 +834,11 @@ function goHome() {
   const from = currentScreen;
   screenHistory = [];
   document.querySelectorAll(".screen.active").forEach(s=>s.classList.remove("active"));
-  document.getElementById("screen-home").classList.add("active");
-  currentScreen = "home";
+  const target = getExperimentVariant() === "direct_sorted_menu" ? "landing" : "home";
+  document.getElementById("screen-"+target).classList.add("active");
+  currentScreen = target;
   trackEvent("home_clicked", { from_screen: from });
-  trackViewScreen("home");
+  trackViewScreen(target);
 }
 
 /* ─── Landing → Sorted menu ─── */
@@ -1344,7 +1358,26 @@ document.getElementById("order-popup").addEventListener("click", e => {
 document.getElementById("session-feedback-popup").addEventListener("click", e => {
   if (e.target===e.currentTarget) document.getElementById("session-feedback-popup").classList.remove("show");
 });
-trackViewScreen("home");
+
+function initExperimentLanding() {
+  const wasAlreadyAssigned = !!safeStorage(() => sessionStorage.getItem("brilla_ab_variant"), null);
+  const variant = getExperimentVariant();
+  if (!wasAlreadyAssigned) trackEvent("experiment_assigned", { variant });
+
+  if (variant === "direct_sorted_menu") {
+    document.querySelectorAll(".screen.active").forEach(s => s.classList.remove("active"));
+    document.getElementById("screen-landing").classList.add("active");
+    currentScreen = "landing";
+    screenHistory = [];
+    trackViewScreen("landing");
+    return;
+  }
+
+  document.getElementById("screen-home").classList.add("active");
+  trackViewScreen("home");
+}
+
+initExperimentLanding();
 </script>
 </body>
 </html>
